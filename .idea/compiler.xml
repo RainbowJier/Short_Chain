@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="dcloud-app" />
+        <module name="dcloud-data" />
+        <module name="dcloud-shop" />
+        <module name="dcloud-gateway" />
+        <module name="dcloud-link" />
+        <module name="dcloud-common" />
+        <module name="dcloud-account" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="dcloud-account" options="-parameters" />
+      <module name="dcloud-app" options="-parameters" />
+      <module name="dcloud-common" options="-parameters" />
+      <module name="dcloud-data" options="-parameters" />
+      <module name="dcloud-gateway" options="-parameters" />
+      <module name="dcloud-link" options="-parameters" />
+      <module name="dcloud-shop" options="-parameters" />
+    </option>
+  </component>
+</project>
