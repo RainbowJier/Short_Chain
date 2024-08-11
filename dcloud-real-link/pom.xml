@@ -42,14 +42,14 @@
         <lombok.version>1.18.28</lombok.version>
         <commons.lang3.version>3.9</commons.lang3.version>
         <commons.codec.version>1.15</commons.codec.version>
-        <xxl-job.version>2.3.0</xxl-job.version>
+        <xxl.job.version>2.3.0</xxl.job.version>
 
-        <aliyun.oss.version>3.10.2</aliyun.oss.version>
-        <kaptcha.version>1.1.0</kaptcha.version>
+        <aliyun.oss.version>3.8.0</aliyun.oss.version>
+        <kaptcha.version>2.3.2</kaptcha.version>
         <docker.image.prefix>dcloud</docker.image.prefix>
 
         <jwt.version>0.9.0</jwt.version>
-        <sharding.jdbc.version>4.1.1</sharding.jdbc.version>
+        <sharding.jdbc.version>5.1.1</sharding.jdbc.version>
         <skipTests>true</skipTests>
         <junit.version>4.12</junit.version>
         <druid.version>1.2.8</druid.version>
@@ -106,11 +106,13 @@
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
             </dependency>
+
             <!--      swagger3      -->
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
@@ -131,6 +133,7 @@
                 <artifactId>jjwt</artifactId>
                 <version>${jwt.version}</version>
             </dependency>
+
             <!-- MySQL 连接驱动 -->
             <dependency>
                 <groupId>mysql</groupId>
@@ -166,19 +169,22 @@
                 <version>${commons.codec.version}</version>
             </dependency>
 
-            <!--验证码kaptcha依赖包-->
+            <!--
+            -验证码kaptcha依赖包
+            https://mvnrepository.com/artifact/com.github.penggle/kaptcha
+            -->
             <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>kaptcha-spring-boot-starter</artifactId>
+                <groupId>com.github.penggle</groupId>
+                <artifactId>kaptcha</artifactId>
                 <version>${kaptcha.version}</version>
             </dependency>
 
             <!--阿⾥云oss-->
+            <!-- https://mvnrepository.com/artifact/com.aliyun.oss/aliyun-sdk-oss -->
             <dependency>
                 <groupId>com.aliyun.oss</groupId>
                 <artifactId>aliyun-sdk-oss</artifactId>
-                <version>${aliyun.oss.version}
-                </version>
+                <version>${aliyun.oss.version}</version>
             </dependency>
 
             <!--分布式锁-->
@@ -188,11 +194,11 @@
                 <version>${redission.version}</version>
             </dependency>
 
-            <!--end-->
+            <!-- shardingsphere -->
             <dependency>
                 <groupId>org.apache.shardingsphere</groupId>
-                <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
-                <version>${sharding-jdbc.version}</version>
+                <artifactId>shardingsphere-jdbc-core-spring-boot-starter</artifactId>
+                <version>${sharding.jdbc.version}</version>
             </dependency>
 
             <dependency>
@@ -203,9 +209,8 @@
 
             <dependency>
                 <groupId>com.xuxueli</groupId>
-                <artifactId>xxl-jobcore</artifactId>
-                <version>${xxl-job.version}
-                </version>
+                <artifactId>xxl-job-core</artifactId>
+                <version>${xxl.job.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
