@@ -10,14 +10,14 @@
 
     <artifactId>dcloud-app</artifactId>
     <packaging>war</packaging>
-    <name>dcloud-app Maven Webapp</name>
-    <url>http://maven.apache.org</url>
+    <name>dcloud-app</name>
+    <description>dcloud-app</description>
 
     <dependencies>
-        <!-- SpringBoot Web-->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>com.example</groupId>
+            <artifactId>dcloud-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

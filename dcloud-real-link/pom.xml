@@ -67,6 +67,7 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- Spring Boot 依赖管理 -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -75,25 +76,25 @@
                 <scope>import</scope>
             </dependency>
 
+            <!-- Spring Cloud 依赖管理 -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring.cloud.version}
-                </version>
+                <version>${spring.cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
 
+            <!-- Spring Cloud Alibaba 依赖管理 -->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-                <version>${alibaba.cloud.version}
-                </version>
+                <version>${alibaba.cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
 
-            <!--        devtools-->
+            <!-- Spring Boot 开发工具 -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-devtools</artifactId>
@@ -101,19 +102,22 @@
                 <optional>true</optional>
             </dependency>
 
+            <!-- Fastjson -->
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
             </dependency>
 
+            <!-- Hutool 工具类库 -->
             <dependency>
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
             </dependency>
 
-            <!--      swagger3      -->
+
+            <!--  swagger3  -->
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>knife4j-openapi2-spring-boot-starter</artifactId>

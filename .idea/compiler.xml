@@ -29,6 +29,7 @@
       <module name="dcloud-gateway" options="-parameters" />
       <module name="dcloud-link" options="-parameters" />
       <module name="dcloud-shop" options="-parameters" />
+      <module name="test" options="-parameters" />
     </option>
   </component>
 </project>

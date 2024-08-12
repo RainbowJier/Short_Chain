@@ -8,6 +8,7 @@
         <option value="$PROJECT_DIR$/dcloud-real-link/pom.xml" />
         <option value="$PROJECT_DIR$/dcloud-real-link/dcloud-common/pom.xml" />
         <option value="$PROJECT_DIR$/dcloud-real-link/test/pom.xml" />
+        <option value="$PROJECT_DIR$/dcloud-real-link/dcloud-account/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
