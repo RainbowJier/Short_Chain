@@ -1,7 +1,6 @@
 package com.example.dcloudcommon.exception;
 
 import com.example.dcloudcommon.enums.BizCodeEnum;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**

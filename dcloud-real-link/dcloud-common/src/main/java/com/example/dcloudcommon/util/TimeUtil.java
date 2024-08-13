@@ -28,23 +28,22 @@ public class TimeUtil {
     }
 
     /**
-     * Convert Date to String
+     * Convert Date to String with custom pattern
      */
     public static String format(Date time, String pattern) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
-
         return formatter.format(time.toInstant().atZone(DEFAULT_ZONE_ID));
     }
 
     /**
-     * Conver Date to String.
+     * Convert Date to String.
      */
     public static String format(Date time) {
         return DEFAULT_DATE_TIME_FORMATTER.format(time.toInstant().atZone(DEFAULT_ZONE_ID));
     }
 
     /**
-     * Convert timestamp to String.
+     * Convert Timestamp to String.
      */
     public static String format(long timestamp) {
         return DEFAULT_DATE_TIME_FORMATTER.format(new Date(timestamp).toInstant().atZone(DEFAULT_ZONE_ID));
@@ -60,6 +59,7 @@ public class TimeUtil {
 
     /**
      * 获取当天剩余的秒数,用于流量包过期配置
+     * Get the remaining seconds of the day, used for traffic package expiration configuration.
      */
     public static Integer getRemainSecondsOneDay(Date currentDate) {
         LocalDateTime midnight = LocalDateTime.ofInstant(currentDate.toInstant(), ZoneId.systemDefault()).plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
