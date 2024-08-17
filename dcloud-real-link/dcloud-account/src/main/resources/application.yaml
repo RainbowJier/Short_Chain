@@ -49,7 +49,7 @@ knife4j:
   setting:
     language: zh_cn
   openapi:
-    title: UMSDemo
+    title: dcloud_account
     description: "`I'm Gamer`,**你知道吗**"
     email: 3021809270@qqc.com
     concat: RainbowJier

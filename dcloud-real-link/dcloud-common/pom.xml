@@ -33,11 +33,19 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
+        <!--Database Connection Pool-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>${druid.version}</version>
+        </dependency>
+
         <!--mybatis plus-->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
         </dependency>
+
 
         <!--单元测试-->
         <dependency>
