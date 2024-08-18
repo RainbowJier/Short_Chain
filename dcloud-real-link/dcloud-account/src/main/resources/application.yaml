@@ -2,7 +2,10 @@ server:
   port: 8080
 
 spring:
-  #MYSQL
+  application:
+    # 需要参考配置中心的Data Id
+    name: dcloud-account
+  # Database
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     url: jdbc:mysql://123.249.98.26:3306/dcloud_account?characterEncoding=utf8&connectTimeout=10000&socketTimeout=30000&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
@@ -10,22 +13,39 @@ spring:
     username: root
     password: xdclass.net
 
-  #  Redis
-  data:
-    redis:
-      database: 0 # Indicate which database on Redis you want to manipulate(??).
-      port: 6379      # Redis port is default 6379
-      host: localhost
-      # Other
-      lettuce:
-        pool:
-          min-idle: 5
-          max-idle: 10
-          max-active: 8
-          max-wait: 1ms
-          shutdown-timeout: 100ms
+  # Redis
+#  data:
+#    redis:
+#      database: 0 # Indicate which database on Redis you want to manipulate(??).
+#      port: 6379      # Redis port is default 6379
+#      host: localhost
+#      # Other
+#      lettuce:
+#        pool:
+#          min-idle: 5
+#          max-idle: 10
+#          max-active: 8
+#          max-wait: 1ms
+#          shutdown-timeout: 100ms
 
-#MybatisPlus
+  # Nacos
+  cloud:
+    nacos:
+      discovery:
+        enabled: true
+        server-addr: 123.249.98.26:8848
+        username: nacos
+        password: nacos
+
+# Nacos 配置暴露所有的监控点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+
+# MybatisPlus
 mybatis-plus:
   #  xml文件地址
   mapper-locations: classpath:mapper/*.xml
@@ -50,7 +70,7 @@ knife4j:
     language: zh_cn
   openapi:
     title: dcloud_account
-    description: "`I'm Gamer`,**你知道吗**"
+    description: "✅🎯🧊💪🧱"
     email: 3021809270@qqc.com
     concat: RainbowJier
     url: https://docs.xiaominfo.com
