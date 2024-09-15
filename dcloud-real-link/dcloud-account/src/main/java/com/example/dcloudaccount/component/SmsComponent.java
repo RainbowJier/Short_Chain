@@ -1,6 +1,7 @@
 package com.example.dcloudaccount.component;
 
 import com.example.dcloudaccount.config.SmsConfig;
+import com.example.dcloudcommon.util.CommonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -28,6 +29,9 @@ public class SmsComponent {
     private SmsConfig smsConfig;
 
     public void send(String to, String templateId,String value) {
+        // Millisecond timestamp
+        Long begin = CommonUtil.getCurrentTimestamp();
+
         String url = String.format(URL_TEMPLATE, to, templateId, value);
 
         // Create headers entity
@@ -37,8 +41,10 @@ public class SmsComponent {
 
         // Send request and get response.
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
-        log.info("url={},body={}", url, response.getBody());
 
+        Long end = CommonUtil.getCurrentTimestamp();
+
+        log.info("Send SMS, cost time:{}ms, url={},body={}", end - begin, url, response.getBody());
         if (response.getStatusCode() == HttpStatus.OK) {
             log.info("Send SMS success, response message:{}", response.getBody());
         } else {
