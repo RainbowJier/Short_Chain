@@ -51,7 +51,7 @@ public class RestTemplateConfig {
         // 请求 xdclass.net,最大并发300
         // 请求 baidu.net,最大并发300
         // 实际上二者连接数合起来最大不能超过500
-        connectionManager.setDefaultMaxPerRoute(200);
+        connectionManager.setDefaultMaxPerRoute(300);
 
         RequestConfig requestConfig = RequestConfig.custom()
                 //返回数据的超时时间
@@ -68,15 +68,4 @@ public class RestTemplateConfig {
                 .setConnectionManager(connectionManager)
                 .build();
     }
-
-
-    //@Bean
-    //public ClientHttpRequestFactory simpleClientHttpRequestFactory() {
-    //    SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-    //    factory.setReadTimeout(10000);
-    //    factory.setConnectTimeout(10000);
-    //    return factory;
-    //}
-
-
 }

@@ -34,7 +34,7 @@ public class NotifyServiceImpl implements NotifyService {
      * Test send SMS
      */
     @Override
-    //@Async("threadPoolTaskExecutor")   // 自定义线程池
+    @Async("threadPoolTaskExecutor")   // 自定义线程池
     @Transactional(rollbackFor = Exception.class)
     public void testNotify() {
         long beginTime = CommonUtil.getCurrentTimestamp();
@@ -43,8 +43,6 @@ public class NotifyServiceImpl implements NotifyService {
         long endTime = CommonUtil.getCurrentTimestamp();
         log.info("The cost time = {},body={}",endTime-beginTime,body);
     }
-
-
 
 
 
