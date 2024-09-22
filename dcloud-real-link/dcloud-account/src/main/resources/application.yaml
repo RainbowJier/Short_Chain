@@ -13,20 +13,22 @@ spring:
     username: root
     password: xdclass.net
 
-  # Redis
-  #  data:
-  #    redis:
-  #      database: 0 # Indicate which database on Redis you want to manipulate(??).
-  #      port: 6379      # Redis port is default 6379
-  #      host: localhost
-  #      # Other
-  #      lettuce:
-  #        pool:
-  #          min-idle: 5
-  #          max-idle: 10
-  #          max-active: 8
-  #          max-wait: 1ms
-  #          shutdown-timeout: 100ms
+  #  Redis
+  redis:
+    client-type: jedis
+    host: 123.249.98.26
+    password: xdclass.net
+    port: 6379
+    jedis:
+      pool:
+        # 连接池最大连接数（使用负值表示没有限制）
+        max-active: 100
+        # 连接池中的最大空闲连接
+        max-idle: 100
+        # 连接池中的最小空闲连接
+        min-idle: 100
+        # 连接池最⼤阻塞等待时间（使⽤负值表示没有限制）
+        max-wait: 60000
 
   # Nacos
   cloud:
@@ -44,7 +46,6 @@ management:
       exposure:
         include: "*"
 
-
 # MybatisPlus
 mybatis-plus:
   #  xml文件地址
@@ -61,23 +62,6 @@ mybatis-plus:
       logic-delete-field: deleted  # Globally Logic deletion
       logic-delete-value: 1      # Deleted value is 1
       logic-not-delete-value: 0   # Not deleted value is 0
-
-# knife3j
-# http://localhost:8080/doc.html
-knife4j:
-  enable: true
-  setting:
-    language: zh_cn
-  openapi:
-    title: dcloud_account
-    description: "✅🎯🧊💪🧱"
-    email: 3021809270@qqc.com
-    concat: RainbowJier
-    url: https://docs.xiaominfo.com
-    version: v4.0
-    license: Apache 2.0
-    license-url: https://stackoverflow.com/
-    terms-of-service-url: https://stackoverflow.com/
 
 # Sms configuration
 sms:

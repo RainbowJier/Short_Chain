@@ -10,21 +10,6 @@ spring:
     username: root
     password: xdclass.net
 
-  #  Redis
-  data:
-    redis:
-      database: 0 # Indicate which database on Redis you want to manipulate(??).
-      port: 6379      # Redis port is default 6379
-      host: localhost
-      # Other
-      lettuce:
-        pool:
-          min-idle: 5
-          max-idle: 10
-          max-active: 8
-          max-wait: 1ms
-          shutdown-timeout: 100ms
-
 #MybatisPlus
 mybatis-plus:
   #  xml文件地址
@@ -41,20 +26,3 @@ mybatis-plus:
       logic-delete-field: deleted  # Globally Logic deletion
       logic-delete-value: 1      # Deleted value is 1
       logic-not-delete-value: 0   # Not deleted value is 0
-
-# knife3j
-# http://localhost:8080/doc.html
-knife4j:
-  enable: true
-  setting:
-    language: zh_cn
-  openapi:
-    title: UMSDemo
-    description: "`I'm Gamer`,**你知道吗**"
-    email: 3021809270@qqc.com
-    concat: RainbowJier
-    url: https://docs.xiaominfo.com
-    version: v4.0
-    license: Apache 2.0
-    license-url: https://stackoverflow.com/
-    terms-of-service-url: https://stackoverflow.com/

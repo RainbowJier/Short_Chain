@@ -3,7 +3,6 @@ package com.example.dcloudaccount.component;
 import com.example.dcloudaccount.config.SmsConfig;
 import com.example.dcloudcommon.util.CommonUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -29,6 +28,12 @@ public class SmsComponent {
     @Resource
     private SmsConfig smsConfig;
 
+    /**
+     * Send verification code by SMS.
+     * @param to : Phone number
+     * @param templateId
+     * @param value : Verification code
+     */
     @Async("threadPoolTaskExecutor")
     public void send(String to, String templateId,String value) {
         // Millisecond timestamp

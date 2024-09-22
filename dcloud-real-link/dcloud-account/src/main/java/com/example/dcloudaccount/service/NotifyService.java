@@ -1,7 +1,7 @@
 package com.example.dcloudaccount.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.example.dcloudaccount.entity.Account;
+import com.example.dcloudcommon.enums.SendCodeEnum;
+import com.example.dcloudcommon.util.JsonData;
 
 /**
  * <p>
@@ -14,7 +14,7 @@ import com.example.dcloudaccount.entity.Account;
 public interface NotifyService{
 
     /**
-     * Test send SMS
+     * send SMS
      */
-    void testNotify();
+    JsonData sendCode(SendCodeEnum userRegister, String to);
 }

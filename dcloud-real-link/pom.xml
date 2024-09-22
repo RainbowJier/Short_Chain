@@ -116,14 +116,6 @@
                 <version>${hutool.version}</version>
             </dependency>
 
-
-            <!--  swagger3  -->
-            <dependency>
-                <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-openapi2-spring-boot-starter</artifactId>
-                <version>${knife4j-openapi3.version}</version>
-            </dependency>
-
             <!-- MyBatis Plus Starter：用于简化 MyBatis 的使用 -->
             <dependency>
                 <groupId>com.baomidou</groupId>

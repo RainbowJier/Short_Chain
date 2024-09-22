@@ -1,18 +1,15 @@
 package com.example.dcloudaccount.service.impl;
 
-import com.example.dcloudaccount.entity.Account;
+import com.example.dcloudaccount.component.SmsComponent;
+import com.example.dcloudaccount.config.SmsConfig;
 import com.example.dcloudaccount.service.NotifyService;
+import com.example.dcloudcommon.enums.SendCodeEnum;
+import com.example.dcloudcommon.util.CheckUtil;
 import com.example.dcloudcommon.util.CommonUtil;
+import com.example.dcloudcommon.util.JsonData;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration;
-import org.springframework.boot.autoconfigure.task.TaskExecutionProperties;
-import org.springframework.http.*;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
-
-import javax.annotation.Resource;
 
 
 /**
@@ -27,25 +24,31 @@ import javax.annotation.Resource;
 @Slf4j
 public class NotifyServiceImpl implements NotifyService {
 
-    @Resource
-    private RestTemplate restTemplate;
+    @Autowired
+    private SmsConfig smsConfig;
+
+    @Autowired
+    private SmsComponent smsComponent;
 
     /**
      * Test send SMS
      */
     @Override
-    @Async("threadPoolTaskExecutor")   // 自定义线程池
-    @Transactional(rollbackFor = Exception.class)
-    public void testNotify() {
-        long beginTime = CommonUtil.getCurrentTimestamp();
-        ResponseEntity<String> forEntity = restTemplate.getForEntity("http://old.xdclass.net", String.class);
-        String body = forEntity.getBody();
-        long endTime = CommonUtil.getCurrentTimestamp();
-        log.info("The cost time = {},body={}",endTime-beginTime,body);
+    public JsonData sendCode(SendCodeEnum userRegister, String to) {
+        // Phone or Email
+        if(CheckUtil.isPhone(to)){
+            String templateId = smsConfig.getTemplateId();
+
+            // Generate random code.
+            String randomCode = CommonUtil.getRandomCode(6);
+
+            // Send SMS
+            smsComponent.send(to, templateId, randomCode);
+        }
+        if (CheckUtil.isEmail(to)){
+
+        }
+
+        return JsonData.buildSuccess();
     }
-
-
-
-
-
 }

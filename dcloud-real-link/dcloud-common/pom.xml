@@ -63,18 +63,14 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
+        <!--Redis Connection Pool-->
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
         </dependency>
-
-        <!--
-       https://mvnrepository.com/artifact/org.apache.common
-       s/commons-lang3 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
+            <artifactId>commons-pool2</artifactId>
         </dependency>
 
         <!--⽤于加密-->
