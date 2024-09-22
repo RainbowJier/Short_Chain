@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @Description：TODO
+ * @Description：Chcek if the input is phone or email.
  * @Author： RainbowJier
  * @Data： 2024/9/22 15:24
  */
@@ -19,7 +19,7 @@ public class CheckUtil {
      */
     private static final Pattern PHONE_PATTERN = Pattern.compile("^((13[0-9])|(14[0-9])|(15[0-9])| (17[0-9])|(18[0-9]))\\d{8}$");
 
-  
+
     public static boolean isEmail(String email) {
         if (null == email || "".equals(email)) {
             return false;

@@ -31,7 +31,7 @@ public class SmsComponent {
     /**
      * Send verification code by SMS.
      * @param to : Phone number
-     * @param templateId
+     * @param templateId : SMS template ID
      * @param value : Verification code
      */
     @Async("threadPoolTaskExecutor")
