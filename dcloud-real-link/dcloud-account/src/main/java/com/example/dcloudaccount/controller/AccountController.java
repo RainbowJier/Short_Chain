@@ -35,7 +35,6 @@ public class AccountController {
         return accountService.register(accountRegisterRequest);
     }
 
-
     /**
      * 登录接口
      */

@@ -86,7 +86,7 @@ public class NotifyController {
     /**
      * 发送短信验证码
      */
-    @PostMapping("/send-code")
+    @PostMapping("/send_code")
     public JsonData notify(@RequestBody SendCodeRequest sendCodeRequest, HttpServletRequest request) {
 
         // Get captcha text from Redis.
