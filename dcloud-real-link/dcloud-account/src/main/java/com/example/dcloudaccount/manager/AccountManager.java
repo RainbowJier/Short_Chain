@@ -1,16 +1,23 @@
 package com.example.dcloudaccount.manager;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.dcloudaccount.entity.Account;
 
+import java.util.List;
+
 /**
- * <p>
- *  服务类
- * </p>
- *
  * @author RainbowJier
  * @since 2024-08-17
  */
-public interface AccountManager extends IService<Account> {
+public interface AccountManager{
 
+    /**
+     * 新增用户
+     */
+    int insert(Account account);
+
+
+    /**
+     * 根据手机号查找账号
+     */
+    List<Account> selectByPhone(String phone);
 }

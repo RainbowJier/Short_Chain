@@ -20,12 +20,12 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @Description：TODO
+ * @Description：获取图形验证码并验证短信验证码
  * @Author： RainbowJier
  * @Data： 2024/8/29 21:28
  */
 @RestController
-@RequestMapping("/api/account/v1")
+@RequestMapping("/api/notify/v1")
 @Slf4j
 public class NotifyController {
 

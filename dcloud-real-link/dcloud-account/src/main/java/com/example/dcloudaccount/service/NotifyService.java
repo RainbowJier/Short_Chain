@@ -17,4 +17,12 @@ public interface NotifyService{
      * send SMS
      */
     JsonData sendCode(SendCodeEnum userRegister, String to);
+
+
+    /**
+     * 校验验证码
+     */
+    boolean checkCode(SendCodeEnum sendCodeEnum, String to,String code);
+
+
 }
