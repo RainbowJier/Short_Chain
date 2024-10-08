@@ -1,0 +1,46 @@
+import {
+  Button,
+  Space,
+  Form,
+  Input,
+  Checkbox,
+  Tag,
+  Divider,
+  Table,
+  Modal,
+  Select,
+  Radio,
+  DatePicker,
+  Popconfirm,
+  Card,
+  Tabs,
+  Progress,
+  InputNumber,
+  Pagination,
+  Upload,
+} from 'ant-design-vue';
+
+const antArr = [
+  Upload,
+  Pagination,
+  InputNumber,
+  Progress,
+  Tabs,
+  Card,
+  Button,
+  Space,
+  Form,
+  Input,
+  Checkbox,
+  Tag,
+  Divider,
+  Table,
+  Modal,
+  Select,
+  Radio,
+  DatePicker,
+  Popconfirm,
+];
+
+export default antArr;
+
