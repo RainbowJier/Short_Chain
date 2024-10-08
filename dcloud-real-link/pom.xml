@@ -56,7 +56,6 @@
         <fastjson.version>1.2.79</fastjson.version>
         <hutool.version>5.8.27</hutool.version>
         <knife4j-openapi3.version>4.4.0</knife4j-openapi3.version>
-        <jwt.version>0.7.0</jwt.version>
 
         <mybatis-plus.version>3.5.7</mybatis-plus.version>
         <mysql.version>8.0.30</mysql.version>
@@ -209,13 +208,6 @@
                 <groupId>com.xuxueli</groupId>
                 <artifactId>xxl-job-core</artifactId>
                 <version>${xxl.job.version}</version>
-            </dependency>
-
-            <!--JWT-->
-            <dependency>
-                <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt</artifactId>
-                <version>${jwt.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
