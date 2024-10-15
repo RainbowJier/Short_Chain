@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36" version="24.7.17">
   <diagram name="第 1 页" id="vO-5KL60WhVZvW-t5biG">
-    <mxGraphModel dx="1050" dy="522" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="913" dy="1623" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -157,6 +157,51 @@
         </mxCell>
         <mxCell id="vSEwYygJi2QSESKw-jdO-29" value="异常处理" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="1620" y="160" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="hxnyZ7wzCu-Sgj7sRI47-22" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="hxnyZ7wzCu-Sgj7sRI47-5" target="hxnyZ7wzCu-Sgj7sRI47-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="hxnyZ7wzCu-Sgj7sRI47-5" value="product_order_0" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#7EA6E0;" vertex="1" parent="1">
+          <mxGeometry x="1960" y="-10" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="hxnyZ7wzCu-Sgj7sRI47-10" value="product_order_item_0" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#7EA6E0;" vertex="1" parent="1">
+          <mxGeometry x="2160" y="-10" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="hxnyZ7wzCu-Sgj7sRI47-23" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="hxnyZ7wzCu-Sgj7sRI47-11" target="hxnyZ7wzCu-Sgj7sRI47-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="hxnyZ7wzCu-Sgj7sRI47-11" value="product_order_1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#7EA6E0;" vertex="1" parent="1">
+          <mxGeometry x="1960" y="60" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="hxnyZ7wzCu-Sgj7sRI47-13" value="product_order_item_1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#7EA6E0;" vertex="1" parent="1">
+          <mxGeometry x="2160" y="60" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="hxnyZ7wzCu-Sgj7sRI47-19" value="分片规则相同：order_id" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1940" y="30" width="150" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="hxnyZ7wzCu-Sgj7sRI47-1" value="" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=none;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1868" y="160" width="192" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="hxnyZ7wzCu-Sgj7sRI47-2" value="product_order_0" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#7EA6E0;" vertex="1" parent="1">
+          <mxGeometry x="1899" y="200" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="hxnyZ7wzCu-Sgj7sRI47-3" value="product_order_item_0" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#7EA6E0;" vertex="1" parent="1">
+          <mxGeometry x="1899" y="250" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="hxnyZ7wzCu-Sgj7sRI47-24" value="通用城市字典表" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D4E1F5;" vertex="1" parent="1">
+          <mxGeometry x="1899" y="300" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="hxnyZ7wzCu-Sgj7sRI47-25" value="" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=none;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="2110" y="160" width="192" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="hxnyZ7wzCu-Sgj7sRI47-26" value="product_order_1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#7EA6E0;" vertex="1" parent="1">
+          <mxGeometry x="2141" y="200" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="hxnyZ7wzCu-Sgj7sRI47-27" value="product_order_item_1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#7EA6E0;" vertex="1" parent="1">
+          <mxGeometry x="2141" y="250" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="hxnyZ7wzCu-Sgj7sRI47-28" value="通用城市字典表" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D4E1F5;" vertex="1" parent="1">
+          <mxGeometry x="2141" y="300" width="130" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
