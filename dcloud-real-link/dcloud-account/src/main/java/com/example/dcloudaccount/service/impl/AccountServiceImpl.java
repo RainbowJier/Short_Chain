@@ -13,6 +13,7 @@ import com.example.dcloudcommon.enums.BizCodeEnum;
 import com.example.dcloudcommon.enums.SendCodeEnum;
 import com.example.dcloudcommon.model.LoginUser;
 import com.example.dcloudcommon.util.CommonUtil;
+import com.example.dcloudcommon.util.IDUtil;
 import com.example.dcloudcommon.util.JWTUtil;
 import com.example.dcloudcommon.util.JsonData;
 import jodd.util.StringUtil;
@@ -65,8 +66,8 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
         Account account = new Account();
         BeanUtils.copyProperties(accountRegisterRequest, account);
 
-        // 生成账号唯一编号 TODO
-        account.setAccountNo(CommonUtil.getCurrentTimestamp());
+        // 生成账号唯一编号
+        account.setAccountNo((Long) IDUtil.generateSnowFlakeID());
 
         // 设置用户级别
         account.setAuth(AuthTypeEnum.DEFAULT.name());
