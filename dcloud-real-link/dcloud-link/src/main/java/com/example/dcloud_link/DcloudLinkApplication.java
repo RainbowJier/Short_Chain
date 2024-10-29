@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
-//@ComponentScan(basePackages  = {"com.example.dcloud_link", "com.example.dcloud_common"})
+@ComponentScan(basePackages  = {"com.example.dcloud_link", "com.example.dcloud_common"})
 @EnableTransactionManagement  // Open Database Transaction.
 @EnableFeignClients          // Enable OpenFeign
 @EnableDiscoveryClient      // Enable Service register and discovery.

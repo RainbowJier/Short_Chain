@@ -7,11 +7,7 @@ import com.example.dcloud_account.controller.request.AccountLoginRequest;
 import com.example.dcloud_account.controller.request.AccountRegisterRequest;
 import com.example.dcloud_common.util.JsonData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -42,6 +38,11 @@ public class AccountController {
     @PostMapping("login")
     public JsonData login(@RequestBody AccountLoginRequest accountLoginRequest){
         return accountService.login(accountLoginRequest);
+    }
+
+    @GetMapping("test")
+    public JsonData test(){
+        return JsonData.buildSuccess("test");
     }
 
 }

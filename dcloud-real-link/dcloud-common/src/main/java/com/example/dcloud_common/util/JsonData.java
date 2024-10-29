@@ -58,6 +58,10 @@ public class JsonData {
         return new JsonData(0, null, msg);
     }
 
+    public static JsonData buildSuccess(Object data,String msg) {
+        return new JsonData(0, data, msg);
+    }
+
     /**
      * Error with description.
      */

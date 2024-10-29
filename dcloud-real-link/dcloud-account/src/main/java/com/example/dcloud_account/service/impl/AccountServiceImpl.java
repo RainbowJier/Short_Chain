@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -110,8 +111,9 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
 
                 // 生成token
                 String token = JWTUtil.generateJsonToken(loginUser);
-
-                return JsonData.buildSuccess(token);
+                HashMap<String, Object> data = new HashMap<>();
+                data.put("token", token);
+                return JsonData.buildSuccess(data,"登录成功");
             } else {
                 // 密码错误
                 return JsonData.buildResult(BizCodeEnum.ACCOUNT_PWD_ERROR);

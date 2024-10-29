@@ -31,7 +31,7 @@ public class SnowFlakeWordIdConfig {
             String addressIp = ip4.getHostAddress();
             // 设定 workId 属性，计算IP地址的哈希码，并取绝对值，然后对1024取余，确保workId在0到1023之间
             String workId = (Math.abs(addressIp.hashCode()) % 1024) + "";
-            System.setProperty("workerId",workId);
+            System.setProperty("workId",workId);
             log.info("SnowFlakeWordIdConfig workId: {}", workId);
         } catch (UnknownHostException e) {
             throw new BizException(BizCodeEnum.OPS_NETWORK_ADDRESS_ERROR);

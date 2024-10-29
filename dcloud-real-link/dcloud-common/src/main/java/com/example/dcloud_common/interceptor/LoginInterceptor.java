@@ -42,7 +42,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         // 获取token
         String accessToken = request.getHeader("token");
-        if (StringUtils.isNotBlank(accessToken)) {
+        if (!StringUtils.isNotBlank(accessToken)) {
             // 有些情况，请求头中token可能为空，就从参数中获取token
             accessToken = request.getParameter("token");
         }
@@ -52,7 +52,6 @@ public class LoginInterceptor implements HandlerInterceptor {
             if (claims == null) {
                 // 未登录
                 CommonUtil.sendJsonMessage(response, JsonData.buildResult(BizCodeEnum.ACCOUNT_UNLOGIN));
-
                 return false;
             }
 
@@ -80,6 +79,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
             return true;
         }
+        CommonUtil.sendJsonMessage(response, JsonData.buildResult(BizCodeEnum.ACCOUNT_UNLOGIN));
         return false;
     }
 

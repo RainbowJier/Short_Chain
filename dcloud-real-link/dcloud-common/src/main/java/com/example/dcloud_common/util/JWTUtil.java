@@ -26,12 +26,12 @@ public class JWTUtil {
     /**
      * 秘钥
      */
-    private static final String SECRET = "xdclass.net168";
+    private static final String SECRET = "xdclass.net";
 
     /**
      * 令牌前缀
      */
-    private static final String TOKEN_PREFIX = "dcloud-link";
+    private static final String TOKEN_PREFIX = "dcloud_account";
 
     /**
      * 过期时间，七天
@@ -49,10 +49,10 @@ public class JWTUtil {
 
         String token = Jwts.builder()
                 .setSubject(SUBJECT)
-                .claim("head_img", loginUser.getHeadImg())
+                .claim("head_img", loginUser.getHeadImg() == null? "" : loginUser.getHeadImg())
                 .claim("account_no", loginUser.getAccountNo())
                 .claim("username", loginUser.getUsername())
-                .claim("mail", loginUser.getMail())
+                .claim("mail", loginUser.getMail() == null? "" : loginUser.getMail())
                 .claim("phone", loginUser.getPhone())
                 .claim("auth", loginUser.getAuth())
                 .setIssuedAt(new Date())

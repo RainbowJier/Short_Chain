@@ -14,7 +14,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 
 @Component
-@Slf4j
 public class InterceptorConfig implements WebMvcConfigurer {
 
     @Override
