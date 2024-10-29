@@ -12,7 +12,7 @@ import javax.annotation.Resource;
  * @since 2024-10-29 14:10:42
  */
 @RestController
-@RequestMapping("shortLink")
+@RequestMapping("/api/link")
 public class ShortLinkController {
     /**
      * 服务对象
