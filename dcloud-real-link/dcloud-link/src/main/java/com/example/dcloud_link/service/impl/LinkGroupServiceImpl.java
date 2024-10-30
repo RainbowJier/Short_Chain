@@ -5,13 +5,19 @@ import com.example.dcloud_common.enums.BizCodeEnum;
 import com.example.dcloud_common.interceptor.LoginInterceptor;
 import com.example.dcloud_common.util.JsonData;
 import com.example.dcloud_link.controller.request.LinkGroupRequest;
+import com.example.dcloud_link.controller.request.LinkGroupUpdateRequest;
 import com.example.dcloud_link.entity.LinkGroup;
+import com.example.dcloud_link.entity.vo.LinkGroupVo;
 import com.example.dcloud_link.manager.LinkGroupManager;
 import com.example.dcloud_link.mapper.LinkGroupMapper;
 import com.example.dcloud_link.service.LinkGroupService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * (LinkGroup)表服务实现类
@@ -65,6 +71,53 @@ public class LinkGroupServiceImpl implements LinkGroupService {
         }
 
         return JsonData.buildSuccess("删除成功");
+    }
+
+    @Override
+    public LinkGroupVo detail(Long groupId) {
+        // 获取当前登录的账号
+        Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
+
+        // 获取分组详情
+        LinkGroup linkGroup = linkGroupManager.detail(groupId, accountNo);
+
+        // 数据脱敏
+        LinkGroupVo linkGroupVo = new LinkGroupVo();
+        BeanUtils.copyProperties(linkGroup, linkGroupVo);
+
+        return linkGroupVo;
+    }
+
+    @Override
+    public List<LinkGroupVo> findUserAllLinkGroup() {
+        // 获取当前登录的账号
+        Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
+
+        // 获取用户所有分组
+        List<LinkGroup> list  = linkGroupManager.findUserAllLinkGroup(accountNo);
+
+        // 数据脱敏
+        List<LinkGroupVo> linkGroupVoList = new ArrayList<>();
+        for(LinkGroup obj : list) {
+            LinkGroupVo linkGroupVo = new LinkGroupVo();
+            BeanUtils.copyProperties(obj, linkGroupVo);
+            linkGroupVoList.add(linkGroupVo);
+        }
+
+        return linkGroupVoList;
+    }
+
+    @Override
+    public int updateById(LinkGroupUpdateRequest request) {
+        // 获取当前登录的账号
+        Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
+
+        LinkGroup linkGroup = new LinkGroup()
+                .setAccountNo(accountNo)
+                .setId(request.getId())
+                .setTitle(request.getTitle());
+
+        return linkGroupManager.updateById(linkGroup);
     }
 }
 

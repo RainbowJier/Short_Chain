@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * (LinkGroup)表服务实现类
@@ -36,6 +37,7 @@ public class LinkGroupManagerImpl implements LinkGroupManager {
     public boolean checkGroupExists(String title) {
         LambdaQueryWrapper<LinkGroup> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(LinkGroup::getTitle, title);
+
         LinkGroup linkGroup = linkGroupMapper.selectOne(queryWrapper);
         return linkGroup != null;
     }
@@ -44,10 +46,42 @@ public class LinkGroupManagerImpl implements LinkGroupManager {
     public int del(LinkGroup linkGroup) {
         LambdaQueryWrapper<LinkGroup> queryWrapper = new LambdaQueryWrapper<>();
         // 账号和id都要匹配才行
-        queryWrapper.eq(LinkGroup::getAccountNo, linkGroup.getAccountNo())
-                    .eq(LinkGroup::getId, linkGroup.getId());
+        queryWrapper
+                .eq(LinkGroup::getAccountNo, linkGroup.getAccountNo())
+                .eq(LinkGroup::getId, linkGroup.getId());
 
         return linkGroupMapper.delete(queryWrapper);
+    }
+
+    @Override
+    public LinkGroup detail(Long groupId, Long accountNo) {
+        LambdaQueryWrapper<LinkGroup> queryWrapper = new LambdaQueryWrapper<>();
+        // 账号和id都要匹配才行
+        queryWrapper
+                .eq(LinkGroup::getAccountNo, accountNo)
+                .eq(LinkGroup::getId, groupId);
+
+        return linkGroupMapper.selectOne(queryWrapper);
+    }
+
+    @Override
+    public List<LinkGroup> findUserAllLinkGroup(Long accountNo) {
+        LambdaQueryWrapper<LinkGroup> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(LinkGroup::getAccountNo, accountNo);
+
+        return linkGroupMapper.selectList(queryWrapper);
+    }
+
+    @Override
+    public int updateById(LinkGroup linkGroup) {
+        LambdaQueryWrapper<LinkGroup> queryWrapper = new LambdaQueryWrapper<>();
+        
+        // 账号和id都要匹配才行
+        queryWrapper
+                .eq(LinkGroup::getAccountNo, linkGroup.getAccountNo())
+                .eq(LinkGroup::getId, linkGroup.getId());
+
+        return linkGroupMapper.update(linkGroup, queryWrapper);
     }
 }
 

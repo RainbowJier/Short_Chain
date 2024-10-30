@@ -1,14 +1,12 @@
-package com.example.dcloud_link.entity;
+package com.example.dcloud_link.entity.vo;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import java.util.Date;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * (LinkGroup)实体类
@@ -19,9 +17,7 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("link_group")
-public class LinkGroup implements Serializable {
-    private static final long serialVersionUID = -74132650745233741L;
+public class LinkGroupVo implements Serializable {
 
     private Long id;
     /**

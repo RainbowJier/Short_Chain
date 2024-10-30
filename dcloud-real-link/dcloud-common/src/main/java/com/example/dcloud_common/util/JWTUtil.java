@@ -38,7 +38,6 @@ public class JWTUtil {
      */
     private static final long EXPIRED = 1000 * 60 * 60 * 24 * 7;
 
-
     /**
      * 生成ytoken
      */
