@@ -1,27 +1,21 @@
-package com.example.dcloud_link.entity;
+package com.example.dcloud_link.controller.request;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.*;
-import lombok.experimental.Accessors;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.io.Serializable;
 
 /**
- * (ShortLink)实体类
- *
- * @author makejava
- * @since 2024-10-29 14:11:16
+ * @Description：TODO
+ * @Author： RainbowJier
+ * @Data： 2024/11/3 15:17
  */
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-@TableName("short_link")
-public class ShortLink implements Serializable {
-
+public class ShortLinkRequest {
     private Long id;
     /**
      * 分组
@@ -75,7 +69,4 @@ public class ShortLink implements Serializable {
      * 链接产品层级：FIRST 免费青铜、SECOND黄金、THIRD钻石
      */
     private String linkType;
-
-
 }
-

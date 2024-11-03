@@ -30,11 +30,6 @@ public class LinkGroupController {
      */
     @PostMapping("/add")
     public JsonData add(@RequestBody LinkGroupRequest addRequest) {
-        // 校验分组是否已经存在
-        if (linkGroupService.checkGroupExists(addRequest.getTitle())) {
-            return JsonData.buildError("分组名称已存在");
-        }
-
         return linkGroupService.add(addRequest);
     }
 
@@ -69,16 +64,7 @@ public class LinkGroupController {
      */
     @PutMapping("update")
     public JsonData update(@RequestBody LinkGroupUpdateRequest request) {
-        // 校验分组是否已经存在
-        if (linkGroupService.checkGroupExists(request.getTitle())) {
-            return JsonData.buildError("分组名称已存在");
-        }
-
-        int updateRow = linkGroupService.updateById(request);
-        if(updateRow <= 0) {
-            return JsonData.buildError("更新失败");
-        }
-        return JsonData.buildSuccess("更新成功");
+        return linkGroupService.updateById(request);
     }
 
 

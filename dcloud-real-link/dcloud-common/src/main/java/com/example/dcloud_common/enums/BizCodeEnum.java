@@ -76,13 +76,19 @@ public enum BizCodeEnum {
     /**
      * Common operation code.
      */
-    OPS_REPEAT(110001, "᯿复操作"),
+    OPS_REPEAT(110001, "重复操作"),
     OPS_NETWORK_ADDRESS_ERROR(110002, "⽹络地址错误"),
 
     /**
      * Files
      */
-    FILE_UPLOAD_USER_IMG_FAIL(700101, "⽤户头像⽂件上传失败");
+    FILE_UPLOAD_USER_IMG_FAIL(700101, "⽤户头像⽂件上传失败"),
+
+    /**
+     * 数据库路由信息
+     */
+    DB_ROUTE_NOT_FOUND(83002, "数据库路由未找到");
+
 
     private String message;
 

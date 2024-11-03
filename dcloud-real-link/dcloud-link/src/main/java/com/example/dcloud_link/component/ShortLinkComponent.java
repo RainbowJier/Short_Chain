@@ -1,6 +1,8 @@
 package com.example.dcloud_link.component;
 
 import com.example.dcloud_common.util.CommonUtil;
+import com.example.dcloud_link.strategy.ShardingDBConfig;
+import com.example.dcloud_link.strategy.ShardingTableConfig;
 import org.springframework.stereotype.Component;
 
 /**
@@ -23,8 +25,14 @@ public class ShortLinkComponent {
     public String createShortLinkCode(String originalUrl) {
         long murmur32 = CommonUtil.murmurHash32(originalUrl);
 
+        // 随机库前缀
+        String dbPrefix = ShardingDBConfig.getRandomDBPrefix();
+
+        // 随机表后缀
+        String tableSubfix = ShardingTableConfig.getRandomTableSubfix();
+
         //转62进制
-        return encodeToBase62(murmur32);
+        return dbPrefix+encodeToBase62(murmur32)+tableSubfix;
     }
 
     /**

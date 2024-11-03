@@ -36,6 +36,11 @@ public class LinkGroupServiceImpl implements LinkGroupService {
         // 获取当前登录的账号
         Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
 
+        // 校验分组是否已经存在
+        if (linkGroupManager.checkGroupExists(addRequest.getTitle(),accountNo)) {
+            return JsonData.buildError("分组名称已存在");
+        }
+
         // 封装参数
         LinkGroup linkGroup = new LinkGroup()
                 .setTitle(addRequest.getTitle())
@@ -48,11 +53,6 @@ public class LinkGroupServiceImpl implements LinkGroupService {
         }
 
         return JsonData.buildSuccess("新增成功");
-    }
-
-    @Override
-    public boolean checkGroupExists(String title) {
-        return linkGroupManager.checkGroupExists(title);
     }
 
     @Override
@@ -108,16 +108,25 @@ public class LinkGroupServiceImpl implements LinkGroupService {
     }
 
     @Override
-    public int updateById(LinkGroupUpdateRequest request) {
+    public JsonData updateById(LinkGroupUpdateRequest request) {
         // 获取当前登录的账号
         Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
+
+        // 校验分组是否已经存在
+        if (linkGroupManager.checkGroupExists(request.getTitle(),accountNo)) {
+            return JsonData.buildError("分组名称已存在");
+        }
 
         LinkGroup linkGroup = new LinkGroup()
                 .setAccountNo(accountNo)
                 .setId(request.getId())
                 .setTitle(request.getTitle());
 
-        return linkGroupManager.updateById(linkGroup);
+        int updateRow = linkGroupManager.updateById(linkGroup);
+        if(updateRow <= 0){
+            return JsonData.buildError("更新失败");
+        }
+        return JsonData.buildSuccess("更新成功");
     }
 }
 

@@ -24,7 +24,7 @@ public interface LinkGroupManager {
     /**
      * 校验分组名称是否存在
      */
-    boolean checkGroupExists(String title);
+    boolean checkGroupExists(String title,Long accountNo);
 
     /**
      * 删除分组

@@ -34,9 +34,10 @@ public class LinkGroupManagerImpl implements LinkGroupManager {
     }
 
     @Override
-    public boolean checkGroupExists(String title) {
+    public boolean checkGroupExists(String title,Long accountNo) {
         LambdaQueryWrapper<LinkGroup> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(LinkGroup::getTitle, title);
+        queryWrapper.eq(LinkGroup::getTitle, title)
+               .eq(LinkGroup::getAccountNo, accountNo);
 
         LinkGroup linkGroup = linkGroupMapper.selectOne(queryWrapper);
         return linkGroup != null;

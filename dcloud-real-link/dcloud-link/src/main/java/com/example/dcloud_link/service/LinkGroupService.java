@@ -22,11 +22,6 @@ public interface LinkGroupService{
     JsonData add(LinkGroupRequest addRequest);
 
     /**
-     * 校验分组名称是否存在
-     */
-    boolean checkGroupExists(String title);
-
-    /**
      * 删除分组
      */
     JsonData del(Long groupId);
@@ -44,6 +39,6 @@ public interface LinkGroupService{
     /**
      * 更新分组信息
      */
-    int updateById(LinkGroupUpdateRequest request);
+    JsonData updateById(LinkGroupUpdateRequest request);
 }
 

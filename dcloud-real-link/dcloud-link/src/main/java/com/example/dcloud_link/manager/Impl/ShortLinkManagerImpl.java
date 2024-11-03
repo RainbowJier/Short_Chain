@@ -1,7 +1,10 @@
 package com.example.dcloud_link.manager.Impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.example.dcloud_link.entity.ShortLink;
 import com.example.dcloud_link.manager.ShortLinkManager;
 import com.example.dcloud_link.mapper.ShortLinkMapper;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -13,9 +16,29 @@ import javax.annotation.Resource;
  * @since 2024-10-29 14:11:16
  */
 
-@Service
+@Component
 public class ShortLinkManagerImpl implements ShortLinkManager {
     @Resource
     private ShortLinkMapper shortLinkMapper;
 
+    @Override
+    public int addShortLink(ShortLink shortLink) {
+        return shortLinkMapper.insert(shortLink);
+    }
+
+    @Override
+    public ShortLink findbyShortLink(int shortLinkCode) {
+        LambdaQueryWrapper<ShortLink> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(ShortLink::getCode, shortLinkCode)
+                .eq(ShortLink::getDel, 0);
+        return shortLinkMapper.selectOne(wrapper);
+    }
+
+    @Override
+    public int del(String shortLinkCode, Long accountNo) {
+        LambdaQueryWrapper<ShortLink> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(ShortLink::getCode, shortLinkCode)
+                .eq(ShortLink::getAccountNo, accountNo);
+        return shortLinkMapper.update(wrapper);
+    }
 }
