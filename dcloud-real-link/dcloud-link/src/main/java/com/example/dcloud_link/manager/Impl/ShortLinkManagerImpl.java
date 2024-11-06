@@ -27,7 +27,7 @@ public class ShortLinkManagerImpl implements ShortLinkManager {
     }
 
     @Override
-    public ShortLink findbyShortLink(int shortLinkCode) {
+    public ShortLink findbyShortLink(String shortLinkCode) {
         LambdaQueryWrapper<ShortLink> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(ShortLink::getCode, shortLinkCode)
                 .eq(ShortLink::getDel, 0);

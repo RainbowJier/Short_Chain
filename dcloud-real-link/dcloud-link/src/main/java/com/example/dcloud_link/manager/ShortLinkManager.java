@@ -18,7 +18,7 @@ public interface ShortLinkManager {
     /**
      * 根据短链码查询短链
      */
-    ShortLink findbyShortLink(int shortLinkCode);
+    ShortLink findbyShortLink(String shortLinkCode);
 
     /**
      * 根据短链码和 accountNo 删除

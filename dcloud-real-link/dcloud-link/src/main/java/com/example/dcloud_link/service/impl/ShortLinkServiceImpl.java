@@ -6,9 +6,11 @@ import com.example.dcloud_common.util.JsonData;
 import com.example.dcloud_link.component.ShortLinkComponent;
 import com.example.dcloud_link.controller.request.ShortLinkRequest;
 import com.example.dcloud_link.entity.ShortLink;
+import com.example.dcloud_link.entity.vo.ShortLinkVo;
 import com.example.dcloud_link.manager.ShortLinkManager;
 import com.example.dcloud_link.service.ShortLinkService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
@@ -30,30 +32,18 @@ public class ShortLinkServiceImpl implements ShortLinkService {
     @Autowired
     private ShortLinkComponent shortLinkComponent;
 
+
     @Override
-    public JsonData addShortLink(ShortLinkRequest request) {
-        // 获取当前登录的账号
-        Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
-
-        Random random = new Random();
-        int num1 = random.nextInt(10);
-        int num2 = random.nextInt(1000000);
-        int num3 = random.nextInt(1000000);
-
-        String originalUrl = num1 + "xdclass" +  num2 + ".net" + num3;
-        String linkCode = shortLinkComponent.createShortLinkCode(originalUrl);
-
-        ShortLink shortLink = new ShortLink()
-                .setOriginalUrl(originalUrl)
-                .setCode(linkCode)
-                .setAccountNo(accountNo)
-                .setSign(CommonUtil.MD5(originalUrl))
-                .setDel(0L);
-
-        int insertCount = shortLinkManager.addShortLink(shortLink);
-        if(insertCount <= 0){
-            return JsonData.buildError("新增失败");
+    public ShortLinkVo parseShortLinkCode(String shortLinkCode) {
+        ShortLink shortLink = shortLinkManager.findbyShortLink(shortLinkCode);
+        if (shortLink== null) {
+            return null;
         }
-        return JsonData.buildSuccess("新增成功");
+
+        // 拷贝属性
+        ShortLinkVo shortLinkVo = new ShortLinkVo();
+        BeanUtils.copyProperties(shortLink, shortLinkVo);
+
+        return shortLinkVo;
     }
 }

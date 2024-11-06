@@ -55,22 +55,24 @@ class DcloudLinkApplicationTests {
     private ShortLinkManager shortLinkManager;
     @Test
     void testSaveShortLink() {
-        Random random = new Random();
-        int num1 = random.nextInt(10);
-        int num2 = random.nextInt(1000000);
-        int num3 = random.nextInt(1000000);
+        for (int i = 0; i < 100; i++) {
+            Random random = new Random();
+            int num1 = random.nextInt(10);
+            int num2 = random.nextInt(1000000);
+            int num3 = random.nextInt(1000000);
 
-        String originalUrl = num1 + "xdclass" +  num2 + ".net" + num3;
-        String linkCode = shortLinkComponent.createShortLinkCode(originalUrl);
+            String originalUrl = num1 + "xdclass" +  num2 + ".net" + num3;
+            String linkCode = shortLinkComponent.createShortLinkCode(originalUrl);
 
-        ShortLink shortLink = new ShortLink()
-                .setOriginalUrl(originalUrl)
-                .setCode(linkCode)
-                .setAccountNo((long) num3)
-                .setSign(CommonUtil.MD5(originalUrl))
-                .setDel(0L);
+            ShortLink shortLink = new ShortLink()
+                    .setOriginalUrl(originalUrl)
+                    .setCode(linkCode)
+                    .setAccountNo((long) num3)
+                    .setSign(CommonUtil.MD5(originalUrl))
+                    .setDel(0L);
 
-        shortLinkManager.addShortLink(shortLink);
+            shortLinkManager.addShortLink(shortLink);
+        }
     }
 
 }

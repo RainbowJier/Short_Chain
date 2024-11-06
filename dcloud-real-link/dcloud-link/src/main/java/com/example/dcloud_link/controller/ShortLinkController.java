@@ -30,26 +30,5 @@ public class ShortLinkController {
     @Resource
     private ShortLinkComponent shortLinkComponent;
 
-    @PostMapping("/add")
-    public JsonData addShortLink(){
-        Random random = new Random();
-        int num1 = random.nextInt(10);
-        int num2 = random.nextInt(1000000);
-        int num3 = random.nextInt(1000000);
-
-        String originalUrl = num1 + "xdclass" +  num2 + ".net" + num3;
-        String linkCode = shortLinkComponent.createShortLinkCode(originalUrl);
-
-        ShortLink shortLink = new ShortLink()
-                .setOriginalUrl(originalUrl)
-                .setCode(linkCode)
-                .setAccountNo((long) num3)
-                .setDel(0L);
-
-        ShortLinkRequest request = new ShortLinkRequest();
-        BeanUtils.copyProperties(shortLink, request);
-
-        return shortLinkService.addShortLink(request);
-    }
 }
 
