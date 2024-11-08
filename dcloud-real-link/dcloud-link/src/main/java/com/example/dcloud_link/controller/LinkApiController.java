@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @Description：TODO
+ * @Description：短链重定向，跳转到目标地址
  * @Author： RainbowJier
  * @Data： 2024/11/6 20:07
  */

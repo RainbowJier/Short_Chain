@@ -30,5 +30,8 @@ public class ShortLinkController {
     @Resource
     private ShortLinkComponent shortLinkComponent;
 
+
+
+
 }
 
