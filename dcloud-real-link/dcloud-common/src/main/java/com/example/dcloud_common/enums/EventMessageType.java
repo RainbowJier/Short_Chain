@@ -7,7 +7,7 @@ package com.example.dcloud_common.enums;
  * @Version: 1.0
  */
 
-public enum EventEnum {
+public enum EventMessageType {
     /**
      * 短链创建
      */

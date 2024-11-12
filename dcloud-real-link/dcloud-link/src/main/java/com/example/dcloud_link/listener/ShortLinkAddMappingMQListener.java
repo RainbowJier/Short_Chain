@@ -25,7 +25,6 @@ import java.io.IOException;
 @RabbitListener(queuesToDeclare = {@Queue("short_link.add.mapping.queue") }) // 如果没有队列，则自动创建队列
 public class ShortLinkAddMappingMQListener {
 
-    
     @RabbitHandler
     public void shortLinkHandler(EventMessage eventMessage, Message message, Channel channel) throws IOException {
         log.info("监听到消息 ShortLinkAddMappingMQListener：message 消息内容：{}",message);
@@ -37,7 +36,6 @@ public class ShortLinkAddMappingMQListener {
             //TODO 处理业务
 
         } catch (Exception e) {
-            // 处理业务失败，还要进⾏其他操作，⽐如记录失败原因
             log.error("消费失败{}", eventMessage);
             throw new BizException(BizCodeEnum.MQ_CONSUME_EXCEPTION);
         }

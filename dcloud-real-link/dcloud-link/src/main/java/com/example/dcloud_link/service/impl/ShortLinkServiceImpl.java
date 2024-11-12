@@ -1,7 +1,7 @@
 package com.example.dcloud_link.service.impl;
 
 import com.example.dcloud_common.entity.EventMessage;
-import com.example.dcloud_common.enums.EventEnum;
+import com.example.dcloud_common.enums.EventMessageType;
 import com.example.dcloud_common.interceptor.LoginInterceptor;
 import com.example.dcloud_common.util.IDUtil;
 import com.example.dcloud_common.util.JsonData;
@@ -65,7 +65,7 @@ public class ShortLinkServiceImpl implements ShortLinkService {
         EventMessage eventMessage = EventMessage.builder().accountNo(accountNo)
                 .content(JsonUtil.objToJson(shortLinkRequest))
                 .messageId(IDUtil.generateSnowFlakeID().toString())
-                .eventMessageType(EventEnum.SHORT_LINK_ADD.name())
+                .eventMessageType(EventMessageType.SHORT_LINK_ADD.name())
                 .build();
 
         rabbitTemplate.convertAndSend(rabbitMQConfig.getShortLinkEventExchange(),   // 交换机名称

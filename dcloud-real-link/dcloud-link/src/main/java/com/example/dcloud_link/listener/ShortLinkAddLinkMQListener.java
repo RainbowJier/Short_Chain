@@ -37,7 +37,6 @@ public class ShortLinkAddLinkMQListener {
             //TODO 处理业务
 
         } catch (Exception e) {
-            // 处理业务失败，还要进⾏其他操作，⽐如记录失败原因
             log.error("消费失败{}", eventMessage);
             throw new BizException(BizCodeEnum.MQ_CONSUME_EXCEPTION);
         }

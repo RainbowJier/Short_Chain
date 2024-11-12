@@ -1,10 +1,7 @@
 package com.example.dcloud_link.config;
 
 import lombok.Data;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.Exchange;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -54,15 +51,6 @@ public class RabbitMQConfig {
     private String shortLinkAddLinkBindingKey = "short_link.add.link.*.routing.key";
 
     /**
-     * 新增短链 api 队列和交换机的绑定关系建⽴
-     */
-    @Bean
-    public Binding shortLinkAddApiBinding() {
-        return new Binding(shortLinkAddLinkQueue, Binding.DestinationType.QUEUE,
-                shortLinkEventExchange, shortLinkAddLinkBindingKey, null);
-    }
-
-    /**
      * 新增短链 api 普通队列，⽤于被监听
      */
     @Bean
@@ -70,6 +58,17 @@ public class RabbitMQConfig {
         return new Queue(shortLinkAddLinkQueue, true, false, false);
     }
 
+    /**
+     * 新增短链 api 队列和交换机的绑定关系建⽴
+     */
+    @Bean
+    public Binding shortLinkAddApiBinding() {
+        return BindingBuilder
+                .bind(shortLinkAddLinkQueue())                        // 绑定队列
+                .to(shortLinkEventExchange())                         // 绑定到交换机
+                .with(shortLinkAddLinkBindingKey)                     // 路由键
+                .noargs();                                            // 无额外参数
+    }
 
     // B 端新增短链映射相关配置
     /**
@@ -82,16 +81,6 @@ public class RabbitMQConfig {
      */
     private String shortLinkAddMappingBindingKey = "short_link.add.*.mapping.routing.key";
 
-
-    /**
-     * 新增短链 mapping 队列和交换机的绑定关系建⽴
-     */
-    @Bean
-    public Binding shortLinkAddMappingBinding() {
-        return new Binding(shortLinkAddMappingQueue, Binding.DestinationType.QUEUE,
-                shortLinkEventExchange, shortLinkAddMappingBindingKey, null);
-    }
-
     /**
      * 新增短链 mapping 普通队列，用于被监听
      * 设置为可持久化
@@ -100,4 +89,18 @@ public class RabbitMQConfig {
     public Queue shortLinkAddMappingQueue() {
         return new Queue(shortLinkAddMappingQueue, true, false, false);
     }
+
+    /**
+     * 新增短链 mapping 队列和交换机的绑定关系建⽴
+     */
+    @Bean
+    public Binding shortLinkAddMappingBinding() {
+        return BindingBuilder
+                .bind(shortLinkAddMappingQueue())                     // 绑定队列
+                .to(shortLinkEventExchange())                         // 绑定到交换机
+                .with(shortLinkAddMappingBindingKey)                  // 路由键
+                .noargs();                                            // 无额外参数
+    }
+
+
 }
