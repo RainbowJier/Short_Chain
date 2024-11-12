@@ -87,8 +87,13 @@ public enum BizCodeEnum {
     /**
      * 数据库路由信息
      */
-    DB_ROUTE_NOT_FOUND(83002, "数据库路由未找到");
+    DB_ROUTE_NOT_FOUND(83002, "数据库路由未找到"),
 
+
+    /**
+     * MQ
+     */
+    MQ_CONSUME_EXCEPTION( 900101, "MQ消费异常");
 
     private String message;
 

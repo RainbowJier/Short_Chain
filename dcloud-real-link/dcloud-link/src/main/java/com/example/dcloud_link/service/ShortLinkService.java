@@ -1,7 +1,7 @@
 package com.example.dcloud_link.service;
 
 import com.example.dcloud_common.util.JsonData;
-import com.example.dcloud_link.controller.request.ShortLinkRequest;
+import com.example.dcloud_link.controller.request.ShortLinkAddRequest;
 import com.example.dcloud_link.entity.vo.ShortLinkVo;
 
 /**
@@ -16,4 +16,9 @@ public interface ShortLinkService {
      * 解析短链
      */
     ShortLinkVo parseShortLinkCode(String shortLinkCode);
+
+    /**
+     * 创建短链
+     */
+    JsonData createShortLink(ShortLinkAddRequest shortLinkRequest);
 }
