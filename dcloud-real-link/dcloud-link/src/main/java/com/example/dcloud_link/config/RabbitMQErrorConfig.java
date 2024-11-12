@@ -67,7 +67,7 @@ public class RabbitMQErrorConfig {
 
     /**
      * 配置 RepublishMessageRecoverer
-     * 用途：消息重试⼀定次数后，⽤特定的routingKey转发到指定的交换机中，⽅便后续排查和告警
+     * 用途：消息重试⼀定次数后，特定的 routingKey 转发到指定的交换机中，⽅便后续排查和告警
      * 顶层是 MessageRecoverer 接⼝，多个实现类
      */
     @Bean

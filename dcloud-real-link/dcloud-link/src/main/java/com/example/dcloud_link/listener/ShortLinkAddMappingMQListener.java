@@ -34,6 +34,7 @@ public class ShortLinkAddMappingMQListener {
 
         try {
             //TODO 处理业务
+            int i = 1/0;  // 触发异常，测试消费失败
 
         } catch (Exception e) {
             log.error("消费失败{}", eventMessage);
@@ -42,6 +43,6 @@ public class ShortLinkAddMappingMQListener {
         log.info("消费成功{}", eventMessage);
 
         // 确认消息消费成功
-        channel.basicAck(msgTag, false);
+        //channel.basicAck(msgTag, false);
     }
 }
