@@ -39,7 +39,7 @@ public class ShortLinkAddLinkMQListener {
             eventMessage.setEventMessageType(EventMessageType.SHORT_LINK_ADD_MAPPING.name());
 
             // 处理消息
-            boolean b = shortLinkService.handlerAddShortLink(eventMessage);
+            shortLinkService.handlerAddShortLink(eventMessage)
 
         } catch (Exception e) {
             log.error("消费失败{}", eventMessage);
