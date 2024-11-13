@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36" version="24.8.4">
   <diagram id="BT_9d3tybcS5t6vmlCDs" name="第 1 页">
-    <mxGraphModel dx="724" dy="1529" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1050" dy="1691" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -1211,14 +1211,11 @@
         <mxCell id="qVBW4P1DTHRQs45p9x4o-25" value="用户 A 新增短链码" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
           <mxGeometry x="6480" y="-179.12" width="120" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="qVBW4P1DTHRQs45p9x4o-26" value="用户 B 新增商家短链码" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1" vertex="1" parent="1">
+        <mxCell id="qVBW4P1DTHRQs45p9x4o-26" value="用户 A 新增商家短链码" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=0" vertex="1" parent="1">
           <mxGeometry x="6460" y="20" width="150" height="30" as="geometry" />
         </mxCell>
         <mxCell id="qVBW4P1DTHRQs45p9x4o-27" value="&lt;div&gt;用户 A 新增短链码&lt;div&gt;用户 A 新增商家码&lt;br&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;用户 B 新增短链码&lt;div&gt;用户 B 新增商家码&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
           <mxGeometry x="6280" y="-19.25" width="120" height="70" as="geometry" />
-        </mxCell>
-        <mxCell id="qVBW4P1DTHRQs45p9x4o-28" value="本来是用户A&amp;nbsp; 同时新增商家码的，但是被用户B抢占了" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="6395" y="65" width="310" height="30" as="geometry" />
         </mxCell>
         <mxCell id="qVBW4P1DTHRQs45p9x4o-29" value="" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#D4E1F5;" vertex="1" parent="1">
           <mxGeometry x="6990" y="-199.56" width="60" height="80" as="geometry" />
@@ -1244,8 +1241,8 @@
         <mxCell id="qVBW4P1DTHRQs45p9x4o-36" value="&lt;b&gt;C端&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
           <mxGeometry x="6835" y="-280.01" width="40" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="qVBW4P1DTHRQs45p9x4o-37" value="生成短链码" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="6705" y="-70" width="80" height="30" as="geometry" />
+        <mxCell id="qVBW4P1DTHRQs45p9x4o-37" value="生成短链码和商家码相同" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="6600" y="-70" width="160" height="30" as="geometry" />
         </mxCell>
         <mxCell id="qVBW4P1DTHRQs45p9x4o-38" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
@@ -1296,6 +1293,46 @@
         </mxCell>
         <mxCell id="qVBW4P1DTHRQs45p9x4o-51" value="用户 B 加锁" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
           <mxGeometry x="7195" y="-199.56" width="90" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="qVBW4P1DTHRQs45p9x4o-54" value="朋友圈（短链）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D5E8D4;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="3945.99" y="1555" width="120" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="qVBW4P1DTHRQs45p9x4o-55" value="抖音（短链）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#B3B3B3;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="3945.99" y="1607.5" width="120" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="qVBW4P1DTHRQs45p9x4o-56" value="快手（短链）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFB570;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="3945.99" y="1658.75" width="120" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="qVBW4P1DTHRQs45p9x4o-57" value="普通用户" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="3770" y="1600" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="qVBW4P1DTHRQs45p9x4o-58" value="产品（原始URL）" style="verticalLabelPosition=bottom;aspect=fixed;html=1;shape=mxgraph.salesforce.commerce;" vertex="1" parent="1">
+          <mxGeometry x="4290" y="1587.95" width="61.99" height="54.55" as="geometry" />
+        </mxCell>
+        <mxCell id="qVBW4P1DTHRQs45p9x4o-74" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="qVBW4P1DTHRQs45p9x4o-66" target="qVBW4P1DTHRQs45p9x4o-73">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="4175" y="1670" />
+              <mxPoint x="4175" y="1754" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="qVBW4P1DTHRQs45p9x4o-66" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;dashed=1;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="3920" y="1540" width="170" height="168.75" as="geometry" />
+        </mxCell>
+        <mxCell id="qVBW4P1DTHRQs45p9x4o-67" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.016;entryY=0.533;entryDx=0;entryDy=0;entryPerimeter=0;strokeColor=#000000;" edge="1" parent="1" source="qVBW4P1DTHRQs45p9x4o-57" target="qVBW4P1DTHRQs45p9x4o-66">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="qVBW4P1DTHRQs45p9x4o-68" value="1. 点击广告" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontStyle=1" vertex="1" connectable="0" parent="qVBW4P1DTHRQs45p9x4o-67">
+          <mxGeometry x="-0.0207" y="2" relative="1" as="geometry">
+            <mxPoint x="2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="qVBW4P1DTHRQs45p9x4o-71" value="3. 响应码302，重定向到目标地址" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.018;entryY=0.665;entryDx=0;entryDy=0;entryPerimeter=0;fontStyle=1" edge="1" parent="1" source="qVBW4P1DTHRQs45p9x4o-66" target="qVBW4P1DTHRQs45p9x4o-58">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="qVBW4P1DTHRQs45p9x4o-73" value="统计不同平台数据&lt;br&gt;并分析" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D5E8D4;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="4260" y="1723" width="120" height="61.75" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
