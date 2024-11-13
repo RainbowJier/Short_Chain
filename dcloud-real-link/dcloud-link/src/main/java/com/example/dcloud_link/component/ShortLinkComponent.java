@@ -25,14 +25,16 @@ public class ShortLinkComponent {
     public String createShortLinkCode(String originalUrl) {
         long murmur32 = CommonUtil.murmurHash32(originalUrl);
 
+        String code = encodeToBase62(murmur32);
+
         // 随机库前缀
-        String dbPrefix = ShardingDBConfig.getRandomDBPrefix();
+        String dbPrefix = ShardingDBConfig.getRandomDBPrefix(code);
 
         // 随机表后缀
-        String tableSubfix = ShardingTableConfig.getRandomTableSubfix();
+        String tableSubfix = ShardingTableConfig.getRandomTableSubfix(code);
 
         //转62进制
-        return dbPrefix+encodeToBase62(murmur32)+tableSubfix;
+        return dbPrefix + code + tableSubfix;
     }
 
     /**
@@ -50,6 +52,5 @@ public class ShortLinkComponent {
             num /= 62;
         } while (num > 0);
         return sb.reverse().toString();
-
     }
 }

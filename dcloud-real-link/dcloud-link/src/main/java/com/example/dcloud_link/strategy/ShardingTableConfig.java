@@ -27,4 +27,13 @@ public class ShardingTableConfig {
         int index = random.nextInt(tabletSubfixList.size());
         return tabletSubfixList.get(index);
     }
+
+    /**
+     * 获取随机的后缀
+     */
+    public static String getRandomTableSubfix(String code){
+        int hashCode = code.hashCode();
+        int num = Math.abs(hashCode) % tabletSubfixList.size();
+        return tabletSubfixList.get(num);
+    }
 }

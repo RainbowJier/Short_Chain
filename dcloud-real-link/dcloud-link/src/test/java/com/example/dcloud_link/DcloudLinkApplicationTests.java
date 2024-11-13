@@ -35,14 +35,9 @@ class DcloudLinkApplicationTests {
      */
     @Test
     void testMurmurHash() {
+        String originalUrl = "xdclass.net";
         Random random = new Random();
-        for (int i = 0; i < 100; i++) {
-            int num1 = random.nextInt(10);
-            int num2 = random.nextInt(1000000);
-            int num3 = random.nextInt(1000000);
-
-            String originalUrl = num1 + "xdclass" +  num2 + ".net" + num3;
-
+        for (int i = 0; i < 10; i++) {
             String linkCode = shortLinkComponent.createShortLinkCode(originalUrl);
             log.info("originalUrl:{}, shortLinkCode={}", originalUrl, linkCode);
         }
