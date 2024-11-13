@@ -2,13 +2,16 @@ package com.example.dcloud_link.listener;
 
 import com.example.dcloud_common.entity.EventMessage;
 import com.example.dcloud_common.enums.BizCodeEnum;
+import com.example.dcloud_common.enums.EventMessageType;
 import com.example.dcloud_common.exception.BizException;
+import com.example.dcloud_link.service.ShortLinkService;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -24,17 +27,19 @@ import java.io.IOException;
 //@RabbitListener(queues = "short_link.add.link.queue") // 如果没有匹配到队列，则报错
 @RabbitListener(queuesToDeclare = {@Queue("short_link.add.link.queue") }) // 如果没有队列，则自动创建队列
 public class ShortLinkAddLinkMQListener {
-
+    @Autowired
+    private ShortLinkService shortLinkService;
 
     @RabbitHandler
     public void shortLinkHandler(EventMessage eventMessage, Message message, Channel channel) throws IOException {
         log.info("监听到消息 ShortLinkAddLinkMQListener：message 消息内容：{}",message);
 
-        // 获取消息id
-        long msgTag = message.getMessageProperties().getDeliveryTag();
-
         try {
-            //TODO 处理业务
+            // 设置消息类型，C端
+            eventMessage.setEventMessageType(EventMessageType.SHORT_LINK_ADD_MAPPING.name());
+
+            // 处理消息
+            boolean b = shortLinkService.handlerAddShortLink(eventMessage);
 
         } catch (Exception e) {
             log.error("消费失败{}", eventMessage);
@@ -43,6 +48,6 @@ public class ShortLinkAddLinkMQListener {
         log.info("消费成功{}", eventMessage);
 
         // 确认消息消费成功
-        channel.basicAck(msgTag, false);
+        //channel.basicAck(msgTag, false);
     }
 }

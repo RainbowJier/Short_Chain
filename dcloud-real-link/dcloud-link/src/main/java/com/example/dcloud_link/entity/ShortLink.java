@@ -19,6 +19,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
+@Builder
 @TableName("short_link")
 public class ShortLink implements Serializable {
 

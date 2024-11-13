@@ -1,8 +1,7 @@
 package com.example.dcloud_link.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.util.Date;
@@ -15,8 +14,11 @@ import java.io.Serializable;
  * @since 2024-11-08 09:45:56
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
+@Builder
 @TableName("group_code_mapping")
 public class GroupCodeMapping implements Serializable {
 
