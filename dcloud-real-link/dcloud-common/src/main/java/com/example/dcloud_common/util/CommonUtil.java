@@ -163,8 +163,40 @@ public class CommonUtil {
     /**
      * murmur hash算法
      */
-    public static long murmurHash32(String param){
+    public static long murmurHash32(String param) {
         return Hashing.murmur3_32().hashUnencodedChars(param).padToLong();
+    }
+
+
+    /**
+     * URL增加前缀
+     */
+    public static String addUrlPrefix(String url) {
+        return IDUtil.generateSnowFlakeID() + "&" + url;
+    }
+
+    /**
+     * URL移除前缀
+     */
+    public static String removeUrlPrefix(String url) {
+        return url.substring(url.indexOf("&") + 1);
+    }
+
+    /**
+     * 如果短链码重复，则调用这个⽅法
+     * url前缀编号+1，如果还是用雪花算法，则容易C和B端不⼀致，所以采⽤原先的id递增1
+     */
+    public static String addUrlPrefixVersion(String url) {
+        // 前缀
+        String result = url.substring(0, url.indexOf("&"));
+
+        //原始地址
+        String originalUrl = url.substring(url.indexOf("&") + 1);
+
+        //新id编号
+        Long newIdValue = Long.parseLong(result) + 1;
+
+        return newIdValue + "&" + originalUrl;
     }
 
 

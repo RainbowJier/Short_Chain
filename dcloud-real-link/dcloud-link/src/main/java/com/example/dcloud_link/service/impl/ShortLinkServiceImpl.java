@@ -68,13 +68,17 @@ public class ShortLinkServiceImpl implements ShortLinkService {
      * 发送消息到 RabbitMQ
      */
     @Override
-    public JsonData createShortLink(ShortLinkAddRequest shortLinkRequest) {
+    public JsonData createShortLink(ShortLinkAddRequest request) {
         Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
+
+        // 原始 URL 加上时间戳前缀
+        String tameStampUrl = CommonUtil.addUrlPrefix(request.getOriginalUrl());
+        request.setOriginalUrl(tameStampUrl);
 
         // 封装消息对象
         EventMessage eventMessage = EventMessage.builder()
                 .accountNo(accountNo)
-                .content(JsonUtil.objToJson(shortLinkRequest))
+                .content(JsonUtil.objToJson(request))
                 .messageId(IDUtil.generateSnowFlakeID().toString())
                 .eventMessageType(EventMessageType.SHORT_LINK_ADD.name())
                 .build();

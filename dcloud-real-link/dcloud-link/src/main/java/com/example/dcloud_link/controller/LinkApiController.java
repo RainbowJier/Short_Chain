@@ -47,9 +47,12 @@ public class LinkApiController {
 
                 // 判断是否可以访问
                 if (isVisitable(shortLinkVo)) {
-                    // 重定向到目标地址
-                    String targetUrl = shortLinkVo.getOriginalUrl();
-                    response.setHeader("Location", targetUrl);
+                    String tameStampUrl = shortLinkVo.getOriginalUrl();
+
+                    // 移除 URL 中的前缀
+                    String originalUrl = CommonUtil.removeUrlPrefix(tameStampUrl);
+
+                    response.setHeader("Location", originalUrl);
                     response.setStatus(HttpStatus.FOUND.value());  // 302
                 }
             } else {
