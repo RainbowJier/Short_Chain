@@ -24,7 +24,6 @@ import java.io.IOException;
  */
 @Slf4j
 @Component
-//@RabbitListener(queues = "short_link.add.link.queue") // 如果没有匹配到队列，则报错
 @RabbitListener(queuesToDeclare = {@Queue("short_link.add.link.queue") }) // 如果没有队列，则自动创建队列
 public class ShortLinkAddLinkMQListener {
     @Autowired
@@ -39,15 +38,12 @@ public class ShortLinkAddLinkMQListener {
             eventMessage.setEventMessageType(EventMessageType.SHORT_LINK_ADD_MAPPING.name());
 
             // 处理消息
-            shortLinkService.handlerAddShortLink(eventMessage)
+            shortLinkService.handlerAddShortLink(eventMessage);
 
         } catch (Exception e) {
             log.error("消费失败{}", eventMessage);
             throw new BizException(BizCodeEnum.MQ_CONSUME_EXCEPTION);
         }
         log.info("消费成功{}", eventMessage);
-
-        // 确认消息消费成功
-        //channel.basicAck(msgTag, false);
     }
 }

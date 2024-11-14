@@ -18,8 +18,6 @@ public class ShortLinkController {
     @Resource
     private ShortLinkService shortLinkService;
 
-    @Resource
-    private ShortLinkComponent shortLinkComponent;
 
     @PostMapping("add")
     public JsonData createShortLink(@RequestBody ShortLinkAddRequest shortLinkRequest) {

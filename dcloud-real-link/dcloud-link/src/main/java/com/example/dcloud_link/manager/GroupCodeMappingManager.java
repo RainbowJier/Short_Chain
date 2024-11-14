@@ -7,6 +7,9 @@ import com.example.dcloud_link.entity.GroupCodeMapping;
 import java.util.Map;
 
 
+/**
+ * B 端，商家短链码
+ */
 public interface GroupCodeMappingManager {
 
     /**
@@ -16,12 +19,12 @@ public interface GroupCodeMappingManager {
     GroupCodeMapping findByGroupIdAndMappingId(Long mappingId, Long accountNo, Long groupId);
 
     /**
-     * 新增
+     * 新增商家短链码
      */
     int add(GroupCodeMapping groupCodeMapping);
 
     /**
-     * 删除短链
+     * 删除商家短链码
      */
     int del(String shortLinkCode, Long accountNo, Long groupId);
 

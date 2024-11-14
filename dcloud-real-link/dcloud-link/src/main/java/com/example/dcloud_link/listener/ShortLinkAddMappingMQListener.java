@@ -49,8 +49,5 @@ public class ShortLinkAddMappingMQListener {
             throw new BizException(BizCodeEnum.MQ_CONSUME_EXCEPTION);
         }
         log.info("消费成功{}", eventMessage);
-
-        // 确认消息消费成功
-        //channel.basicAck(msgTag, false);
     }
 }

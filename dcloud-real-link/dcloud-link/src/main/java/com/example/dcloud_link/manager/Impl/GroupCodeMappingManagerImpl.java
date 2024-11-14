@@ -25,7 +25,6 @@ public class GroupCodeMappingManagerImpl implements GroupCodeMappingManager {
     @Resource
     private GroupCodeMappingMapper groupCodeMappingMapper;
 
-
     @Override
     public GroupCodeMapping findByGroupIdAndMappingId(Long mappingId, Long accountNo, Long groupId) {
         LambdaQueryWrapper<GroupCodeMapping> lambdaQueryWrapper = new LambdaQueryWrapper<>();

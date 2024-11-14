@@ -23,14 +23,15 @@ public class ShortLinkComponent {
      * @return db编码+6位短链编码
      */
     public String createShortLinkCode(String originalUrl) {
+        // murmur32算法生成64位哈希值
         long murmur32 = CommonUtil.murmurHash32(originalUrl);
-
+        // 转62进制
         String code = encodeToBase62(murmur32);
 
-        // 随机库前缀
+        // 库前缀
         String dbPrefix = ShardingDBConfig.getRandomDBPrefix(code);
 
-        // 随机表后缀
+        // 表后缀
         String tableSubfix = ShardingTableConfig.getRandomTableSubfix(code);
 
         //转62进制

@@ -28,12 +28,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
-/**
- * (ShortLink)表服务实现类
- *
- * @author makejava
- * @since 2024-10-29 14:11:16
- */
 
 @Service
 @Slf4j
@@ -71,7 +65,7 @@ public class ShortLinkServiceImpl implements ShortLinkService {
     }
 
     /**
-     * 发送消息到MQ
+     * 发送消息到 RabbitMQ
      */
     @Override
     public JsonData createShortLink(ShortLinkAddRequest shortLinkRequest) {
@@ -85,9 +79,11 @@ public class ShortLinkServiceImpl implements ShortLinkService {
                 .eventMessageType(EventMessageType.SHORT_LINK_ADD.name())
                 .build();
 
-        rabbitTemplate.convertAndSend(rabbitMQConfig.getShortLinkEventExchange(),   // 交换机名称
-                rabbitMQConfig.getShortLinkAddRoutingKey(),             // 消息对象的 routing key
-                eventMessage);
+        rabbitTemplate.convertAndSend(
+                rabbitMQConfig.getShortLinkEventExchange(),   // 交换机名称
+                rabbitMQConfig.getShortLinkAddRoutingKey(),   // 消息对象的 routing key
+                eventMessage                                  // 消息对象
+        );
 
         return JsonData.buildSuccess();
     }
@@ -170,7 +166,6 @@ public class ShortLinkServiceImpl implements ShortLinkService {
             groupCodeMappingManager.add(groupCodeMapping);
             return true;
         }
-
 
         return false;
     }
