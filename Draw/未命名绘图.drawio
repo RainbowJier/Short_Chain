@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36" version="24.8.6">
   <diagram id="BT_9d3tybcS5t6vmlCDs" name="第 1 页">
-    <mxGraphModel dx="472" dy="1899" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="704" dy="2222" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -1503,6 +1503,42 @@
         </mxCell>
         <mxCell id="Ig3GlLUK34uhVQRqRqdA-101" value="数据库" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#D4E1F5;" vertex="1" parent="1">
           <mxGeometry x="7570" y="619" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Ig3GlLUK34uhVQRqRqdA-103" value="只有申请锁成功的节点才能操作数据库" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="7650" y="515" width="230" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Ig3GlLUK34uhVQRqRqdA-107" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="Ig3GlLUK34uhVQRqRqdA-104" target="Ig3GlLUK34uhVQRqRqdA-106">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Ig3GlLUK34uhVQRqRqdA-104" value="开始" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="7640" y="840" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Ig3GlLUK34uhVQRqRqdA-109" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="Ig3GlLUK34uhVQRqRqdA-106" target="Ig3GlLUK34uhVQRqRqdA-108">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Ig3GlLUK34uhVQRqRqdA-106" value="SETNX加锁" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="7770" y="840.5" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Ig3GlLUK34uhVQRqRqdA-111" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="Ig3GlLUK34uhVQRqRqdA-108" target="Ig3GlLUK34uhVQRqRqdA-110">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Ig3GlLUK34uhVQRqRqdA-108" value="设置过期时间" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="7890" y="840.5" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Ig3GlLUK34uhVQRqRqdA-113" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="Ig3GlLUK34uhVQRqRqdA-110" target="Ig3GlLUK34uhVQRqRqdA-112">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Ig3GlLUK34uhVQRqRqdA-110" value="执行业务逻辑" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="8010" y="840.5" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Ig3GlLUK34uhVQRqRqdA-115" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="Ig3GlLUK34uhVQRqRqdA-112" target="Ig3GlLUK34uhVQRqRqdA-114">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Ig3GlLUK34uhVQRqRqdA-112" value="释放锁" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="8140" y="840.5" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Ig3GlLUK34uhVQRqRqdA-114" value="结束" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="8270" y="840.5" width="100" height="40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
