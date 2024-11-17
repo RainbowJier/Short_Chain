@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36" version="24.8.6">
   <diagram id="BT_9d3tybcS5t6vmlCDs" name="第 1 页">
-    <mxGraphModel dx="519" dy="1945" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1213" dy="1784" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -1140,9 +1140,6 @@
         <mxCell id="Rhhl3DTdyp3vl1WjTmLo-26" value="异常队列" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#FF6666;" parent="1" vertex="1">
           <mxGeometry x="6480" y="-960" width="150" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="Rhhl3DTdyp3vl1WjTmLo-34" value="重复多次失败&lt;br&gt;转发到异常交换机" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1" parent="1" vertex="1">
-          <mxGeometry x="6620" y="-874.13" width="120" height="40" as="geometry" />
-        </mxCell>
         <mxCell id="qVBW4P1DTHRQs45p9x4o-3" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;dashed=1;" parent="1" vertex="1">
           <mxGeometry x="6780" y="-249.12" width="150" height="179.12" as="geometry" />
         </mxCell>
@@ -1314,7 +1311,7 @@
           <mxGeometry x="4260" y="1723" width="120" height="61.75" as="geometry" />
         </mxCell>
         <mxCell id="Ig3GlLUK34uhVQRqRqdA-2" value="Redis" style="image;sketch=0;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/mscae/Cache_Redis_Product.svg;" vertex="1" parent="1">
-          <mxGeometry x="6510" y="75" width="50" height="42" as="geometry" />
+          <mxGeometry x="6510" y="98" width="50" height="42" as="geometry" />
         </mxCell>
         <mxCell id="Ig3GlLUK34uhVQRqRqdA-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="Ig3GlLUK34uhVQRqRqdA-3" target="Ig3GlLUK34uhVQRqRqdA-4">
           <mxGeometry relative="1" as="geometry" />
@@ -1587,6 +1584,12 @@
         </mxCell>
         <mxCell id="Ig3GlLUK34uhVQRqRqdA-128" value="结束" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
           <mxGeometry x="7820" y="1420" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Ig3GlLUK34uhVQRqRqdA-139" value="用户A" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="6205" y="-70" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Ig3GlLUK34uhVQRqRqdA-140" value="用户B" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="6205" y="-40" width="60" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
