@@ -29,9 +29,14 @@ public interface GroupCodeMappingManager {
     int del(String shortLinkCode, Long accountNo, Long groupId);
 
     /**
+     * 判断短链码是否存在
+     */
+    GroupCodeMapping findByCodeAndGroupId(String shortLinkCode, Long groupId, Long accountNo);
+
+    /**
      * 分页查询
      */
-    Map<String,Object> pageShortLinkByGroupId(Integer page, Integer size, Long accountNo, Long groupId);
+    Map<String, Object> pageShortLinkByGroupId(Integer page, Integer size, Long accountNo, Long groupId);
 
     /**
      * 更新短链的状态

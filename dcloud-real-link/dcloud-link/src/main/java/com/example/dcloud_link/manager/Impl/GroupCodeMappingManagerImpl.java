@@ -90,5 +90,19 @@ public class GroupCodeMappingManagerImpl implements GroupCodeMappingManager {
 
         return groupCodeMappingMapper.update(lambdaUpdateWrapper);
     }
+
+    /**
+     * 判断短链码是否存在
+     */
+    @Override
+    public GroupCodeMapping findByCodeAndGroupId(String shortLinkCode, Long groupId, Long accountNo) {
+        LambdaQueryWrapper<GroupCodeMapping> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(GroupCodeMapping::getCode, shortLinkCode)
+                .eq(GroupCodeMapping::getAccountNo, accountNo)
+                .eq(GroupCodeMapping::getGroupId, groupId);
+
+        return groupCodeMappingMapper.selectOne(lambdaQueryWrapper);
+    }
+
 }
 
