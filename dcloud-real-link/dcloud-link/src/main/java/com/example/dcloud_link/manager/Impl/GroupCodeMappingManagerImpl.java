@@ -64,11 +64,11 @@ public class GroupCodeMappingManagerImpl implements GroupCodeMappingManager {
         Page<GroupCodeMapping> pageMap = groupCodeMappingMapper.selectPage(pageParam, lambdaQueryWrapper);
 
         Map<String, Object> result = new HashMap<>();
-        result.put("total_record", pageMap.getTotal()); // 总记录数
-        result.put("total_page", pageMap.getPages());  // 总页数
+        result.put("total_record", pageMap.getTotal()); // 总数据量
+        result.put("total_page", pageMap.getPages());   // 总页数
 
         List<GroupCodeMappingVo> list = new ArrayList<>();
-        List<GroupCodeMapping> records = pageMap.getRecords();
+        List<GroupCodeMapping> records = pageMap.getRecords();  // 获取数据列表
         for (GroupCodeMapping object : records) {
             GroupCodeMappingVo groupCodeMappingVo = new GroupCodeMappingVo();
             BeanUtils.copyProperties(object, groupCodeMappingVo);
@@ -86,7 +86,8 @@ public class GroupCodeMappingManagerImpl implements GroupCodeMappingManager {
         lambdaUpdateWrapper.eq(GroupCodeMapping::getAccountNo, accountNo)
                 .eq(GroupCodeMapping::getGroupId, groupId)
                 .eq(GroupCodeMapping::getCode, shortLinkCode)
-                .set(GroupCodeMapping::getState, shortLinkStateEnum.name());
+                .set(GroupCodeMapping::getState, shortLinkStateEnum.name())
+                .eq(GroupCodeMapping::getDel, 0);
 
         return groupCodeMappingMapper.update(lambdaUpdateWrapper);
     }
@@ -99,7 +100,8 @@ public class GroupCodeMappingManagerImpl implements GroupCodeMappingManager {
         LambdaQueryWrapper<GroupCodeMapping> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(GroupCodeMapping::getCode, shortLinkCode)
                 .eq(GroupCodeMapping::getAccountNo, accountNo)
-                .eq(GroupCodeMapping::getGroupId, groupId);
+                .eq(GroupCodeMapping::getGroupId, groupId)
+                .eq(GroupCodeMapping::getDel, 0);
 
         return groupCodeMappingMapper.selectOne(lambdaQueryWrapper);
     }

@@ -3,7 +3,10 @@ package com.example.dcloud_link.service;
 import com.example.dcloud_common.entity.EventMessage;
 import com.example.dcloud_common.util.JsonData;
 import com.example.dcloud_link.controller.request.ShortLinkAddRequest;
+import com.example.dcloud_link.controller.request.ShortLinkPageRequest;
 import com.example.dcloud_link.entity.vo.ShortLinkVo;
+
+import java.util.Map;
 
 /**
  * (ShortLink)表服务接口
@@ -28,4 +31,9 @@ public interface ShortLinkService {
      * 处理新增短链消息
      */
     boolean handlerAddShortLink(EventMessage eventMessage);
+
+    /**
+     * 分页查找分组下的短链
+     */
+    Map<String, Object> page(ShortLinkPageRequest request);
 }

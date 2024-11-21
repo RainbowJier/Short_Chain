@@ -14,7 +14,6 @@ public interface GroupCodeMappingManager {
 
     /**
      * 查找详情
-     * @param mappingId ：详情id
      */
     GroupCodeMapping findByGroupIdAndMappingId(Long mappingId, Long accountNo, Long groupId);
 

@@ -12,6 +12,7 @@ import com.example.dcloud_common.util.JsonUtil;
 import com.example.dcloud_link.component.ShortLinkComponent;
 import com.example.dcloud_link.config.RabbitMQConfig;
 import com.example.dcloud_link.controller.request.ShortLinkAddRequest;
+import com.example.dcloud_link.controller.request.ShortLinkPageRequest;
 import com.example.dcloud_link.entity.GroupCodeMapping;
 import com.example.dcloud_link.entity.LinkGroup;
 import com.example.dcloud_link.entity.ShortLink;
@@ -31,6 +32,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 
@@ -107,7 +110,7 @@ public class ShortLinkServiceImpl implements ShortLinkService {
      * 2. 判断组名是否合法
      * 3. 生成长链摘要
      * 4. 生成短链码
-     * 5. 加锁（暂时不写，后续添加）
+     * 5. 加锁
      * 6. 查询短链码是否存在
      * 7. 构建短链对象
      * 8. 保存数据库
@@ -261,6 +264,20 @@ public class ShortLinkServiceImpl implements ShortLinkService {
         Assert.notNull(linkGroup, "组名不合法");
         return linkGroup;
     }
+
+    /**
+     * 分页查找分组下的短链
+     * 从B端查找
+     */
+    @Override
+    public Map<String, Object> page(ShortLinkPageRequest request) {
+        Long groupId = request.getGroupId();
+        Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
+
+        return groupCodeMappingManager.pageShortLinkByGroupId(request.getPage(), request.getSize(), accountNo,groupId);
+    }
+
+
 
 
 }

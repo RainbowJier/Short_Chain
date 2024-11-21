@@ -47,6 +47,6 @@ public class ShortLinkAddMappingMQListener {
             log.error("B 端消费异常：{}", e.getMessage());
             throw new BizException(BizCodeEnum.MQ_CONSUME_EXCEPTION);
         }
-        log.info("消费成功{}", eventMessage);
+        log.info("B 端消费成功{}", eventMessage);
     }
 }

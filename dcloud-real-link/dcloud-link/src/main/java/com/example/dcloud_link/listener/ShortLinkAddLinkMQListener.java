@@ -43,6 +43,6 @@ public class ShortLinkAddLinkMQListener {
             log.error("C 端消费异常：{}", e.getMessage());
             throw new BizException(BizCodeEnum.MQ_CONSUME_EXCEPTION);
         }
-        log.info("消费成功{}", eventMessage);
+        log.info("C 端消费成功{}", eventMessage);
     }
 }
