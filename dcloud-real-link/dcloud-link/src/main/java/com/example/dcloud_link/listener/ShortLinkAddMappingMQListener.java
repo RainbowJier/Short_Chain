@@ -43,9 +43,8 @@ public class ShortLinkAddMappingMQListener {
             // 处理消息
             boolean b = shortLinkService.handlerAddShortLink(eventMessage);
 
-
         } catch (Exception e) {
-            log.error("消费失败{}", eventMessage);
+            log.error("B 端消费异常：{}", e.getMessage());
             throw new BizException(BizCodeEnum.MQ_CONSUME_EXCEPTION);
         }
         log.info("消费成功{}", eventMessage);

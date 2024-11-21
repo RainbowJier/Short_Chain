@@ -14,12 +14,12 @@ public enum EventMessageType {
     SHORT_LINK_ADD,
 
     /**
-     * B端
+     * C端
      */
     SHORT_LINK_ADD_LINK,
 
     /**
-     * C端
+     * B端
      */
     SHORT_LINK_ADD_MAPPING;
 }

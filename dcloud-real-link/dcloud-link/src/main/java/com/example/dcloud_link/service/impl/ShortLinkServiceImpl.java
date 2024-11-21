@@ -114,7 +114,7 @@ public class ShortLinkServiceImpl implements ShortLinkService {
      */
     @Override
     public boolean handlerAddShortLink(EventMessage eventMessage) {
-        Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
+        Long accountNo = eventMessage.getAccountNo();
 
         // 消息类型
         String eventMessageType = eventMessage.getEventMessageType();
@@ -144,7 +144,7 @@ public class ShortLinkServiceImpl implements ShortLinkService {
         // 加锁成功
         if(getLock) {
             // C端
-            if(EventMessageType.SHORT_LINK_ADD.name().equals(eventMessageType)) {
+            if(EventMessageType.SHORT_LINK_ADD_LINK.name().equals(eventMessageType)) {
                 // 短链码是否存在
                 ShortLink shortLinkCodeInDB = shortLinkManager.findbyShortLink(shortLinkCode);
                 if (shortLinkCodeInDB != null) {

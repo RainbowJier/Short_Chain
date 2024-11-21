@@ -34,14 +34,13 @@ public class ShortLinkAddLinkMQListener {
         log.info("监听到消息 ShortLinkAddLinkMQListener：message 消息内容：{}",message);
 
         try {
-            // 设置消息类型，C端
-            eventMessage.setEventMessageType(EventMessageType.SHORT_LINK_ADD_MAPPING.name());
+            eventMessage.setEventMessageType(EventMessageType.SHORT_LINK_ADD_LINK.name());
 
             // 处理消息
             shortLinkService.handlerAddShortLink(eventMessage);
 
         } catch (Exception e) {
-            log.error("消费失败{}", eventMessage);
+            log.error("C 端消费异常：{}", e.getMessage());
             throw new BizException(BizCodeEnum.MQ_CONSUME_EXCEPTION);
         }
         log.info("消费成功{}", eventMessage);
