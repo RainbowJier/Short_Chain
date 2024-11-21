@@ -58,7 +58,7 @@ public class JsonUtil {
     /**
      * Convert Object to Json String.
      */
-    public static String objToJson(Object obj) {
+    public static String objToJsonStr(Object obj) {
         String jsonStr = null;
         try {
             jsonStr = mapper.writeValueAsString(obj);

@@ -153,10 +153,10 @@ public class CommonUtil {
         response.setContentType("application/json;charset=utf-8");
 
         try (PrintWriter writer = response.getWriter()) {
-            writer.print(JsonUtil.objToJson(obj));
+            writer.print(JsonUtil.objToJsonStr(obj));
             response.flushBuffer();
         } catch (IOException e) {
-            log.warn("Respond json data to the fronted exception: {}", e);
+            log.warn("Respond json data to the fronted exception: {}", e.getMessage());
         }
     }
 

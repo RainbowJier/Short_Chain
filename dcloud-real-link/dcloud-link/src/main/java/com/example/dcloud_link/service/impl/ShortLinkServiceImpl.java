@@ -86,7 +86,7 @@ public class ShortLinkServiceImpl implements ShortLinkService {
         // 封装消息对象
         EventMessage eventMessage = EventMessage.builder()
                 .accountNo(accountNo)
-                .content(JsonUtil.objToJson(request))
+                .content(JsonUtil.objToJsonStr(request))
                 .messageId(IDUtil.generateSnowFlakeID().toString())
                 .eventMessageType(EventMessageType.SHORT_LINK_ADD.name())
                 .build();
@@ -223,7 +223,7 @@ public class ShortLinkServiceImpl implements ShortLinkService {
         String newOriginalUrl = CommonUtil.addUrlPrefixVersion(addRequest.getOriginalUrl());
         addRequest.setOriginalUrl(newOriginalUrl);
 
-        eventMessage.setContent(JsonUtil.objToJson(addRequest));
+        eventMessage.setContent(JsonUtil.objToJsonStr(addRequest));
         log.warn("短链码重复，重新生成短链码：{}", eventMessage);
 
         // 重新调用方法
