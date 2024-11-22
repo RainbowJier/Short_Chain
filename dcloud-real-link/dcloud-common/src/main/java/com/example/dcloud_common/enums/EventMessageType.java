@@ -18,8 +18,16 @@ public enum EventMessageType {
      */
     SHORT_LINK_ADD_LINK,
 
+    SHORT_LINK_DEL_LINK,
+
+    SHORT_LINK_UPDATE_LINK,
+
     /**
      * B端
      */
-    SHORT_LINK_ADD_MAPPING;
+    SHORT_LINK_ADD_MAPPING,
+
+    SHORT_LINK_DEL_MAPPING,
+
+    SHORT_LINK_UPDATE_MAPPING
 }

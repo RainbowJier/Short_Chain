@@ -18,31 +18,32 @@ import java.io.IOException;
 
 /**
  * @Author: RainbowJier
- * @Description: 👺🐉😎C 端队列监听器（消费者）
+ * @Description: 👺🐉😎B 端队列监听器（消费者），删除短链
  * @Date: 2024/11/12 10:02
  * @Version: 1.0
  */
 @Slf4j
 @Component
-@RabbitListener(queuesToDeclare = {@Queue("short_link.add.link.queue") }) // 如果没有队列，则自动创建队列
-public class ShortLinkAddLinkMQListener {
+@RabbitListener(queuesToDeclare = {@Queue("short_link.delete.mapping.queue") }) // 如果没有队列，则自动创建队列
+public class ShortLinkDelMappingMQListener {
+
     @Autowired
     private ShortLinkService shortLinkService;
 
     @RabbitHandler
     public void shortLinkHandler(EventMessage eventMessage, Message message, Channel channel) throws IOException {
-        log.info("C 端监听到消息 ShortLinkAddLinkMQListener：message 消息内容：{}",message);
+        log.info("B 端监听到消息-删除短链-消息内容：{}",message);
 
         try {
-            eventMessage.setEventMessageType(EventMessageType.SHORT_LINK_ADD_LINK.name());
+            eventMessage.setEventMessageType(EventMessageType.SHORT_LINK_DEL_MAPPING.name());
 
             // 处理消息
-            shortLinkService.handlerAddShortLink(eventMessage);
+            boolean b = shortLinkService.handlerDelShortLink(eventMessage);
 
         } catch (Exception e) {
-            log.error("C 端消费异常：{}", e.getMessage());
+            log.error("B 端-删除短链-消费异常：{}", e.getMessage());
             throw new BizException(BizCodeEnum.MQ_CONSUME_EXCEPTION);
         }
-        log.info("C 端消费成功{}", eventMessage);
+        log.info("B 端-删除短链-消费成功{}", eventMessage);
     }
 }

@@ -34,7 +34,7 @@ public class ShortLinkAddMappingMQListener {
 
     @RabbitHandler
     public void shortLinkHandler(EventMessage eventMessage, Message message, Channel channel) throws IOException {
-        log.info("监听到消息 ShortLinkAddMappingMQListener：message 消息内容：{}",message);
+        log.info("B 端监听到消息 ShortLinkAddMappingMQListener：message 消息内容：{}",message);
 
         try {
             // 设置消息类型，B端

@@ -11,6 +11,11 @@ import java.util.Map;
  * B 端，商家短链码
  */
 public interface GroupCodeMappingManager {
+    /**
+     * 分页查询
+     */
+    Map<String, Object> pageShortLinkByGroupId(Integer page, Integer size, Long accountNo, Long groupId);
+
 
     /**
      * 查找详情
@@ -25,21 +30,24 @@ public interface GroupCodeMappingManager {
     /**
      * 删除商家短链码
      */
-    int del(String shortLinkCode, Long accountNo, Long groupId);
+    int del(GroupCodeMapping groupCodeMapping);
+
+    /**
+     * 更新商家短链码
+     */
+    int update(GroupCodeMapping groupCodeMapping);
 
     /**
      * 判断短链码是否存在
      */
     GroupCodeMapping findByCodeAndGroupId(String shortLinkCode, Long groupId, Long accountNo);
 
-    /**
-     * 分页查询
-     */
-    Map<String, Object> pageShortLinkByGroupId(Integer page, Integer size, Long accountNo, Long groupId);
 
     /**
      * 更新短链的状态
      */
     int updateGroupCodeMappingState(Long accountNo, Long groupId, String shortLinkCode, ShortLinkStateEnum shortLinkStateEnum);
+
+
 }
 

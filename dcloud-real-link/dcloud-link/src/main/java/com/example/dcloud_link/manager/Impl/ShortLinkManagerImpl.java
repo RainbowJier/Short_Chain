@@ -1,6 +1,7 @@
 package com.example.dcloud_link.manager.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.example.dcloud_link.entity.ShortLink;
 import com.example.dcloud_link.manager.ShortLinkManager;
 import com.example.dcloud_link.mapper.ShortLinkMapper;
@@ -35,10 +36,19 @@ public class ShortLinkManagerImpl implements ShortLinkManager {
     }
 
     @Override
-    public int del(String shortLinkCode, Long accountNo) {
-        LambdaQueryWrapper<ShortLink> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(ShortLink::getCode, shortLinkCode)
-                .eq(ShortLink::getAccountNo, accountNo);
+    public int del(ShortLink shortLink) {
+        LambdaUpdateWrapper<ShortLink> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(ShortLink::getCode, shortLink.getCode())
+                .set(ShortLink::getDel, shortLink.getDel());
+        return shortLinkMapper.update(wrapper);
+    }
+
+    @Override
+    public int update(ShortLink shortLink) {
+        LambdaUpdateWrapper<ShortLink> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(ShortLink::getCode, shortLink.getCode())
+                .eq(ShortLink::getDel, shortLink.getDel())
+                .set(ShortLink::getTitle, shortLink.getTitle());
         return shortLinkMapper.update(wrapper);
     }
 }

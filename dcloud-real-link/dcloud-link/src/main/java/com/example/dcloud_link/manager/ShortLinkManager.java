@@ -23,5 +23,10 @@ public interface ShortLinkManager {
     /**
      * 根据短链码和 accountNo 删除
      */
-    int del(String shortLinkCode, Long accountNo);
+    int del(ShortLink shortLink);
+
+    /**
+     * 更新短链
+     */
+    int update(ShortLink shortLink);
 }

@@ -12,7 +12,9 @@ import com.example.dcloud_common.util.JsonUtil;
 import com.example.dcloud_link.component.ShortLinkComponent;
 import com.example.dcloud_link.config.RabbitMQConfig;
 import com.example.dcloud_link.controller.request.ShortLinkAddRequest;
+import com.example.dcloud_link.controller.request.ShortLinkDelRequest;
 import com.example.dcloud_link.controller.request.ShortLinkPageRequest;
+import com.example.dcloud_link.controller.request.ShortLinkUpdateRequest;
 import com.example.dcloud_link.entity.GroupCodeMapping;
 import com.example.dcloud_link.entity.LinkGroup;
 import com.example.dcloud_link.entity.ShortLink;
@@ -22,7 +24,6 @@ import com.example.dcloud_link.manager.LinkGroupManager;
 import com.example.dcloud_link.manager.ShortLinkManager;
 import com.example.dcloud_link.service.ShortLinkService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.jni.Time;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -61,6 +61,21 @@ public class ShortLinkServiceImpl implements ShortLinkService {
     @Autowired
     private RedisTemplate<Object, Object> redisTemplate;
 
+
+    /**
+     * B 端-分页查找分组下的短链
+     */
+    @Override
+    public Map<String, Object> page(ShortLinkPageRequest request) {
+        Long groupId = request.getGroupId();
+        Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
+
+        return groupCodeMappingManager.pageShortLinkByGroupId(request.getPage(), request.getSize(), accountNo, groupId);
+    }
+
+
+    // -------------------------- 发送消息到 RabbitMQ  --------------------
+
     @Override
     public ShortLinkVo parseShortLinkCode(String shortLinkCode) {
         ShortLink shortLink = shortLinkManager.findbyShortLink(shortLinkCode);
@@ -76,7 +91,7 @@ public class ShortLinkServiceImpl implements ShortLinkService {
     }
 
     /**
-     * 发送消息到 RabbitMQ
+     * 【新增】发送消息到 RabbitMQ
      */
     @Override
     public JsonData createShortLink(ShortLinkAddRequest request) {
@@ -103,9 +118,59 @@ public class ShortLinkServiceImpl implements ShortLinkService {
         return JsonData.buildSuccess();
     }
 
+    /**
+     * 【删除】短链，发送删除消息到 RabbitMQ.
+     */
+    @Override
+    public JsonData delShortLink(ShortLinkDelRequest request) {
+        Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
+
+        // 封装消息对象
+        EventMessage eventMessage = EventMessage.builder()
+                .accountNo(accountNo)
+                .content(JsonUtil.objToJsonStr(request))
+                .messageId(IDUtil.generateSnowFlakeID().toString())
+                .eventMessageType(EventMessageType.SHORT_LINK_DEL_LINK.name())
+                .build();
+
+        rabbitTemplate.convertAndSend(
+                rabbitMQConfig.getShortLinkEventExchange(),   // 交换机名称
+                rabbitMQConfig.getShortLinkDelRoutingKey(),   // 消息对象的 routing key
+                eventMessage                                  // 消息对象
+        );
+
+        return JsonData.buildSuccess();
+    }
 
     /**
-     * 处理添加短链事件
+     * 【更新】短链，发送更新消息到 RabbitMQ.
+     */
+    @Override
+    public JsonData updateShortLink(ShortLinkUpdateRequest request) {
+        Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
+
+        // 封装消息对象
+        EventMessage eventMessage = EventMessage.builder()
+                .accountNo(accountNo)
+                .content(JsonUtil.objToJsonStr(request))
+                .messageId(IDUtil.generateSnowFlakeID().toString())
+                .eventMessageType(EventMessageType.SHORT_LINK_UPDATE_LINK.name())
+                .build();
+
+        rabbitTemplate.convertAndSend(
+                rabbitMQConfig.getShortLinkEventExchange(),   // 交换机名称
+                rabbitMQConfig.getShortLinkUpdateRoutingKey(),   // 消息对象的 routing key
+                eventMessage                                  // 消息对象
+        );
+
+        return JsonData.buildSuccess();
+    }
+
+
+    // -------------------------- 以下为 RabbitMQ 消息处理 --------------------
+
+    /**
+     * 处理【新增】短链消息
      * 1. 判断短链域名是否合法（这里不写）
      * 2. 判断组名是否合法
      * 3. 生成长链摘要
@@ -145,15 +210,15 @@ public class ShortLinkServiceImpl implements ShortLinkService {
         boolean getLock = tryAcquireLock(shortLinkCode, accountNo);
 
         // 加锁成功
-        if(getLock) {
+        if (getLock) {
             // C端
-            if(EventMessageType.SHORT_LINK_ADD_LINK.name().equals(eventMessageType)) {
+            if (EventMessageType.SHORT_LINK_ADD_LINK.name().equals(eventMessageType)) {
                 // 短链码是否存在
                 ShortLink shortLinkCodeInDB = shortLinkManager.findbyShortLink(shortLinkCode);
                 if (shortLinkCodeInDB != null) {
                     duplicateCode = true;
                     log.error("C 端短链码重复：{}", shortLinkCode);
-                }else{
+                } else {
                     // 构建短链对象
                     ShortLink shortLink = ShortLink.builder()
                             .accountNo(accountNo)
@@ -173,13 +238,13 @@ public class ShortLinkServiceImpl implements ShortLinkService {
                 }
             }
             // B端
-            else if(EventMessageType.SHORT_LINK_ADD_MAPPING.name().equals(eventMessageType)){
+            else if (EventMessageType.SHORT_LINK_ADD_MAPPING.name().equals(eventMessageType)) {
                 // 短链码是否存在
-                GroupCodeMapping groupCodeMappingInDB = groupCodeMappingManager.findByCodeAndGroupId(shortLinkCode,groupId,accountNo);
+                GroupCodeMapping groupCodeMappingInDB = groupCodeMappingManager.findByCodeAndGroupId(shortLinkCode, groupId, accountNo);
                 if (groupCodeMappingInDB != null) {
                     duplicateCode = true;
                     log.error("B 端短链码重复：{}", shortLinkCode);
-                }else{
+                } else {
                     GroupCodeMapping groupCodeMapping = GroupCodeMapping.builder()
                             .accountNo(accountNo)
                             .code(shortLinkCode)
@@ -199,14 +264,14 @@ public class ShortLinkServiceImpl implements ShortLinkService {
             }
         }
         // 加锁失败
-        else{
-            log.error("加锁失败{}",eventMessage);
+        else {
+            log.error("加锁失败{}", eventMessage);
             // 短链码重复,导致加锁失败
             duplicateCode = true;
         }
 
         // 短链码重复，重新生成短链码，重新调用方法
-        if(duplicateCode){
+        if (duplicateCode) {
             retryOnLockFailure(eventMessage, addRequest);
         }
 
@@ -233,7 +298,7 @@ public class ShortLinkServiceImpl implements ShortLinkService {
         handlerAddShortLink(eventMessage);
     }
 
-    // 尝试加锁
+    // 加锁
     private boolean tryAcquireLock(String shortLinkCode, Long accountNo) {
         // lua 脚本
         String script = "if redis.call('EXISTS', KEYS[1]) == 0 then " +
@@ -255,31 +320,94 @@ public class ShortLinkServiceImpl implements ShortLinkService {
         return result > 0;
     }
 
-
-    /**
-     * 检查组名是否合法
-     */
+    // 检查组名是否合法
     private LinkGroup checkLinkGroup(Long accountNo, Long groupId) {
         LinkGroup linkGroup = linkGroupManager.detail(groupId, accountNo);
         Assert.notNull(linkGroup, "组名不合法");
         return linkGroup;
     }
 
-    /**
-     * 分页查找分组下的短链
-     * 从B端查找
-     */
     @Override
-    public Map<String, Object> page(ShortLinkPageRequest request) {
-        Long groupId = request.getGroupId();
-        Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
+    public boolean handlerDelShortLink(EventMessage eventMessage) {
+        Long accountNo = eventMessage.getAccountNo();
 
-        return groupCodeMappingManager.pageShortLinkByGroupId(request.getPage(), request.getSize(), accountNo,groupId);
+        // 消息类型
+        String eventMessageType = eventMessage.getEventMessageType();
+
+        // 解析消息内容
+        ShortLinkDelRequest request = JsonUtil.jsonStrToObj(eventMessage.getContent(), ShortLinkDelRequest.class);
+        String shortLinkCode = request.getCode();   // 短链码
+        Long groupId = request.getGroupId();        // 分组id
+        Long mappingId = request.getMappingId();    // 映射表id
+
+        // C端
+        if (EventMessageType.SHORT_LINK_DEL_LINK.name().equals(eventMessageType)) {
+            ShortLink shortLink = ShortLink.builder()
+                    .accountNo(accountNo).code(shortLinkCode)
+                    .del(1L).build();
+
+            // 删除短链
+            int delRow = shortLinkManager.del(shortLink);
+            if (delRow <= 0) {
+                log.debug("C 端删除：{}", delRow);
+            }
+            return true;
+        }
+        // B端
+        else if (EventMessageType.SHORT_LINK_DEL_MAPPING.name().equals(eventMessageType)) {
+            GroupCodeMapping groupCodeMapping = GroupCodeMapping.builder()
+                    .id(mappingId).accountNo(accountNo)
+                    .code(shortLinkCode).groupId(groupId)
+                    .del(1L)
+                    .build();
+
+            int delRow = groupCodeMappingManager.del(groupCodeMapping);
+            if (delRow <= 0) {
+                log.debug("B 端删除：{}", delRow);
+            }
+            return true;
+        }
+        return false;
     }
 
+    @Override
+    public boolean handlerUpdateShortLink(EventMessage eventMessage) {
+        Long accountNo = eventMessage.getAccountNo();
 
+        // 消息类型
+        String eventMessageType = eventMessage.getEventMessageType();
 
+        // 解析消息内容
+        ShortLinkUpdateRequest request = JsonUtil.jsonStrToObj(eventMessage.getContent(), ShortLinkUpdateRequest.class);
+        Long groupId = request.getGroupId();
+        Long mappingId = request.getMappingId();
+        String shortLinkCode = request.getCode();
+        String title = request.getTitle();    // 短链的标题
 
+        // C端
+        if (EventMessageType.SHORT_LINK_UPDATE_LINK.name().equals(eventMessageType)) {
+            // 构建短链对象
+            ShortLink shortLink = ShortLink.builder()
+                    .code(shortLinkCode)
+                    .title(title).del(0L)
+                    .build();
+
+            shortLinkManager.update(shortLink);
+            return true;
+        }
+        // B端
+        else if (EventMessageType.SHORT_LINK_UPDATE_MAPPING.name().equals(eventMessageType)) {
+            GroupCodeMapping groupCodeMapping = GroupCodeMapping.builder()
+                    .id(mappingId).title(title)
+                    .accountNo(accountNo).groupId(groupId)
+                    .del(0L).build();
+
+            groupCodeMappingManager.update(groupCodeMapping);
+            return true;
+        }
+
+        return false;
+    }
 }
 
 

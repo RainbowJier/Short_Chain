@@ -24,25 +24,25 @@ import java.io.IOException;
  */
 @Slf4j
 @Component
-@RabbitListener(queuesToDeclare = {@Queue("short_link.add.link.queue") }) // 如果没有队列，则自动创建队列
-public class ShortLinkAddLinkMQListener {
+@RabbitListener(queuesToDeclare = {@Queue("short_link.update.link.queue") })
+public class ShortLinkUpdateLinkMQListener {
     @Autowired
     private ShortLinkService shortLinkService;
 
     @RabbitHandler
     public void shortLinkHandler(EventMessage eventMessage, Message message, Channel channel) throws IOException {
-        log.info("C 端监听到消息 ShortLinkAddLinkMQListener：message 消息内容：{}",message);
+        log.info("C 端监听到消息-更新短链-消息内容：{}",message);
 
         try {
-            eventMessage.setEventMessageType(EventMessageType.SHORT_LINK_ADD_LINK.name());
+            eventMessage.setEventMessageType(EventMessageType.SHORT_LINK_UPDATE_LINK.name());
 
             // 处理消息
-            shortLinkService.handlerAddShortLink(eventMessage);
+            shortLinkService.handlerUpdateShortLink(eventMessage);
 
         } catch (Exception e) {
-            log.error("C 端消费异常：{}", e.getMessage());
+            log.error("C 端-更新短链-消费异常：{}", e.getMessage());
             throw new BizException(BizCodeEnum.MQ_CONSUME_EXCEPTION);
         }
-        log.info("C 端消费成功{}", eventMessage);
+        log.info("C 端-更新短链-消费成功{}", eventMessage);
     }
 }
