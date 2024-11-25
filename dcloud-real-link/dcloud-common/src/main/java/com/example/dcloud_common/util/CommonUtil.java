@@ -161,6 +161,20 @@ public class CommonUtil {
     }
 
     /**
+     * Response html data to fronted.
+     */
+    public static void sendHtmlMessage(HttpServletResponse response, JsonData jsonData) {
+        response.setContentType("text/html;charset=utf-8");
+
+        try (PrintWriter writer = response.getWriter()) {
+            writer.write(jsonData.getData().toString());
+            writer.flush();
+        } catch (IOException e) {
+            log.warn("Respond json data to the fronted exception: {}", e.getMessage());
+        }
+    }
+
+    /**
      * murmur hash算法
      */
     public static long murmurHash32(String param) {

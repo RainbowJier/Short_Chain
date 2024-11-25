@@ -43,7 +43,7 @@ public class ProductOrderManagerImpl implements ProductOrderManager {
      * 通过订单号和账号查询
      */
     @Override
-    public ProductOrder findByOutTradeNoAndAccountNo(String outTradeNo, String accountNo) {
+    public ProductOrder findByOutTradeNoAndAccountNo(String outTradeNo, Long accountNo) {
         LambdaQueryWrapper<ProductOrder> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(ProductOrder::getOutTradeNo, outTradeNo)
                 .eq(ProductOrder::getAccountNo, accountNo)
@@ -106,4 +106,19 @@ public class ProductOrderManagerImpl implements ProductOrderManager {
 
         return result;
     }
+
+    /**
+     * 删除订单
+     */
+    @Override
+    public int del(Long accountNo, String productOrderId) {
+        LambdaUpdateWrapper<ProductOrder> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(ProductOrder::getAccountNo, accountNo)
+                .eq(ProductOrder::getId, productOrderId)
+                .set(ProductOrder::getDel, 1);
+
+        return productOrderMapper.update(null, wrapper);
+    }
+
+
 }

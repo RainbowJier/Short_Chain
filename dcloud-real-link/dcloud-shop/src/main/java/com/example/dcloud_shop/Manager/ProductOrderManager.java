@@ -22,7 +22,7 @@ public interface ProductOrderManager {
     /**
      * 通过订单号和账号查询
      */
-    ProductOrder findByOutTradeNoAndAccountNo(String outTradeNo, String accountNo);
+    ProductOrder findByOutTradeNoAndAccountNo(String outTradeNo, Long accountNo);
 
 
     /**
@@ -36,4 +36,8 @@ public interface ProductOrderManager {
     Map<String, Object> page(int page, int size, Long accountNo, String state);
 
 
+    /**
+     * 删除订单
+     */
+    int del(Long accountNo,String productOrderId);
 }
