@@ -47,5 +47,4 @@ public class LoginUser {
      * 用户级别
      */
     private String auth;
-
 }

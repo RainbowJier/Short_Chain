@@ -45,7 +45,7 @@ public enum BizCodeEnum {
      * Order
      */
     ORDER_CONFIRM_PRICE_FAIL(280002, "创建订单-验价失败"),
-    ORDER_CONFIRM_REPEAT(280008, "订单恶意-᯿复提交"),
+    ORDER_CONFIRM_REPEAT(280008, "订单恶意-重复提交"),
     ORDER_CONFIRM_TOKEN_EQUAL_FAIL(280009, "订单令牌缺少"),
     ORDER_CONFIRM_NOT_EXIST(280010, "订单不存在"),
 

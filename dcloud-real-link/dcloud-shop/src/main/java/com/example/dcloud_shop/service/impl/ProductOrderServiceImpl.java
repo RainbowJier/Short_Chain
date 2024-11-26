@@ -27,10 +27,6 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * <p>
- * 服务实现类
- * </p>
- *
  * @author RainbowJier
  * @since 2024-11-23
  */
@@ -68,16 +64,16 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 
     /**
      * 创建订单
-     * 1. 防止重复提交（重点）
+     * 1. todo:防止重复提交（重点）
      * 2. 获取最新的流量包价格
      * 3. 订单验价
      * a. 如果有优惠券或者其他折扣
      * b. 验证前端显示的价格和后台计算的价格是否相同
      * 4. 发送订单对象，保存数据库
-     * 5. 发送延迟消息，订单超时，自动关闭订单（重点）
-     * 6. 创建支付信息，对接第三方支付（重点）
-     * 7. 回调，更新订单支付状态（重点）
-     * 8. 支付成功，创建流量包（重点）
+     * 5. todo:发送延迟消息，订单超时，自动关闭订单（重点）
+     * 6. todo:创建支付信息，对接第三方支付（重点）
+     * 7. todo:回调，更新订单支付状态（重点）
+     * 8. todo:支付成功，创建流量包（重点）
      */
     @Override
     public JsonData confirmOrder(ConfirmOrderRequest orderRequest) {
