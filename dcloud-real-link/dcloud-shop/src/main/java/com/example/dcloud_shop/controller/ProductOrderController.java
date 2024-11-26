@@ -35,7 +35,6 @@ public class ProductOrderController {
     @Autowired
     private ProductOrderService productOrderService;
 
-
     /**
      * 分页查询订单列表
      */
@@ -47,7 +46,6 @@ public class ProductOrderController {
         Map<String, Object> resultMap = productOrderService.page(page, size, state);
         return JsonData.buildSuccess(resultMap);
     }
-
 
     /**
      * 查询订单状态
@@ -61,10 +59,14 @@ public class ProductOrderController {
                 : JsonData.buildSuccess(state);
     }
 
-
+    /**
+     * 创建订单
+     */
     @PostMapping("/confirm")
     public JsonData confirmOrder(@RequestBody ConfirmOrderRequest confirmOrderRequest, HttpServletResponse response) {
+        // 创建订单
         JsonData jsonData = productOrderService.confirmOrder(confirmOrderRequest);
+
         if (jsonData.getCode() == 0) {
             String clientType = confirmOrderRequest.getClientType();  // 客户端类型
             String payType = confirmOrderRequest.getPayType();    // 支付方式
@@ -90,6 +92,5 @@ public class ProductOrderController {
         }
 
         return JsonData.buildSuccess();
-
     }
 }

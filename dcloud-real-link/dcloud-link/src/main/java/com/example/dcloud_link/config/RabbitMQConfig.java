@@ -20,7 +20,7 @@ public class RabbitMQConfig {
      */
     private String shortLinkAddRoutingKey = "short_link.add.link.mapping.routing.key";
 
-    private String shortLinkDelRoutingKey = "short_link.delete.link.mapping.routing.key";
+    private String shortLinkDelRoutingKey = "short_link.del.link.mapping.routing.key";
 
     private String shortLinkUpdateRoutingKey = "short_link.update.link.mapping.routing.key";
 
@@ -174,5 +174,4 @@ public class RabbitMQConfig {
                 .with(shortLinkUpdateMappingBindingKey)
                 .noargs();
     }
-
 }

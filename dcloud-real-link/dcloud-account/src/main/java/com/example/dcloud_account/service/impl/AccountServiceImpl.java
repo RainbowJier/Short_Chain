@@ -38,10 +38,8 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
     @Autowired
     private NotifyService notifyService;
 
-
     @Autowired
     private AccountManager accountManager;
-
 
     /**
      * 用户注册

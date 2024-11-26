@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 
 /**
- *@Description：TODO
+ *@Description：order request.
  *@Author： RainbowJier
  *@Data： 2024/11/25 21:07
  */
@@ -55,7 +55,6 @@ public class ConfirmOrderRequest {
      * 发票类型：0->不开发票；1->电子发票；2->纸质发票
      */
     private String billType;
-
 
     /**
      * 发票抬头
