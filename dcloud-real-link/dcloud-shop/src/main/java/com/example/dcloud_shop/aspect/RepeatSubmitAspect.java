@@ -5,12 +5,16 @@ import com.example.dcloud_common.constant.RedisKey;
 import com.example.dcloud_common.enums.BizCodeEnum;
 import com.example.dcloud_common.exception.BizException;
 import com.example.dcloud_common.interceptor.LoginInterceptor;
+import com.example.dcloud_common.util.CommonUtil;
 import com.example.dcloud_shop.annotation.RepeatSubmit;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -19,6 +23,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author: RainbowJier
@@ -34,7 +40,7 @@ import javax.servlet.http.HttpServletRequest;
 public class RepeatSubmitAspect {
 
     @Autowired
-    private StringRedisTemplate redisTemplate;;
+    private StringRedisTemplate redisTemplate;
 
     /**
      * 在哪里执行
@@ -43,8 +49,7 @@ public class RepeatSubmitAspect {
      * 方式二：execution，当执行指定的方法时，生效
      */
     @Pointcut("@annotation(noRepeatSubmit)")
-    public void pointCutNoRepeatSubmit(RepeatSubmit noRepeatSubmit) {
-    }
+    public void pointCutNoRepeatSubmit(RepeatSubmit noRepeatSubmit) {}
 
     /**
      * 执行的操作
@@ -58,6 +63,8 @@ public class RepeatSubmitAspect {
     public Object around(ProceedingJoinPoint joinPoint, RepeatSubmit noRepeatSubmit) throws Throwable {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
+        Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
+
         // 限制类型
         String type = noRepeatSubmit.limitType().name();
 
@@ -66,37 +73,44 @@ public class RepeatSubmitAspect {
 
         // 方法参数
         if (type.equals(RepeatSubmit.Type.PARAM.name())) {
+            long lockTime = noRepeatSubmit.lockTime();  // 加锁时间
 
+            String ipAddr = CommonUtil.getIpAddr(request);   // ip地址
 
+            // 方法名
+            MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+            Method method = methodSignature.getMethod();
+            String className = method.getDeclaringClass().getName();
 
+            // 构造唯一的key
+            String key = String.format("%s-%s-%s-%s", ipAddr, className, method, accountNo);
+
+            // redis实现分布式锁，不存在就设置key，返回true，存在就不设置，返回false
+            flag  = redisTemplate.opsForValue().setIfAbsent(key, "1", lockTime, TimeUnit.SECONDS);
         }
         // token 令牌
         else {
             String requestToken = request.getHeader("request-token");
+
+            // 校验令牌
             if (StringUtils.isBlank(requestToken)) {
                 throw new BizException(BizCodeEnum.ORDER_CONFIRM_TOKEN_EQUAL_FAIL);
             }
-            Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
 
-            // 获取令牌
+            // 校验令牌是否存在
             String key = String.format(RedisKey.SUBMIT_ORDER_TOKEN_KEY, accountNo, requestToken);
-
             flag = redisTemplate.delete(key);
-
-            // 删除失败，说明重复提交
-            if(!flag){
-                throw new BizException(BizCodeEnum.ORDER_CONFIRM_REPEAT);
-            }
         }
 
+        // 删除失败，说明重复提交
+        if (!flag) {
+            throw new BizException(BizCodeEnum.ORDER_CONFIRM_REPEAT);
+        }
+
+
         System.out.println("⽬标⽅法执⾏前");
-
-
         Object object = joinPoint.proceed();
-
-
         System.out.println("⽬标⽅法执⾏后");
         return object;
-
     }
 }

@@ -91,13 +91,16 @@ public class ProductOrderController {
                 if (clientType.equalsIgnoreCase(ClientTypeEnum.APP.name())) {
                     CommonUtil.sendHtmlMessage(response, jsonData);
                 } else if (clientType.equalsIgnoreCase(ClientTypeEnum.PC.name())) {
+                    // todo: 跳转到支付宝支付页面
 
                 } else if (clientType.equalsIgnoreCase(ClientTypeEnum.H5.name())) {
-
+                    // todo: 跳转到支付宝支付页面
                 }
             }
             // 微信支付，返回json
             else if (payType.equalsIgnoreCase(ProductOrderPayTypeEnum.WECHAT_PAY.name())) {
+                // todo:
+
                 CommonUtil.sendJsonMessage(response, jsonData);
             }
 

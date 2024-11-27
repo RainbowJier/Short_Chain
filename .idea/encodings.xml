@@ -2,6 +2,15 @@
 <project version="4">
   <component name="Encoding" native2AsciiForPropertiesFiles="true" defaultCharsetForPropertiesFiles="UTF-8">
     <file url="file://$PROJECT_DIR$/dcloud-real-link" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dcloud-real-link/dcloud-account/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dcloud-real-link/dcloud-app/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dcloud-real-link/dcloud-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dcloud-real-link/dcloud-data/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dcloud-real-link/dcloud-gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dcloud-real-link/dcloud-link/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dcloud-real-link/dcloud-shop/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dcloud-real-link/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dcloud-real-link/src/main/resources" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>
