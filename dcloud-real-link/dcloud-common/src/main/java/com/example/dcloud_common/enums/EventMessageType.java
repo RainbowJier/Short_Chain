@@ -29,5 +29,12 @@ public enum EventMessageType {
 
     SHORT_LINK_DEL_MAPPING,
 
-    SHORT_LINK_UPDATE_MAPPING
+    SHORT_LINK_UPDATE_MAPPING,
+
+
+    // ------------------ dcloud_shop ------------------
+    /**
+     * 新建商品订单
+     */
+    PRODUCT_ORDER_NEW,
 }

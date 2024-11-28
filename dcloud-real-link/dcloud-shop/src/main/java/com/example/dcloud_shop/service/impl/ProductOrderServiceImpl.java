@@ -1,27 +1,30 @@
 package com.example.dcloud_shop.service.impl;
 
+import com.alibaba.cloud.commons.lang.StringUtils;
 import com.example.dcloud_common.constant.TimeConstant;
+import com.example.dcloud_common.entity.EventMessage;
 import com.example.dcloud_common.entity.LoginUser;
-import com.example.dcloud_common.enums.BillTypeEnum;
-import com.example.dcloud_common.enums.BizCodeEnum;
-import com.example.dcloud_common.enums.ProductOrderPayTypeEnum;
-import com.example.dcloud_common.enums.ProductOrderStateEnum;
+import com.example.dcloud_common.enums.*;
 import com.example.dcloud_common.exception.BizException;
 import com.example.dcloud_common.interceptor.LoginInterceptor;
 import com.example.dcloud_common.util.CommonUtil;
+import com.example.dcloud_common.util.IDUtil;
 import com.example.dcloud_common.util.JsonData;
 import com.example.dcloud_common.util.JsonUtil;
 import com.example.dcloud_shop.Manager.ProductManager;
 import com.example.dcloud_shop.Manager.ProductOrderManager;
+import com.example.dcloud_shop.config.RabbitMQConfig;
 import com.example.dcloud_shop.controller.request.ConfirmOrderRequest;
 import com.example.dcloud_shop.entity.Product;
 import com.example.dcloud_shop.entity.ProductOrder;
 import com.example.dcloud_shop.entity.vo.PayInfoVo;
 import com.example.dcloud_shop.service.ProductOrderService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.awt.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
@@ -40,6 +43,12 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 
     @Resource
     private ProductManager productManager;
+
+    @Resource
+    private RabbitTemplate rabbitTemplate;
+
+    @Resource
+    private RabbitMQConfig rabbitMQConfig;
 
     /**
      * 分页查询
@@ -64,7 +73,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 
     /**
      * 创建订单
-     * 1. todo:防止重复提交（重点）
+     * 1. 防止重复提交（重点）
      * 2. 获取最新的流量包价格
      * 3. 订单验价
      * a. 如果有优惠券或者其他折扣
@@ -101,12 +110,26 @@ public class ProductOrderServiceImpl implements ProductOrderService {
                 .setPayFee(orderRequest.getPayAmount())
                 .setOrderPayTimeoutMills(TimeConstant.ORDER_PAY_TIMEOUT_MILLS);
 
+        // 发送延迟消息，订单超时，自动关闭订单
+        EventMessage eventMessage = EventMessage.builder()
+                .eventMessageType(EventMessageType.PRODUCT_ORDER_NEW.name())
+                .accountNo(accountNo)
+                .bizId(orderOutTradeNo)
+                .build();
+
+        rabbitTemplate.convertAndSend(
+                rabbitMQConfig.getOrderEventExchange(),
+                rabbitMQConfig.getOrderCloseDelayRoutingKey(),
+                eventMessage);
+
         // todo:更新支付状态
+
+
 
         // todo:支付成功，创建流量包
 
 
-        return null;
+        return JsonData.buildSuccess();
     }
 
     /**
@@ -169,4 +192,55 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         }
     }
 
+
+    @Override
+    public boolean closeProductOrder(EventMessage eventMessage) {
+        String outTradeNo = eventMessage.getBizId();  // 订单号
+        Long accountNo = eventMessage.getAccountNo();  // 用户账号
+
+        ProductOrder productOrder = productOrderManager.findByOutTradeNoAndAccountNo(outTradeNo, accountNo);
+
+        // 订单不存在
+        if(productOrder == null){
+            log.warn("订单不存在，订单号: {}", outTradeNo);
+            return true;
+        }
+
+        String state = productOrder.getState();
+        // 已经支付
+        if(state.equalsIgnoreCase(ProductOrderStateEnum.PAY.name())){
+            log.info("订单已经支付，订单号: {}",eventMessage);
+
+        }
+
+        // 还未支付，查询第三方支付接口再次校验支付状态
+        if(state.equalsIgnoreCase(ProductOrderStateEnum.NEW.name())){
+            PayInfoVo payInfoVo = new PayInfoVo()
+                    .setPayType(productOrder.getPayType())
+                    .setOutTradeNo(outTradeNo)
+                    .setAccountNo(accountNo);
+
+            // todo:查询第三方支付接口，校验支付状态
+            String payResult = "";
+
+
+            if(StringUtils.isBlank(payResult)){
+                // 支付失败，订单关闭
+                productOrderManager.updateOrderPayState(outTradeNo,accountNo,ProductOrderStateEnum.CONCEL.name(),ProductOrderStateEnum.NEW.name());
+                log.info("订单未支付，取消订单: {}",eventMessage);
+            }else{
+                payResult = "SUCCESS";
+                log.warn("订单已支付，但是微信回调通知失败，需要排查: {}",eventMessage);
+                // 支付成功，订单支付成功
+                productOrderManager.updateOrderPayState(outTradeNo,accountNo,ProductOrderStateEnum.PAY.name(),ProductOrderStateEnum.NEW.name());
+
+
+                // todo:触发支付成功后的逻辑
+            }
+
+        }
+
+
+        return true;
+    }
 }

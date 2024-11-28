@@ -1,5 +1,6 @@
 package com.example.dcloud_shop.service;
 
+import com.example.dcloud_common.entity.EventMessage;
 import com.example.dcloud_common.util.JsonData;
 import com.example.dcloud_shop.controller.request.ConfirmOrderRequest;
 import com.example.dcloud_shop.entity.ProductOrder;
@@ -31,4 +32,9 @@ public interface ProductOrderService {
      * 创建订单
      */
     JsonData confirmOrder(ConfirmOrderRequest confirmOrderRequest);
+
+    /**
+     * 关闭订单
+     */
+    boolean closeProductOrder(EventMessage eventMessage);
 }
