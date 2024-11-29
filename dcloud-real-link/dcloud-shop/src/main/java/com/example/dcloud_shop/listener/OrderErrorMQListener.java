@@ -19,11 +19,11 @@ import java.io.IOException;
  */
 @Slf4j
 @Component
-@RabbitListener(queuesToDeclare = {@Queue("order.error.queue") })
+@RabbitListener(queuesToDeclare = {@Queue("order.error.queue")})
 public class OrderErrorMQListener {
 
     @RabbitHandler
-    public void shortLinkHandler(EventMessage eventMessage, Message message, Channel channel) throws IOException {
+    public void orderErrorMQHandler(EventMessage eventMessage, Message message, Channel channel) throws IOException {
         log.info("警告：订单消费事件失败，异常处理队列，eventMessage内容:{}", eventMessage);
         log.info("警告：Message:{}", message);
         log.info("警告成功，发送通知短信");

@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -81,10 +83,10 @@ public class Product implements Serializable {
     /**
      * 最后修改时间
      */
-    private LocalDateTime gmtModified;
+    private Date gmtModified;
 
     /**
      * 创建时间
      */
-    private LocalDateTime gmtCreate;
+    private Date gmtCreate;
 }

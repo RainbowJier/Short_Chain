@@ -20,10 +20,10 @@ public class CustomExceptionHandler {
         // If the exception is sub-exception of RuntimeException.
         if (e instanceof BizException) {
             BizException bizException = (BizException) e;
-            log.info("[业务异常]{}", e);
+            log.info("[业务异常]{}", e.getMessage());
             return JsonData.buildCodeAndMsg(bizException.getCode(), bizException.getMsg());
         } else {
-            log.info("[系统异常]{}", e);
+            log.info("[系统异常]{}", e.getMessage());
             return JsonData.buildError("全局异常，未知错误");
         }
     }

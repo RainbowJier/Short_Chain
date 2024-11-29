@@ -22,6 +22,7 @@ import com.example.dcloud_shop.service.ProductOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.awt.*;
@@ -85,6 +86,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
      * 8. todo:支付成功，创建流量包（重点）
      */
     @Override
+    @Transactional
     public JsonData confirmOrder(ConfirmOrderRequest orderRequest) {
         LoginUser loginUser = LoginInterceptor.threadLocal.get();
         Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
@@ -112,6 +114,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 
         // 发送延迟消息，订单超时，自动关闭订单
         EventMessage eventMessage = EventMessage.builder()
+                .messageId(IDUtil.generateSnowFlakeID().toString())
                 .eventMessageType(EventMessageType.PRODUCT_ORDER_NEW.name())
                 .accountNo(accountNo)
                 .bizId(orderOutTradeNo)
@@ -193,6 +196,9 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     }
 
 
+    /**
+     * 关闭订单
+     */
     @Override
     public boolean closeProductOrder(EventMessage eventMessage) {
         String outTradeNo = eventMessage.getBizId();  // 订单号
@@ -234,12 +240,10 @@ public class ProductOrderServiceImpl implements ProductOrderService {
                 // 支付成功，订单支付成功
                 productOrderManager.updateOrderPayState(outTradeNo,accountNo,ProductOrderStateEnum.PAY.name(),ProductOrderStateEnum.NEW.name());
 
-
                 // todo:触发支付成功后的逻辑
             }
 
         }
-
 
         return true;
     }

@@ -1,6 +1,7 @@
 package com.example.dcloud_shop.config;
 
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.retry.MessageRecoverer;
@@ -18,19 +19,22 @@ import org.springframework.context.annotation.Configuration;
 
 @Data
 @Configuration
+@Slf4j
 public class RabbitMQErrorConfig {
     /**
      * 交换机名称
      */
     private String orderErrorExchange = "order.error.exchange";
+
     /**
      * 队列名称
      */
     private String orderErrorQueue = "order.error.queue";
+
     /**
      * 路由键
      */
-    private String orderErrorBindKey = "order.error.routing.key";
+    private String orderErrorRoutingKey = "order.error.routing.key";
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
@@ -39,7 +43,7 @@ public class RabbitMQErrorConfig {
      * 异常交换机
      */
     @Bean
-    public Exchange errorTopicExchange() {
+    public TopicExchange errorTopicExchange() {
         return new TopicExchange(orderErrorExchange, true, false);
     }
 
@@ -55,20 +59,19 @@ public class RabbitMQErrorConfig {
      * 队列与交换机进行绑定
      */
     @Bean
-    public Binding bindingErrorQueueAndExchange(Queue errorQueue, TopicExchange errorTopicExchange) {
+    public Binding bindingErrorQueueAndExchange(){
         return BindingBuilder
                 .bind(errorQueue())
                 .to(errorTopicExchange())
-                .with(orderErrorBindKey)
-                .noargs();
+                .with(orderErrorRoutingKey);
     }
-
 
     /**
      * 消息重转发器
+     * 消费消息重试⼀定次数后，⽤特定的routingKey转发到指定的交换机中，⽅便后续排查和告警
      */
     @Bean
     public MessageRecoverer messageRecoverer() {
-        return new RepublishMessageRecoverer(rabbitTemplate, orderErrorExchange, orderErrorBindKey);
+        return new RepublishMessageRecoverer(rabbitTemplate, orderErrorExchange, orderErrorRoutingKey);
     }
 }

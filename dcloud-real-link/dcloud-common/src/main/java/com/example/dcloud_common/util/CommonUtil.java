@@ -149,30 +149,28 @@ public class CommonUtil {
     /**
      * Response Json data to fronted.
      */
-    public static void sendJsonMessage(HttpServletResponse response, Object obj) {
+    public static void sendJsonMessage(HttpServletResponse response, Object obj) throws IOException {
         response.setContentType("application/json;charset=utf-8");
-
         try (PrintWriter writer = response.getWriter()) {
             writer.print(JsonUtil.objToJsonStr(obj));
             response.flushBuffer();
         } catch (IOException e) {
-            log.warn("Respond json data to the fronted exception: {}", e.getMessage());
+            log.warn("json 格式数据响应前端异常: {}", e.getMessage());
         }
     }
 
     /**
      * Response html data to fronted.
      */
-    public static void sendHtmlMessage(HttpServletResponse response, JsonData jsonData) {
-        response.setContentType("text/html;charset=utf-8");
-
-        try (PrintWriter writer = response.getWriter()) {
-            writer.write(jsonData.getData().toString());
-            writer.flush();
-        } catch (IOException e) {
-            log.warn("Respond json data to the fronted exception: {}", e.getMessage());
-        }
-    }
+    //public static void sendHtmlMessage(HttpServletResponse response, JsonData jsonData) throws IOException {
+    //    response.setContentType("text/html;charset=utf-8");
+    //    try (PrintWriter writer = response.getWriter()) {
+    //        writer.write(jsonData.getData().toString());
+    //        writer.flush();
+    //    } catch (Exception e) {
+    //        log.warn("Respond json data to the fronted exception: {}", e.getMessage());
+    //    }
+    //}
 
     /**
      * murmur hash算法

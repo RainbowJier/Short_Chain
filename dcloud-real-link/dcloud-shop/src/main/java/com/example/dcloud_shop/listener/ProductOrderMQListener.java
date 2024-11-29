@@ -30,7 +30,7 @@ public class ProductOrderMQListener {
     private ProductOrderService productOrderService;
 
     @RabbitHandler
-    public void shortLinkHandler(EventMessage eventMessage, Message message, Channel channel) throws IOException {
+    public void orderHandler(EventMessage eventMessage, Message message, Channel channel){
         log.info("监听到消息 ProductOrderMQListener：message 消息内容：{}",message);
 
         try {

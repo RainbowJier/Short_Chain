@@ -18,6 +18,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -55,7 +56,6 @@ public class ProductOrderController {
      * 分页查询订单列表
      */
     @PostMapping("/page")
-    @RepeatSubmit(limitType = RepeatSubmit.Type.PARAM)
     public JsonData page(@RequestBody ProductOrderPageRequest orderPageRequest) {
         Map<String, Object> resultMap = productOrderService.page(orderPageRequest.getPage(), orderPageRequest.getSize(), orderPageRequest.getState());
         return JsonData.buildSuccess(resultMap);
@@ -77,8 +77,8 @@ public class ProductOrderController {
      * 创建订单
      */
     @PostMapping("/confirm")
-    @RepeatSubmit(limitType = RepeatSubmit.Type.TOKEN)
-    public JsonData confirmOrder(@RequestBody ConfirmOrderRequest confirmOrderRequest, HttpServletResponse response) {
+    @RepeatSubmit(limitType = RepeatSubmit.Type.PARAM)
+    public JsonData confirmOrder(@RequestBody ConfirmOrderRequest confirmOrderRequest, HttpServletResponse response) throws IOException {
         // 创建订单
         JsonData jsonData = productOrderService.confirmOrder(confirmOrderRequest);
 
@@ -87,18 +87,18 @@ public class ProductOrderController {
             String payType = confirmOrderRequest.getPayType();    // 支付方式
 
             // 支付宝支付，跳转网页
-            if (payType.equalsIgnoreCase(ProductOrderPayTypeEnum.ALI_PAY.name())) {
-                if (clientType.equalsIgnoreCase(ClientTypeEnum.APP.name())) {
-                    CommonUtil.sendHtmlMessage(response, jsonData);
-                } else if (clientType.equalsIgnoreCase(ClientTypeEnum.PC.name())) {
-                    // todo: 跳转到支付宝支付页面
-
-                } else if (clientType.equalsIgnoreCase(ClientTypeEnum.H5.name())) {
-                    // todo: 跳转到支付宝支付页面
-                }
-            }
+            //if (payType.equalsIgnoreCase(ProductOrderPayTypeEnum.ALI_PAY.name())) {
+            //    if (clientType.equalsIgnoreCase(ClientTypeEnum.APP.name())) {
+            //        CommonUtil.sendHtmlMessage(response, jsonData);
+            //    } else if (clientType.equalsIgnoreCase(ClientTypeEnum.PC.name())) {
+            //        // todo: 跳转到支付宝支付页面
+            //
+            //    } else if (clientType.equalsIgnoreCase(ClientTypeEnum.H5.name())) {
+            //        // todo: 跳转到支付宝支付页面
+            //    }
+            //}
             // 微信支付，返回json
-            else if (payType.equalsIgnoreCase(ProductOrderPayTypeEnum.WECHAT_PAY.name())) {
+            if (payType.equalsIgnoreCase(ProductOrderPayTypeEnum.WECHAT_PAY.name())) {
                 // todo:
 
                 CommonUtil.sendJsonMessage(response, jsonData);

@@ -21,9 +21,9 @@ import java.util.Map;
 @Data
 public class RabbitMQConfig {
     /**
-     * 过期时间，单位：毫秒
+     * 过期时间，60秒，单位：毫秒
      */
-    private Integer ttl = 1000 * 60;
+    private Integer ttl = 1000 * 3;
 
     /**
      * --------------交换机----------------
@@ -31,7 +31,7 @@ public class RabbitMQConfig {
     private String orderEventExchange = "order.event.exchange";
 
     @Bean
-    public Exchange shortLinkEventExchange() {
+    public TopicExchange orderEventExchange() {
         return new TopicExchange(orderEventExchange, true, false);
     }
 
@@ -48,12 +48,11 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Binding orderCloseBinding() {
+    public Binding orderCloseBinding(){
         return BindingBuilder
                 .bind(orderCloseQueue())
-                .to(shortLinkEventExchange())
-                .with(orderCloseRoutingKey)
-                .noargs();
+                .to(orderEventExchange())
+                .with(orderCloseRoutingKey);
     }
 
     /**
@@ -79,12 +78,11 @@ public class RabbitMQConfig {
 
     // 交换机绑定队列
     @Bean
-    public Binding orderCloseDelayBinding() {
+    public Binding orderCloseDelayBinding(){
         return BindingBuilder
                 .bind(orderCloseDelayQueue())
-                .to(shortLinkEventExchange())
-                .with(orderCloseDelayRoutingKey)
-                .noargs();
+                .to(orderEventExchange())
+                .with(orderCloseDelayRoutingKey);
     }
 
     /**

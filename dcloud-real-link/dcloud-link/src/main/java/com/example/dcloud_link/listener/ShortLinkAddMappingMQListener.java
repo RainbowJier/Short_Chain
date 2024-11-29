@@ -25,7 +25,7 @@ import java.io.IOException;
 @Slf4j
 @Component
 //@RabbitListener(queues = "short_link.add.mapping.queue") // 如果没有匹配到队列，则报错
-@RabbitListener(queuesToDeclare = {@Queue("short_link.add.mapping.queue") }) // 如果没有队列，则自动创建队列
+@RabbitListener(queuesToDeclare = {@Queue("short_link.add.mapping.queue")}) // 如果没有队列，则自动创建队列
 public class ShortLinkAddMappingMQListener {
 
     @Autowired
