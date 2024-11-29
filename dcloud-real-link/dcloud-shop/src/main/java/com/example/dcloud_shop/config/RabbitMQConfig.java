@@ -23,7 +23,7 @@ public class RabbitMQConfig {
     /**
      * 过期时间，60秒，单位：毫秒
      */
-    private Integer ttl = 1000 * 3;
+    private Integer ttl = 1000 * 60;
 
     /**
      * --------------交换机----------------
@@ -92,5 +92,4 @@ public class RabbitMQConfig {
     public MessageConverter messageConverter() {
         return new Jackson2JsonMessageConverter();
     }
-
 }

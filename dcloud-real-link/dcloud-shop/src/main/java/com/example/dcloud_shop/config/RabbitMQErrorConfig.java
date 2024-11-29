@@ -21,43 +21,26 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @Slf4j
 public class RabbitMQErrorConfig {
-    /**
-     * 交换机名称
-     */
+
     private String orderErrorExchange = "order.error.exchange";
 
-    /**
-     * 队列名称
-     */
     private String orderErrorQueue = "order.error.queue";
 
-    /**
-     * 路由键
-     */
     private String orderErrorRoutingKey = "order.error.routing.key";
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    /**
-     * 异常交换机
-     */
     @Bean
     public TopicExchange errorTopicExchange() {
         return new TopicExchange(orderErrorExchange, true, false);
     }
 
-    /**
-     * 创建异常队列
-     */
     @Bean
     public Queue errorQueue() {
         return new Queue(orderErrorQueue, true);
     }
 
-    /**
-     * 队列与交换机进行绑定
-     */
     @Bean
     public Binding bindingErrorQueueAndExchange(){
         return BindingBuilder

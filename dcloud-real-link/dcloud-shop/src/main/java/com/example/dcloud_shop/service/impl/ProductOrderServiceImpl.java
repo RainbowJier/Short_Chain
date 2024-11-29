@@ -80,7 +80,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
      * a. 如果有优惠券或者其他折扣
      * b. 验证前端显示的价格和后台计算的价格是否相同
      * 4. 发送订单对象，保存数据库
-     * 5. todo:发送延迟消息，订单超时，自动关闭订单（重点）
+     * 5. 发送延迟消息，订单超时，自动关闭订单（重点）
      * 6. todo:创建支付信息，对接第三方支付（重点）
      * 7. todo:回调，更新订单支付状态（重点）
      * 8. todo:支付成功，创建流量包（重点）
@@ -219,6 +219,8 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 
         }
 
+        String payResult = "";  // 支付状态
+
         // 还未支付，查询第三方支付接口再次校验支付状态
         if(state.equalsIgnoreCase(ProductOrderStateEnum.NEW.name())){
             PayInfoVo payInfoVo = new PayInfoVo()
@@ -227,7 +229,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
                     .setAccountNo(accountNo);
 
             // todo:查询第三方支付接口，校验支付状态
-            String payResult = "";
+            payResult = "SUCCESS";
 
 
             if(StringUtils.isBlank(payResult)){
@@ -239,11 +241,25 @@ public class ProductOrderServiceImpl implements ProductOrderService {
                 log.warn("订单已支付，但是微信回调通知失败，需要排查: {}",eventMessage);
                 // 支付成功，订单支付成功
                 productOrderManager.updateOrderPayState(outTradeNo,accountNo,ProductOrderStateEnum.PAY.name(),ProductOrderStateEnum.NEW.name());
-
-                // todo:触发支付成功后的逻辑
             }
-
         }
+
+        // 支付成功
+
+        // todo:触发支付成功后的逻辑
+
+
+
+
+        return true;
+    }
+
+
+    /**
+     * 查询第三方支付接口，校验支付状态
+     */
+    private boolean checkPayResult(PayInfoVo payInfoVo){
+
 
         return true;
     }

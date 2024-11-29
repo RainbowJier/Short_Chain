@@ -14,8 +14,6 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-
 /**
  * @Author: RainbowJier
  * @Description: 👺🐉😎C 端队列监听器（消费者）
