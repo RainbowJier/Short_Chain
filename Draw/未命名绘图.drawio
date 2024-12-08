@@ -1973,7 +1973,7 @@
         <mxCell id="ZAm1KZqq0n68Q5Ix5wok-84" value="N" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="ZAm1KZqq0n68Q5Ix5wok-78" target="ZAm1KZqq0n68Q5Ix5wok-83">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="ZAm1KZqq0n68Q5Ix5wok-78" value="&lt;span style=&quot;font-size: 11px; text-wrap-mode: nowrap; background-color: rgb(255, 255, 255);&quot;&gt;&lt;b&gt;保存到Redis&lt;br&gt;过期时间 = 5s&lt;/b&gt;&lt;/span&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;" vertex="1" parent="1">
+        <mxCell id="ZAm1KZqq0n68Q5Ix5wok-78" value="&lt;span style=&quot;font-size: 11px; text-wrap-mode: nowrap; background-color: rgb(255, 255, 255);&quot;&gt;&lt;span&gt;保存到Redis&lt;br&gt;过期时间 = 5s&lt;/span&gt;&lt;/span&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontStyle=0" vertex="1" parent="1">
           <mxGeometry x="7860" y="-1610" width="120" height="80" as="geometry" />
         </mxCell>
         <mxCell id="ZAm1KZqq0n68Q5Ix5wok-85" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="ZAm1KZqq0n68Q5Ix5wok-80" target="ZAm1KZqq0n68Q5Ix5wok-81">
@@ -1990,6 +1990,70 @@
         </mxCell>
         <mxCell id="ZAm1KZqq0n68Q5Ix5wok-83" value="重复提交" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
           <mxGeometry x="8050" y="-1590" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZAm1KZqq0n68Q5Ix5wok-102" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="ZAm1KZqq0n68Q5Ix5wok-99" target="ZAm1KZqq0n68Q5Ix5wok-101">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ZAm1KZqq0n68Q5Ix5wok-99" value="订单页面" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="7550" y="-1430" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZAm1KZqq0n68Q5Ix5wok-107" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="ZAm1KZqq0n68Q5Ix5wok-101" target="ZAm1KZqq0n68Q5Ix5wok-105">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ZAm1KZqq0n68Q5Ix5wok-101" value="根据（&lt;span style=&quot;background-color: initial;&quot;&gt;order:submit:[account_no]:[32 位随机数]&lt;/span&gt;）&lt;br&gt;生成token" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="7692" y="-1430" width="298" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZAm1KZqq0n68Q5Ix5wok-117" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="ZAm1KZqq0n68Q5Ix5wok-105" target="ZAm1KZqq0n68Q5Ix5wok-116">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ZAm1KZqq0n68Q5Ix5wok-105" value="保存到 Redis" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="8020" y="-1430" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZAm1KZqq0n68Q5Ix5wok-111" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="ZAm1KZqq0n68Q5Ix5wok-108" target="ZAm1KZqq0n68Q5Ix5wok-109">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ZAm1KZqq0n68Q5Ix5wok-113" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="ZAm1KZqq0n68Q5Ix5wok-108" target="ZAm1KZqq0n68Q5Ix5wok-99">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ZAm1KZqq0n68Q5Ix5wok-108" value="用户" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="7435" y="-1380" width="55" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZAm1KZqq0n68Q5Ix5wok-119" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="ZAm1KZqq0n68Q5Ix5wok-109" target="ZAm1KZqq0n68Q5Ix5wok-115">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ZAm1KZqq0n68Q5Ix5wok-109" value="提交订单" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="7550" y="-1340" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZAm1KZqq0n68Q5Ix5wok-123" value="Y" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="ZAm1KZqq0n68Q5Ix5wok-115" target="ZAm1KZqq0n68Q5Ix5wok-121">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ZAm1KZqq0n68Q5Ix5wok-124" value="N" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="ZAm1KZqq0n68Q5Ix5wok-115" target="ZAm1KZqq0n68Q5Ix5wok-122">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="7750" y="-1249" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ZAm1KZqq0n68Q5Ix5wok-115" value="删除request-token" style="rhombus;whiteSpace=wrap;html=1;fillColor=none;strokeColor=default;fontStyle=0" vertex="1" parent="1">
+          <mxGeometry x="7692" y="-1360" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ZAm1KZqq0n68Q5Ix5wok-116" value="响应用户request-tioken = key" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="8160" y="-1430" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZAm1KZqq0n68Q5Ix5wok-126" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="ZAm1KZqq0n68Q5Ix5wok-121" target="ZAm1KZqq0n68Q5Ix5wok-125">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ZAm1KZqq0n68Q5Ix5wok-121" value="保存订单到数据库" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="7870" y="-1340" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZAm1KZqq0n68Q5Ix5wok-127" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="ZAm1KZqq0n68Q5Ix5wok-122" target="ZAm1KZqq0n68Q5Ix5wok-125">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ZAm1KZqq0n68Q5Ix5wok-122" value="重复提交" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="7870" y="-1269.12" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ZAm1KZqq0n68Q5Ix5wok-125" value="结束" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="8090" y="-1340" width="80" height="40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
