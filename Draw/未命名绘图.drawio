@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" version="25.0.3">
   <diagram id="BT_9d3tybcS5t6vmlCDs" name="第 1 页">
-    <mxGraphModel dx="1313" dy="3034" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1615" dy="3195" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -1759,7 +1759,12 @@
           <mxGeometry x="8560" y="-1500.9" width="120" height="80" as="geometry" />
         </mxCell>
         <mxCell id="ZAm1KZqq0n68Q5Ix5wok-5" value="3.创建订单" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontStyle=1;strokeColor=default;" parent="1" source="ZAm1KZqq0n68Q5Ix5wok-7" target="ZAm1KZqq0n68Q5Ix5wok-8" edge="1">
-          <mxGeometry relative="1" as="geometry" />
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="9100" y="-1480" />
+              <mxPoint x="9100" y="-1480" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="ZAm1KZqq0n68Q5Ix5wok-6" value="&lt;b&gt;4.订单消息延迟消费（比支付有效时间长）&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=default;" parent="1" source="ZAm1KZqq0n68Q5Ix5wok-7" target="ZAm1KZqq0n68Q5Ix5wok-10" edge="1">
           <mxGeometry x="-0.0167" y="-60" relative="1" as="geometry">
@@ -2031,7 +2036,7 @@
         <mxCell id="EMSnG2hzjjKduYDKPV_--45" value="账号服务" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D5E8D4;fontStyle=1;strokeColor=default;" vertex="1" parent="1">
           <mxGeometry x="8840" y="-1290" width="100" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="EMSnG2hzjjKduYDKPV_--50" value="11.更新订单状态" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=1;entryDx=0;entryDy=-15;entryPerimeter=0;fontStyle=1;strokeColor=#FF0000;" edge="1" parent="1" source="ZAm1KZqq0n68Q5Ix5wok-7" target="ZAm1KZqq0n68Q5Ix5wok-8">
+        <mxCell id="EMSnG2hzjjKduYDKPV_--50" value="11.规定时间内支付&lt;br&gt;更新订单状态" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=1;entryDx=0;entryDy=-15;entryPerimeter=0;fontStyle=1;strokeColor=#FF0000;" edge="1" parent="1" source="ZAm1KZqq0n68Q5Ix5wok-7" target="ZAm1KZqq0n68Q5Ix5wok-8">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="9030" y="-1435" />
