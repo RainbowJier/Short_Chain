@@ -37,4 +37,8 @@ public enum EventMessageType {
      * 新建商品订单
      */
     PRODUCT_ORDER_NEW,
+    /**
+     * 订单支付
+     */
+    ORDER_PAY,
 }

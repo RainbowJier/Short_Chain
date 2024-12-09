@@ -1,10 +1,9 @@
 package com.example.dcloud_shop.service;
 
 import com.example.dcloud_common.entity.EventMessage;
+import com.example.dcloud_common.enums.ProductOrderPayTypeEnum;
 import com.example.dcloud_common.util.JsonData;
 import com.example.dcloud_shop.controller.request.ConfirmOrderRequest;
-import com.example.dcloud_shop.entity.ProductOrder;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.Map;
 

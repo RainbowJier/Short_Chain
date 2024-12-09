@@ -21,9 +21,9 @@ import java.util.Map;
 @Data
 public class RabbitMQConfig {
     /**
-     * 过期时间，60秒，单位：毫秒
+     * 过期时间10分钟，60秒，单位：毫秒
      */
-    private Integer ttl = 1000 * 60;
+    private Integer ttl = 1000 * 60 * 10;
 
     /**
      * --------------交换机----------------
@@ -48,9 +48,8 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Binding orderCloseBinding(){
-        return BindingBuilder
-                .bind(orderCloseQueue())
+    public Binding orderCloseBinding() {
+        return BindingBuilder.bind(orderCloseQueue())
                 .to(orderEventExchange())
                 .with(orderCloseRoutingKey);
     }
@@ -73,14 +72,13 @@ public class RabbitMQConfig {
         arguments.put("x-dead-letter-routing-key", orderCloseRoutingKey); // 死信路由键
         arguments.put("x-message-ttl", ttl);    // 过期时间
 
-        return new Queue(orderCloseDelayQueue, true, false, false,arguments);
+        return new Queue(orderCloseDelayQueue, true, false, false, arguments);
     }
 
     // 交换机绑定队列
     @Bean
-    public Binding orderCloseDelayBinding(){
-        return BindingBuilder
-                .bind(orderCloseDelayQueue())
+    public Binding orderCloseDelayBinding() {
+        return BindingBuilder.bind(orderCloseDelayQueue())
                 .to(orderEventExchange())
                 .with(orderCloseDelayRoutingKey);
     }
@@ -92,4 +90,50 @@ public class RabbitMQConfig {
     public MessageConverter messageConverter() {
         return new Jackson2JsonMessageConverter();
     }
+
+
+    //=============订单支付成功配置===================
+    /**
+     * 支付成功后routing key
+     */
+    private String orderUpdateTrafficRoutingKey = "order.update.traffic.routing.key";
+
+    /**
+     * 更新订单 队列
+     */
+    private String orderUpdateQueue = "order.update.queue";
+
+    private String orderUpdateBindingKey = "order.update.*.routing.key";
+
+    @Bean
+    public Queue orderUpdateQueue() {
+        return new Queue(orderUpdateQueue, true, false, false);
+    }
+
+    @Bean
+    public Binding orderUpdateBinding() {
+        return BindingBuilder.bind(orderUpdateQueue())
+                .to(orderEventExchange())
+                .with(orderUpdateBindingKey);
+    }
+
+    /**
+     * 订单发放流量包 队列
+     */
+    private String orderTrafficQueue = "order.traffic.queue";
+
+    private String orderTrafficBindingKey = "order.*.traffic.routing.key";
+
+    @Bean
+    public Queue orderTrafficQueue() {
+        return new Queue(orderTrafficQueue, true, false, false);
+    }
+
+    @Bean
+    public Binding orderTrafficBinding() {
+        return BindingBuilder.bind(orderTrafficQueue())
+                .to(orderEventExchange())
+                .with(orderTrafficBindingKey);
+    }
+
 }
