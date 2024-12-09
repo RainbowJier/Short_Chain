@@ -6,7 +6,6 @@ package com.example.dcloud_common.enums;
  *@Data： 2024/11/25 21:15
  */
 public enum ProductOrderPayTypeEnum {
-
     WECHAT_PAY,
 
     ALI_PAY,

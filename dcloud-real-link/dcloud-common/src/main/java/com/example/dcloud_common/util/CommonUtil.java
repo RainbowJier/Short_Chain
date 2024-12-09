@@ -156,21 +156,25 @@ public class CommonUtil {
             response.flushBuffer();
         } catch (IOException e) {
             log.warn("json 格式数据响应前端异常: {}", e.getMessage());
+        }finally{
+            response.getWriter().close();
         }
     }
 
     /**
      * Response html data to fronted.
      */
-    //public static void sendHtmlMessage(HttpServletResponse response, JsonData jsonData) throws IOException {
-    //    response.setContentType("text/html;charset=utf-8");
-    //    try (PrintWriter writer = response.getWriter()) {
-    //        writer.write(jsonData.getData().toString());
-    //        writer.flush();
-    //    } catch (Exception e) {
-    //        log.warn("Respond json data to the fronted exception: {}", e.getMessage());
-    //    }
-    //}
+    public static void sendHtmlMessage(HttpServletResponse response, JsonData jsonData) throws IOException {
+        response.setContentType("text/html;charset=utf-8");
+        try (PrintWriter writer = response.getWriter()) {
+            writer.write(jsonData.getData().toString());
+            writer.flush();
+        } catch (Exception e) {
+            log.warn("Respond json data to the fronted exception: {}", e.getMessage());
+        }finally{
+            response.getWriter().close();
+        }
+    }
 
     /**
      * murmur hash算法

@@ -49,7 +49,8 @@ public class RepeatSubmitAspect {
      * 方式二：execution，当执行指定的方法时，生效
      */
     @Pointcut("@annotation(noRepeatSubmit)")
-    public void pointCutNoRepeatSubmit(RepeatSubmit noRepeatSubmit) {}
+    public void pointCutNoRepeatSubmit(RepeatSubmit noRepeatSubmit) {
+    }
 
     /**
      * 执行的操作
@@ -74,7 +75,6 @@ public class RepeatSubmitAspect {
         // 方法参数
         if (type.equals(RepeatSubmit.Type.PARAM.name())) {
             long lockTime = noRepeatSubmit.lockTime();  // 加锁时间
-
             String ipAddr = CommonUtil.getIpAddr(request);   // ip地址
 
             // 方法名
@@ -86,7 +86,7 @@ public class RepeatSubmitAspect {
             String key = String.format("%s-%s-%s-%s", ipAddr, className, method, accountNo);
 
             // redis实现分布式锁，不存在就设置key，返回true，存在就不设置，返回false
-            flag  = redisTemplate.opsForValue().setIfAbsent(key, "1", lockTime, TimeUnit.SECONDS);
+            flag = redisTemplate.opsForValue().setIfAbsent(key, "1", lockTime, TimeUnit.SECONDS);
         }
         // token 令牌
         else {
@@ -106,7 +106,6 @@ public class RepeatSubmitAspect {
         if (!flag) {
             throw new BizException(BizCodeEnum.ORDER_CONFIRM_REPEAT);
         }
-
 
         System.out.println("⽬标⽅法执⾏前");
         Object object = joinPoint.proceed();

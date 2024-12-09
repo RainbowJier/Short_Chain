@@ -63,6 +63,7 @@ public class ProductOrderController {
 
     /**
      * 查询订单状态
+     * 前端轮询查询状态
      */
     @GetMapping("/query_state")
     public JsonData queryState(@RequestParam(value = "out_trade_no") String outTradeNo) {
@@ -93,15 +94,12 @@ public class ProductOrderController {
                     CommonUtil.sendHtmlMessage(response, jsonData);
                 } else if (clientType.equalsIgnoreCase(ClientTypeEnum.PC.name())) {
                     // todo: 跳转到支付宝支付页面
-
                 } else if (clientType.equalsIgnoreCase(ClientTypeEnum.H5.name())) {
                     // todo: 跳转到支付宝支付页面
                 }
             }
             // 微信支付，返回json
             if (payType.equalsIgnoreCase(ProductOrderPayTypeEnum.WECHAT_PAY.name())) {
-                // todo:
-
                 CommonUtil.sendJsonMessage(response, jsonData);
             }
 

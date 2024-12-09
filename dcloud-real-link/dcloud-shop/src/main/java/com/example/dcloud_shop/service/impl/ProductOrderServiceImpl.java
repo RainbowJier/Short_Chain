@@ -13,6 +13,7 @@ import com.example.dcloud_common.util.JsonData;
 import com.example.dcloud_common.util.JsonUtil;
 import com.example.dcloud_shop.Manager.ProductManager;
 import com.example.dcloud_shop.Manager.ProductOrderManager;
+import com.example.dcloud_shop.component.PayFactory;
 import com.example.dcloud_shop.config.RabbitMQConfig;
 import com.example.dcloud_shop.controller.request.ConfirmOrderRequest;
 import com.example.dcloud_shop.entity.Product;
@@ -28,6 +29,7 @@ import javax.annotation.Resource;
 import java.awt.*;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -50,6 +52,9 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 
     @Resource
     private RabbitMQConfig rabbitMQConfig;
+
+    @Resource
+    private PayFactory payFactory;
 
     /**
      * 分页查询
@@ -125,14 +130,16 @@ public class ProductOrderServiceImpl implements ProductOrderService {
                 rabbitMQConfig.getOrderCloseDelayRoutingKey(),
                 eventMessage);
 
-        // todo:更新支付状态
+        // 调用支付信息
+        String codeUrl = payFactory.pay(payInfoVo);   // 返回的是二维码，这里默认创建成功
+        if(StringUtils.isNotBlank(codeUrl)){
+            Map<String,String> resultMap = new HashMap<>(2);
+            resultMap.put("code_url",codeUrl);   // 二维码
+            resultMap.put("out_trade_no",payInfoVo.getOutTradeNo());
+            return JsonData.buildSuccess(resultMap);
+        }
 
-
-
-        // todo:支付成功，创建流量包
-
-
-        return JsonData.buildSuccess();
+        return JsonData.buildResult(BizCodeEnum.PAY_ORDER_FAIL);
     }
 
     /**
@@ -216,7 +223,6 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         // 已经支付
         if(state.equalsIgnoreCase(ProductOrderStateEnum.PAY.name())){
             log.info("订单已经支付，订单号: {}",eventMessage);
-
         }
 
         String payResult = "";  // 支付状态
@@ -228,28 +234,21 @@ public class ProductOrderServiceImpl implements ProductOrderService {
                     .setOutTradeNo(outTradeNo)
                     .setAccountNo(accountNo);
 
-            // todo:查询第三方支付接口，校验支付状态
+            // 查询第三方支付接口，校验支付状态，默认成功
             payResult = "SUCCESS";
-
 
             if(StringUtils.isBlank(payResult)){
                 // 支付失败，订单关闭
                 productOrderManager.updateOrderPayState(outTradeNo,accountNo,ProductOrderStateEnum.CONCEL.name(),ProductOrderStateEnum.NEW.name());
                 log.info("订单未支付，取消订单: {}",eventMessage);
             }else{
-                payResult = "SUCCESS";
                 log.warn("订单已支付，但是微信回调通知失败，需要排查: {}",eventMessage);
                 // 支付成功，订单支付成功
                 productOrderManager.updateOrderPayState(outTradeNo,accountNo,ProductOrderStateEnum.PAY.name(),ProductOrderStateEnum.NEW.name());
             }
         }
 
-        // 支付成功
-
-        // todo:触发支付成功后的逻辑
-
-
-
+        // todo:触发支付成功后的逻辑，创建流量包等
 
         return true;
     }

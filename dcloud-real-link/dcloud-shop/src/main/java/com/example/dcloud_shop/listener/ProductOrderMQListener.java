@@ -35,7 +35,7 @@ public class ProductOrderMQListener {
             eventMessage.setEventMessageType(EventMessageType.PRODUCT_ORDER_NEW.name());
 
             // 修改订单状态信息
-            productOrderService.closeProductOrder(eventMessage);
+            boolean b = productOrderService.closeProductOrder(eventMessage);
 
         } catch (Exception e) {
             log.error("消费异常：{}", e.getMessage());
