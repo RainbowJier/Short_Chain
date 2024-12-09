@@ -86,8 +86,8 @@ public class ProductOrderServiceImpl implements ProductOrderService {
      * b. 验证前端显示的价格和后台计算的价格是否相同
      * 4. 发送订单对象，保存数据库
      * 5. 发送延迟消息，订单超时，自动关闭订单（重点）
-     * 6. todo:创建支付信息，对接第三方支付（重点）
-     * 7. todo:回调，更新订单支付状态（重点）
+     * 6. 创建支付信息，对接第三方支付（重点）
+     * 7. 回调，更新订单支付状态（重点）
      * 8. todo:支付成功，创建流量包（重点）
      */
     @Override
@@ -201,7 +201,6 @@ public class ProductOrderServiceImpl implements ProductOrderService {
             throw new BizException(BizCodeEnum.ORDER_CONFIRM_PRICE_FAIL);
         }
     }
-
 
     /**
      * 关闭订单

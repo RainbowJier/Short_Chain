@@ -30,5 +30,4 @@ public interface PayStrategy {
      * 关闭订单
      */
     String closeOrder(PayInfoVo payInfoVo);
-
 }

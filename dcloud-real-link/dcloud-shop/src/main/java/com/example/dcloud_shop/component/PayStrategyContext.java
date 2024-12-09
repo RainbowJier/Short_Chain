@@ -44,6 +44,4 @@ public class PayStrategyContext {
     public String executeQueryPayStatus(PayInfoVo payInfoVo) {
         return payStrategy.queryPayStatus(payInfoVo);
     }
-
-
 }

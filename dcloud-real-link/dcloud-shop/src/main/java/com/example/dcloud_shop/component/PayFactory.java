@@ -83,7 +83,6 @@ public class PayFactory {
         return "";
     }
 
-
     /**
      * 退款接口
      */
@@ -104,8 +103,4 @@ public class PayFactory {
 
         return "";
     }
-
-
-
-
 }
