@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" version="25.0.3">
   <diagram id="BT_9d3tybcS5t6vmlCDs" name="第 1 页">
-    <mxGraphModel dx="1235" dy="2993" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="875" dy="2802" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -1964,6 +1964,59 @@
         </mxCell>
         <mxCell id="ZAm1KZqq0n68Q5Ix5wok-125" value="结束" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="8090" y="-1340" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="EMSnG2hzjjKduYDKPV_--3" value="AliStrategy" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="-1320" width="160" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="EMSnG2hzjjKduYDKPV_--4" value="+pay()&lt;div&gt;+closeOrder()&lt;/div&gt;&lt;div&gt;+queryPayStatus()&lt;br&gt;+refund()&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" vertex="1" parent="EMSnG2hzjjKduYDKPV_--3">
+          <mxGeometry y="50" width="160" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="EMSnG2hzjjKduYDKPV_--5" value="WechatStrategy" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1480" y="-1320" width="160" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="EMSnG2hzjjKduYDKPV_--6" value="+pay()&lt;div&gt;+closeOrder()&lt;/div&gt;&lt;div&gt;+queryPayStatus()&lt;br&gt;+refund()&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" vertex="1" parent="EMSnG2hzjjKduYDKPV_--5">
+          <mxGeometry y="50" width="160" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="EMSnG2hzjjKduYDKPV_--7" value="&amp;lt;&amp;lt;Interface&amp;gt;&amp;gt;&lt;div&gt;&lt;b&gt;PayStrategy&lt;/b&gt;&lt;/div&gt;" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1320" y="-1490" width="160" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="EMSnG2hzjjKduYDKPV_--8" value="+pay()&lt;div&gt;+closeOrder()&lt;/div&gt;&lt;div&gt;+queryPayStatus()&lt;br&gt;+refund()&lt;/div&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;" vertex="1" parent="EMSnG2hzjjKduYDKPV_--7">
+          <mxGeometry y="50" width="160" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="EMSnG2hzjjKduYDKPV_--12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="EMSnG2hzjjKduYDKPV_--8" target="EMSnG2hzjjKduYDKPV_--3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="EMSnG2hzjjKduYDKPV_--13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="EMSnG2hzjjKduYDKPV_--8" target="EMSnG2hzjjKduYDKPV_--5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="EMSnG2hzjjKduYDKPV_--35" value="根据不同策略，执行操作" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="EMSnG2hzjjKduYDKPV_--19" target="EMSnG2hzjjKduYDKPV_--7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="EMSnG2hzjjKduYDKPV_--19" value="&lt;span style=&quot;font-size: 14px;&quot;&gt;PayStrategyContext&lt;/span&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1305" y="-1680" width="210" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="EMSnG2hzjjKduYDKPV_--20" value="+ field: PayStrategy" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="EMSnG2hzjjKduYDKPV_--19">
+          <mxGeometry y="26" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="EMSnG2hzjjKduYDKPV_--21" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="EMSnG2hzjjKduYDKPV_--19">
+          <mxGeometry y="52" width="210" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="EMSnG2hzjjKduYDKPV_--22" value="+ executeUnifirdORder(): String&lt;div&gt;+ executeCloseOrder(): String&lt;/div&gt;&lt;div&gt;+ executeQueryPayStatus(): String&lt;/div&gt;&lt;div&gt;+ executeRefund(): String&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="EMSnG2hzjjKduYDKPV_--19">
+          <mxGeometry y="60" width="210" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="EMSnG2hzjjKduYDKPV_--38" value="&lt;span style=&quot;font-size: 14px;&quot;&gt;PayStrategyContext&lt;/span&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="960" y="-1700" width="210" height="96" as="geometry" />
+        </mxCell>
+        <mxCell id="EMSnG2hzjjKduYDKPV_--41" value="&lt;span style=&quot;text-wrap-mode: nowrap;&quot;&gt;+pay()&lt;/span&gt;&lt;div style=&quot;text-wrap-mode: nowrap;&quot;&gt;+closeOrder()&lt;/div&gt;&lt;div style=&quot;text-wrap-mode: nowrap;&quot;&gt;+queryPayStatus()&lt;br&gt;+refund()&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="EMSnG2hzjjKduYDKPV_--38">
+          <mxGeometry y="26" width="210" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="EMSnG2hzjjKduYDKPV_--43" value="创建不同策略类型" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="EMSnG2hzjjKduYDKPV_--41" target="EMSnG2hzjjKduYDKPV_--20">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1210" y="-1641" />
+              <mxPoint x="1210" y="-1641" />
+            </Array>
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
