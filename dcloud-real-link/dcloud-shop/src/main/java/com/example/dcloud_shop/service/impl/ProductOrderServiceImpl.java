@@ -219,7 +219,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     }
 
     /**
-     * 微信支付成功回调
+     * 支付成功回调
      */
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public boolean processOrderCallbackMsg(ProductOrderPayTypeEnum payType, Map<String, Object> paramsMap) {
@@ -263,7 +263,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         }
         // 支付宝
         else if (payType.name().equalsIgnoreCase(ProductOrderPayTypeEnum.ALI_PAY.name())) {
-            // todo:支付宝支付回调逻辑
+            // 支付宝支付回调逻辑
             return true;
         }
 
@@ -291,7 +291,6 @@ public class ProductOrderServiceImpl implements ProductOrderService {
                 // 更新支付状态（关闭订单）
                 int rows = productOrderManager.updateOrderPayState(outTradeNo, accountNo, ProductOrderStateEnum.PAY.name(), ProductOrderStateEnum.NEW.name());
                 log.info("订单支付成功，rows: {}, everMessage: {}",rows, eventMessage);
-
             }
         }catch (Exception e){
             log.error("订单消费者失败, 错误信息: {}", e.getMessage());
