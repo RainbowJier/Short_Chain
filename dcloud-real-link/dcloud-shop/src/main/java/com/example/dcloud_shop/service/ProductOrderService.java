@@ -36,4 +36,9 @@ public interface ProductOrderService {
      * 关闭订单
      */
     boolean closeProductOrder(EventMessage eventMessage);
+
+    /**
+     * 支付成功后，更新订单、发放流量包
+     */
+    void handleProductOrderMessage(EventMessage eventMessage);
 }

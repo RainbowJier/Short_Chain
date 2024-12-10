@@ -21,6 +21,6 @@ public enum ProductOrderStateEnum {
     /**
      * 超时取消
      */
-    CONCEL;
+    CANCEL;
 
 }

@@ -21,9 +21,9 @@ import java.util.Map;
 @Data
 public class RabbitMQConfig {
     /**
-     * 过期时间10分钟，60秒，单位：毫秒
+     * 过期时间，60秒，单位：毫秒
      */
-    private Integer ttl = 1000 * 60 * 10;
+    private Integer ttl = 1000 * 60;
 
     /**
      * --------------交换机----------------

@@ -22,7 +22,12 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-@RabbitListener(queuesToDeclare = {@Queue("order.close.queue") }) // 如果没有队列，则自动创建队列
+@RabbitListener(queuesToDeclare = {
+        @Queue("order.close.queue"),
+        @Queue("order.update.queue"),
+        @Queue("order.traffic.queue"),
+}) // 如果没有队列，则自动创建队列
+
 public class ProductOrderMQListener {
     @Autowired
     private ProductOrderService productOrderService;
@@ -32,10 +37,11 @@ public class ProductOrderMQListener {
         log.info("监听到消息 ProductOrderMQListener：message 消息内容：{}",message);
 
         try {
-            eventMessage.setEventMessageType(EventMessageType.PRODUCT_ORDER_NEW.name());
+            // 支付成功后，更新订单状态，关闭订单
+            productOrderService.handleProductOrderMessage(eventMessage);
 
-            // 修改订单状态信息
-            boolean b = productOrderService.closeProductOrder(eventMessage);
+            // 延迟队列，关闭订单
+            //boolean b = productOrderService.closeProductOrder(eventMessage);
 
         } catch (Exception e) {
             log.error("消费异常：{}", e.getMessage());

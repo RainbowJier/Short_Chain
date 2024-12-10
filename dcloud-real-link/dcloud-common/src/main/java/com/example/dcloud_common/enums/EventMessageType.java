@@ -34,11 +34,11 @@ public enum EventMessageType {
 
     // ------------------ dcloud_shop ------------------
     /**
-     * 新建商品订单
+     * 新建商品订单，订单未支付
      */
     PRODUCT_ORDER_NEW,
     /**
-     * 订单支付
+     * 订单已经支付
      */
-    ORDER_PAY,
+    PRODUCT_ORDER_PAY,
 }
