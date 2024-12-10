@@ -40,9 +40,6 @@ public class ProductOrderMQListener {
             // 支付成功后，更新订单状态，关闭订单
             productOrderService.handleProductOrderMessage(eventMessage);
 
-            // 延迟队列，关闭订单
-            //boolean b = productOrderService.closeProductOrder(eventMessage);
-
         } catch (Exception e) {
             log.error("消费异常：{}", e.getMessage());
             throw new BizException(BizCodeEnum.MQ_CONSUME_EXCEPTION);
