@@ -1,94 +1,69 @@
 package com.example.dcloud_account.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import java.time.LocalDate;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
-import java.io.Serializable;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+import java.util.Date;
+
 /**
- * <p>
- * 
- * </p>
+ * (Traffic)实体类
  *
- * @author 
- * @since 2024-10-18
+ * @author RainbowJier
+ * @since 2024-12-11 17:02:51
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@AllArgsConstructor
+@NoArgsConstructor
 @Accessors(chain = true)
 @TableName("traffic")
+@Builder
 public class Traffic implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
-
     /**
-     * Daily limit for short links
+     * 每天限制多少条
      */
-    @TableField("day_limit")
     private Integer dayLimit;
-
     /**
-     * Number of short links used for the day
+     * 当天用了多少条
      */
-    @TableField("day_used")
     private Integer dayUsed;
-
     /**
-     * Total limit, used for live codes
+     * 总次数，活码采用
      */
-    @TableField("total_limit")
     private Integer totalLimit;
-
     /**
-     * Account number
+     * 账号
      */
-    @TableField("account_no")
     private Long accountNo;
-
     /**
-     * Order number
+     * 订单号
      */
-    @TableField("out_trade_no")
     private String outTradeNo;
-
     /**
      * Product level: FIRST(Bronze), SECOND(Gold), THIRD(Diamond)
      */
-    @TableField("level")
     private String level;
-
     /**
-     * Expiration date
+     * 过期日期
      */
-    @TableField("expired_date")
-    private LocalDate expiredDate;
-
+    private Date expiredDate;
     /**
-     * Plugin type
+     * 插件类型
      */
-    @TableField("plugin_type")
     private String pluginType;
-
     /**
-     * Product primary key
+     * 商品主键
      */
-    @TableField("product_id")
     private Long productId;
 
-    @TableField("gmt_create")
-    private LocalDateTime gmtCreate;
+    private Date gmtCreate;
 
-    @TableField("gmt_modified")
-    private LocalDateTime gmtModified;
-
+    private Date gmtModified;
 
 }
+

@@ -1,10 +1,9 @@
-package com.example.dcloud_shop.listener;
+package com.example.dcloud_account.listener;
 
+import com.example.dcloud_account.service.TrafficService;
 import com.example.dcloud_common.entity.EventMessage;
 import com.example.dcloud_common.enums.BizCodeEnum;
-import com.example.dcloud_common.enums.EventMessageType;
 import com.example.dcloud_common.exception.BizException;
-import com.example.dcloud_shop.service.ProductOrderService;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
@@ -22,26 +21,23 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-@RabbitListener(queuesToDeclare = {
-        @Queue("order.close.queue"),    // 订单延迟关闭队列
-        @Queue("order.update.queue"),   // 订单更新队列，关闭订单
-})
-public class ProductOrderMQListener {
+@RabbitListener(queuesToDeclare = { @Queue("order.traffic.queue")})
+public class TrafficMQListener {
     @Autowired
-    private ProductOrderService productOrderService;
+    private TrafficService trafficService;
 
     @RabbitHandler
     public void orderHandler(EventMessage eventMessage, Message message, Channel channel){
-        log.info("监听到消息 ProductOrderMQListener：message 消息内容：{}",message);
+        log.info("【流量包监听器】监听到消息，TrafficMQListener：message 消息内容：{}",message);
 
         try {
             // 支付成功后，更新订单状态，关闭订单
-            productOrderService.handleProductOrderMessage(eventMessage);
+            trafficService.handleTrafficMessage(eventMessage);
 
         } catch (Exception e) {
-            log.error("消费异常：{}", e.getMessage());
+            log.error("【流量包监听器】消费异常：{}", e.getMessage());
             throw new BizException(BizCodeEnum.MQ_CONSUME_EXCEPTION);
         }
-        log.info("消费成功{}", eventMessage);
+        log.info("【流量包监听器】消费成功{}", eventMessage);
     }
 }

@@ -236,7 +236,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         content.put("outTradeNo", outTradeNo);
         content.put("buyNum", productOrder.getBuyNum());
         content.put("accountNo", accountNo);
-        content.put("product", productOrder.getProductSnapshot());
+        content.put("productSnapshot", productOrder.getProductSnapshot());
 
         //构建消息
         EventMessage eventMessage = EventMessage.builder()
@@ -301,7 +301,6 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     /**
      * 关闭订单
      */
-    @Override
     public boolean closeProductOrder(EventMessage eventMessage) {
         String outTradeNo = eventMessage.getBizId();  // 订单号
         Long accountNo = eventMessage.getAccountNo();  // 用户账号

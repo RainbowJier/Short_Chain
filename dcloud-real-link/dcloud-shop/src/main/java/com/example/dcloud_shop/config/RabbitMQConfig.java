@@ -84,7 +84,7 @@ public class RabbitMQConfig {
     }
 
     /**
-     * 消息转换器，将延迟消息 -> 死信交换机 -> 死信队列
+     * 消息转换器，设置消息的序列化方式
      */
     @Bean
     public MessageConverter messageConverter() {
