@@ -301,7 +301,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     /**
      * 关闭订单
      */
-    public boolean closeProductOrder(EventMessage eventMessage) {
+    public void closeProductOrder(EventMessage eventMessage) {
         String outTradeNo = eventMessage.getBizId();  // 订单号
         Long accountNo = eventMessage.getAccountNo();  // 用户账号
 
@@ -311,7 +311,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         // 订单不存在
         if (productOrder == null) {
             log.warn("订单不存在，订单号: {}", outTradeNo);
-            return true;
+            return;
         }
 
         String state = productOrder.getState();
@@ -342,13 +342,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
                 productOrderManager.updateOrderPayState(outTradeNo, accountNo, ProductOrderStateEnum.PAY.name(), ProductOrderStateEnum.NEW.name());
             }
         }
-
-        // todo:触发支付成功后的逻辑，创建流量包等
-
-        return true;
     }
-
-
 
 
 
