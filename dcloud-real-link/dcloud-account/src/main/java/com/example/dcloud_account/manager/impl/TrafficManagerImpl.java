@@ -14,15 +14,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-/**
- * 小滴课堂,愿景：让技术不再难学
- *
- * @Description
- * @Author 二当家小D
- * @Remark 有问题直接联系我，源码-笔记-技术交流群
- * @Version 1.0
- **/
-
 @Component
 @Slf4j
 public class TrafficManagerImpl implements TrafficManager {
@@ -37,16 +28,16 @@ public class TrafficManagerImpl implements TrafficManager {
     }
 
     @Override
-    public IPage<Traffic> pageAvailable(int page, int size, Long accountNo) {
+    public Page<Traffic> pageAvailable(int page, int size, Long accountNo) {
         Page<Traffic> pageInfo = new Page<>(page, size);
         String today = TimeUtil.format(new Date(), "yyyy-MM-dd");
 
-        LambdaQueryWrapper<Traffic> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Traffic::getAccountNo, accountNo)
+        LambdaQueryWrapper<Traffic> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Traffic::getAccountNo, accountNo)
                .ge(Traffic::getExpiredDate, today)
                .orderByDesc(Traffic::getGmtCreate);
 
-        return trafficMapper.selectPage(pageInfo, queryWrapper);
+        return trafficMapper.selectPage(pageInfo, wrapper);
     }
 
     @Override

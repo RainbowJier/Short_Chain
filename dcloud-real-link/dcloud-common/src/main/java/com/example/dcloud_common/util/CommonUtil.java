@@ -156,8 +156,6 @@ public class CommonUtil {
             response.flushBuffer();
         } catch (IOException e) {
             log.warn("json 格式数据响应前端异常: {}", e.getMessage());
-        }finally{
-            response.getWriter().close();
         }
     }
 
@@ -171,8 +169,6 @@ public class CommonUtil {
             writer.flush();
         } catch (Exception e) {
             log.warn("Respond json data to the fronted exception: {}", e.getMessage());
-        }finally{
-            response.getWriter().close();
         }
     }
 

@@ -1,6 +1,7 @@
 package com.example.dcloud_account.manager;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.dcloud_account.entity.Traffic;
 
 /**
@@ -20,7 +21,7 @@ public interface TrafficManager {
     /**
      * 分页查询可用的流量包
      */
-    IPage<Traffic> pageAvailable(int page, int size, Long accountNo);
+    Page<Traffic> pageAvailable(int page, int size, Long accountNo);
 
     /**
      * 查找详情

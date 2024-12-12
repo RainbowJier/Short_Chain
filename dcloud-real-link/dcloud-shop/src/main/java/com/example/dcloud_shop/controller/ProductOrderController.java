@@ -84,29 +84,29 @@ public class ProductOrderController {
         JsonData jsonData = productOrderService.confirmOrder(confirmOrderRequest);
 
         // 跳转支付页面
-        if (jsonData.getCode() == 0) {
-            String clientType = confirmOrderRequest.getClientType();  // 客户端类型
-            String payType = confirmOrderRequest.getPayType();    // 支付方式
-
-            // 支付宝支付，跳转网页
-            if (payType.equalsIgnoreCase(ProductOrderPayTypeEnum.ALI_PAY.name())) {
-                if (clientType.equalsIgnoreCase(ClientTypeEnum.APP.name())) {
-                    CommonUtil.sendHtmlMessage(response, jsonData);
-                } else if (clientType.equalsIgnoreCase(ClientTypeEnum.PC.name())) {
-                    // todo: 跳转到支付宝支付页面
-                } else if (clientType.equalsIgnoreCase(ClientTypeEnum.H5.name())) {
-                    // todo: 跳转到支付宝支付页面
-                }
-            }
-            // 微信支付，返回json
-            if (payType.equalsIgnoreCase(ProductOrderPayTypeEnum.WECHAT_PAY.name())) {
-                CommonUtil.sendJsonMessage(response, jsonData);
-            }
-
-        } else {
-            log.error("创建确认失败：{}", jsonData);
-            CommonUtil.sendJsonMessage(response, jsonData);
-        }
+        //if (jsonData.getCode() == 0) {
+        //    String clientType = confirmOrderRequest.getClientType();  // 客户端类型
+        //    String payType = confirmOrderRequest.getPayType();    // 支付方式
+        //
+        //    // 支付宝支付，跳转网页
+        //    if (payType.equalsIgnoreCase(ProductOrderPayTypeEnum.ALI_PAY.name())) {
+        //        if (clientType.equalsIgnoreCase(ClientTypeEnum.APP.name())) {
+        //            CommonUtil.sendHtmlMessage(response, jsonData);
+        //        } else if (clientType.equalsIgnoreCase(ClientTypeEnum.PC.name())) {
+        //            // todo: 跳转到支付宝支付页面
+        //        } else if (clientType.equalsIgnoreCase(ClientTypeEnum.H5.name())) {
+        //            // todo: 跳转到支付宝支付页面
+        //        }
+        //    }
+        //    // 微信支付，返回json
+        //    if (payType.equalsIgnoreCase(ProductOrderPayTypeEnum.WECHAT_PAY.name())) {
+        //        CommonUtil.sendJsonMessage(response, jsonData);
+        //    }
+        //
+        //} else {
+        //    log.error("创建确认失败：{}", jsonData);
+        //    CommonUtil.sendJsonMessage(response, jsonData);
+        //}
 
         return JsonData.buildSuccess();
     }
