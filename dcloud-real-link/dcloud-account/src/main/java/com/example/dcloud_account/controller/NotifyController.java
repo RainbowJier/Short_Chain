@@ -88,7 +88,6 @@ public class NotifyController {
      */
     @PostMapping("/send_code")
     public JsonData notify(@RequestBody SendCodeRequest sendCodeRequest, HttpServletRequest request) {
-
         // Get captcha text from Redis.
         String key = getCaptchaKey(request);
         String captchaCache = redisTemplate.opsForValue().get(key);

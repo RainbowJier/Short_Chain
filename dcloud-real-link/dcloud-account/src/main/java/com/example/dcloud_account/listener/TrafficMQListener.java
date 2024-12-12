@@ -31,16 +31,16 @@ public class TrafficMQListener {
 
     @RabbitHandler
     public void orderHandler(EventMessage eventMessage, Message message, Channel channel){
-        log.info("【流量包监听器】监听到消息，TrafficMQListener：message 消息内容：{}",message);
+        log.info("【发放流量包监听器】监听到消息，TrafficMQListener：message 消息内容：{}",message);
 
         try {
-            // 支付成功后，更新订单状态，关闭订单
+            // 发放流量包
             trafficService.handleTrafficMessage(eventMessage);
 
         } catch (Exception e) {
-            log.error("【流量包监听器】消费异常：{}", e.getMessage());
+            log.error("【发放流量包监听器】消费异常：{}", e.getMessage());
             throw new BizException(BizCodeEnum.MQ_CONSUME_EXCEPTION);
         }
-        log.info("【流量包监听器】消费成功{}", eventMessage);
+        log.info("【发放流量包监听器】消费成功{}", eventMessage);
     }
 }

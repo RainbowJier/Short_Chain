@@ -25,11 +25,11 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class RabbitMQErrorConfig {
 
-    private String trafficErrorExchange = "trffic.error.exchange";
+    private String trafficErrorExchange = "traffic.error.exchange";
 
-    private String trafficErrorQueue = "trffic.error.queue";
+    private String trafficErrorQueue = "traffic.error.queue";
 
-    private String trafficErrorRoutingKey = "trffic.error.routing.key";
+    private String trafficErrorRoutingKey = "traffic.error.routing.key";
 
     @Autowired
     private RabbitTemplate rabbitTemplate;

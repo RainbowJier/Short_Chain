@@ -62,7 +62,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
      * 用户注册
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public JsonData register(AccountRegisterRequest accountRegisterRequest) {
         boolean checkCode;
         String phone = accountRegisterRequest.getPhone();
@@ -94,12 +94,20 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
         account.setPwd(encryptedPassword);
 
         // 新增用户
-        int insertRow = accountManager.insert(account);
-        log.info("rows:{}，注册成功：{}", insertRow, account);
+        try{
+            int insertRow = accountManager.insert(account);
+            if(insertRow < 1){
+                return JsonData.buildResult(BizCodeEnum.PHONE_REPEAT);
+            }
+            log.info("rows:{}，注册成功：{}", insertRow, account);
 
-        // 用户注册成功，新用户发放免费流量包
-        userRegisterInitTask(account);
-        return JsonData.buildSuccess();
+            // 用户注册成功，新用户发放免费流量包
+            userRegisterInitTask(account);
+            return JsonData.buildSuccess();
+        }catch (Exception e){
+            throw new RuntimeException(BizCodeEnum.PHONE_REPEAT.getMessage());
+        }
+
     }
 
     /**

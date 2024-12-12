@@ -85,8 +85,8 @@ public class TrafficServiceImpl implements TrafficService {
             long productId = Long.parseLong(eventMessage.getBizId());
             JsonData jsonData = productFeignService.detail(productId);
 
-            //ProductVo productVo = jsonData.getData(new TypeReference<ProductVo>(){});
-            ProductVo productVo = (ProductVo) jsonData.getData();
+            ProductVo productVo = jsonData.getData(new TypeReference<ProductVo>(){});
+            //ProductVo productVo = (ProductVo) jsonData.getData();
 
             // 构建流量包对象
             Traffic traffic = Traffic.builder()

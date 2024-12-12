@@ -19,13 +19,13 @@ import java.io.IOException;
  */
 @Slf4j
 @Component
-@RabbitListener(queuesToDeclare = {@Queue("order.error.queue")})
+@RabbitListener(queuesToDeclare = {@Queue("traffic.error.queue")})
 public class TrafficErrorMQListener {
 
     @RabbitHandler
     public void orderErrorMQHandler(EventMessage eventMessage, Message message, Channel channel) throws IOException {
-        log.info("警告：订单消费事件失败，异常处理队列，eventMessage内容:{}", eventMessage);
-        log.info("警告：Message:{}", message);
-        log.info("警告成功，发送通知短信");
+        log.info("【账号服务】警告：流量包消费事件失败，异常处理队列，eventMessage内容:{}", eventMessage);
+        log.info("【账号服务】警告：Message:{}", message);
+        log.info("【账号服务】警告成功，发送通知短信");
     }
 }
