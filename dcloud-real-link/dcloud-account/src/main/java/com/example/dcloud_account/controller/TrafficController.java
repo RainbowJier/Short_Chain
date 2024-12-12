@@ -1,12 +1,14 @@
 package com.example.dcloud_account.controller;
 
 import com.example.dcloud_account.controller.request.TrafficPageRequest;
+import com.example.dcloud_account.controller.request.UseTrafficRequest;
 import com.example.dcloud_account.entity.vo.TrafficVo;
 import com.example.dcloud_account.service.TrafficService;
 import com.example.dcloud_common.util.JsonData;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +44,16 @@ public class TrafficController {
         return JsonData.buildSuccess(trafficVO);
     }
 
+    /**
+     * 使用流量包API
+     */
+    @PostMapping("reduce")
+    public JsonData useTraffic(@RequestBody UseTrafficRequest useTrafficRequest, HttpServletRequest request){
+
+        //具体使用流量包逻辑  TODO
+
+        return JsonData.buildSuccess();
+    }
 
 
 }

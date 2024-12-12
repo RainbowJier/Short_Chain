@@ -1,10 +1,7 @@
 package com.example.dcloud_account.config;
 
 import lombok.Data;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
@@ -31,5 +28,32 @@ public class RabbitMQConfig {
     public MessageConverter messageConverter() {
         return new Jackson2JsonMessageConverter();
     }
+
+    //================流量包处理：用户初始化福利==================================
+    private String trafficFreeInitRoutingKey = "traffic.free_init.routing.key";
+
+    private String trafficEventExchange = "traffic.event.exchange";
+
+    private String trafficFreeInitQueue = "traffic.free_init.queue";
+
+    @Bean
+    public TopicExchange trafficEventExchange(){
+        return new TopicExchange(trafficEventExchange,true,false);
+    }
+
+    @Bean
+    public Queue trafficFreeInitQueue(){
+        return new Queue(trafficFreeInitQueue,true,false,false);
+    }
+
+    @Bean
+    public Binding trafficFreeInitBinding(){
+        return BindingBuilder.bind(trafficFreeInitQueue()).to(trafficEventExchange())
+                .with(trafficFreeInitRoutingKey);
+    }
+
+
+
+
 
 }

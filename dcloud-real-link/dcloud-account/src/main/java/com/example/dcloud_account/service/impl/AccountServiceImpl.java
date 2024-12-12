@@ -1,17 +1,20 @@
 package com.example.dcloud_account.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.dcloud_account.manager.AccountManager;
-import com.example.dcloud_account.service.AccountService;
-import com.example.dcloud_account.service.NotifyService;
+import com.example.dcloud_account.config.RabbitMQConfig;
 import com.example.dcloud_account.controller.request.AccountLoginRequest;
 import com.example.dcloud_account.controller.request.AccountRegisterRequest;
 import com.example.dcloud_account.entity.Account;
+import com.example.dcloud_account.manager.AccountManager;
 import com.example.dcloud_account.mapper.AccountMapper;
+import com.example.dcloud_account.service.AccountService;
+import com.example.dcloud_account.service.NotifyService;
+import com.example.dcloud_common.entity.EventMessage;
+import com.example.dcloud_common.entity.LoginUser;
 import com.example.dcloud_common.enums.AuthTypeEnum;
 import com.example.dcloud_common.enums.BizCodeEnum;
+import com.example.dcloud_common.enums.EventMessageType;
 import com.example.dcloud_common.enums.SendCodeEnum;
-import com.example.dcloud_common.entity.LoginUser;
 import com.example.dcloud_common.util.CommonUtil;
 import com.example.dcloud_common.util.IDUtil;
 import com.example.dcloud_common.util.JWTUtil;
@@ -19,11 +22,13 @@ import com.example.dcloud_common.util.JsonData;
 import jodd.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.Md5Crypt;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 
@@ -40,6 +45,18 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
 
     @Autowired
     private AccountManager accountManager;
+
+    @Resource
+    private RabbitTemplate rabbitTemplate;
+
+    @Resource
+    private RabbitMQConfig rabbitMQConfig;
+
+    /**
+     * 免费流量包商品id
+     */
+    private static final Long FREE_TRAFFIC_PRODUCT_ID = 1L;
+
 
     /**
      * 用户注册
@@ -80,9 +97,8 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
         int insertRow = accountManager.insert(account);
         log.info("rows:{}，注册成功：{}", insertRow, account);
 
-        // 用户注册成功，新用户发放福利 TODO
+        // 用户注册成功，新用户发放免费流量包
         userRegisterInitTask(account);
-
         return JsonData.buildSuccess();
     }
 
@@ -111,7 +127,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
                 String token = JWTUtil.generateJsonToken(loginUser);
                 HashMap<String, Object> data = new HashMap<>();
                 data.put("token", token);
-                return JsonData.buildSuccess(data,"登录成功");
+                return JsonData.buildSuccess(data, "登录成功");
             } else {
                 // 密码错误
                 return JsonData.buildResult(BizCodeEnum.ACCOUNT_PWD_ERROR);
@@ -122,11 +138,19 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
         }
     }
 
-
     /**
-     * 用户初始化，发放福利：流量包   TODO
+     * 用户注册，发放福利：流量包
      */
     private void userRegisterInitTask(Account account) {
+        EventMessage eventMessage = EventMessage.builder()
+                .bizId(FREE_TRAFFIC_PRODUCT_ID.toString())
+                .accountNo(account.getAccountNo())
+                .eventMessageType(EventMessageType.TRAFFIC_FREE_INIT.name())
+                .build();
+
+        // 发送消息到MQ
+        rabbitTemplate.convertAndSend(rabbitMQConfig.getTrafficEventExchange(),
+                rabbitMQConfig.getTrafficFreeInitRoutingKey(), eventMessage);
 
     }
 

@@ -40,9 +40,5 @@ public class AccountController {
         return accountService.login(accountLoginRequest);
     }
 
-    @GetMapping("test")
-    public JsonData test(){
-        return JsonData.buildSuccess("test");
-    }
 
 }
