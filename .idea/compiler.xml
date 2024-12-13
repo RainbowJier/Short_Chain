@@ -8,11 +8,15 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="xxl-job-core" />
         <module name="dcloud-app" />
         <module name="dcloud-data" />
+        <module name="xxl-job-executor-sample-frameless" />
         <module name="dcloud-shop" />
         <module name="dcloud-gateway" />
         <module name="dcloud-link" />
+        <module name="xxl-job-admin" />
+        <module name="xxl-job-executor-sample-springboot" />
         <module name="dcloud-common" />
         <module name="dcloud-account" />
       </profile>
