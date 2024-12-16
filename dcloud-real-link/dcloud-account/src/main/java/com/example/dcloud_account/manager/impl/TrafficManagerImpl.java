@@ -2,7 +2,6 @@ package com.example.dcloud_account.manager.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.dcloud_account.entity.Traffic;
 import com.example.dcloud_account.manager.TrafficManager;
@@ -12,7 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -34,8 +35,8 @@ public class TrafficManagerImpl implements TrafficManager {
 
         LambdaQueryWrapper<Traffic> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Traffic::getAccountNo, accountNo)
-               .ge(Traffic::getExpiredDate, today)
-               .orderByDesc(Traffic::getGmtCreate);
+                .ge(Traffic::getExpiredDate, today)
+                .orderByDesc(Traffic::getGmtCreate);
 
         return trafficMapper.selectPage(pageInfo, wrapper);
     }
@@ -64,12 +65,46 @@ public class TrafficManagerImpl implements TrafficManager {
      * add used times for traffic in one day.
      */
     @Override
-    public int addDayUsedTimes(long trafficId, Long accountNo, int dayUsedTimes) {
+    public int addDayUsedTimes(Long accountNo, Long trafficId, Integer dayUsed) {
+        Traffic traffic = new Traffic()
+                .setId(trafficId)
+                .setAccountNo(accountNo)
+                .setDayUsed(dayUsed);
+        return trafficMapper.addDayUsedTimes(traffic);
+    }
+
+    /**
+     * get valid traffic list by accountNo.
+     * <p>
+     * select * from traffic where account_no = ? and (expired_date >= ? or out_trade_no=free_init)
+     */
+    @Override
+    public List<Traffic> selectAvailableTraffics(Long accountNo) {
+        String today = TimeUtil.format(new Date(), "yyyy-MM-dd");
+
+        LambdaQueryWrapper<Traffic> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Traffic::getAccountNo, accountNo);
+        queryWrapper.and(wrapper -> wrapper
+                .ge(Traffic::getExpiredDate, today)
+                .or()
+                .eq(Traffic::getOutTradeNo, "free_init"));
+
+        return trafficMapper.selectList(queryWrapper);
+    }
+
+    /**
+     * batch update used times for traffic.
+     */
+    @Override
+    public int batchUpdateUsedTimes(Long accountNo,List<Long> unUpdatedTrafficIds) {
         LambdaUpdateWrapper<Traffic> updateWrapper = new LambdaUpdateWrapper<>();
-        updateWrapper.eq(Traffic::getId, trafficId)
-               .eq(Traffic::getAccountNo, accountNo)
-               .set(Traffic::getDayUsed, dayUsedTimes);
+        updateWrapper.in(Traffic::getId,unUpdatedTrafficIds)
+                .eq(Traffic::getAccountNo,accountNo)
+                .set(Traffic::getDayUsed, 0)
+                .set(Traffic::getGmtModified, new Date());
 
         return trafficMapper.update(null, updateWrapper);
     }
+
+
 }

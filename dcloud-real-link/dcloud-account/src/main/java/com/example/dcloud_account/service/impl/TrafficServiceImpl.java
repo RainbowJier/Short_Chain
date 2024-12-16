@@ -4,18 +4,23 @@ package com.example.dcloud_account.service.impl;
 import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.dcloud_account.controller.request.TrafficPageRequest;
+import com.example.dcloud_account.controller.request.UseTrafficRequest;
 import com.example.dcloud_account.entity.Product;
 import com.example.dcloud_account.entity.Traffic;
 import com.example.dcloud_account.entity.vo.ProductVo;
 import com.example.dcloud_account.entity.vo.TrafficVo;
+import com.example.dcloud_account.entity.vo.UseTrafficVo;
 import com.example.dcloud_account.feign.ProductFeignService;
 import com.example.dcloud_account.manager.TrafficManager;
 import com.example.dcloud_account.service.TrafficService;
 import com.example.dcloud_common.entity.EventMessage;
+import com.example.dcloud_common.enums.BizCodeEnum;
 import com.example.dcloud_common.enums.EventMessageType;
+import com.example.dcloud_common.exception.BizException;
 import com.example.dcloud_common.interceptor.LoginInterceptor;
 import com.example.dcloud_common.util.JsonData;
 import com.example.dcloud_common.util.JsonUtil;
+import com.example.dcloud_common.util.TimeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -80,12 +85,13 @@ public class TrafficServiceImpl implements TrafficService {
         }
 
         // 免费流量包
-        if(messageType.equalsIgnoreCase(EventMessageType.TRAFFIC_FREE_INIT.name())){
+        if (messageType.equalsIgnoreCase(EventMessageType.TRAFFIC_FREE_INIT.name())) {
             // 获取商品信息
             long productId = Long.parseLong(eventMessage.getBizId());
             JsonData jsonData = productFeignService.detail(productId);
 
-            ProductVo productVo = jsonData.getData(new TypeReference<ProductVo>(){});
+            ProductVo productVo = jsonData.getData(new TypeReference<ProductVo>() {
+            });
             //ProductVo productVo = (ProductVo) jsonData.getData();
 
             // 构建流量包对象
@@ -119,7 +125,7 @@ public class TrafficServiceImpl implements TrafficService {
         // 流量包列表
         List<Traffic> records = trafficPage.getRecords();
 
-        // convert to vo object.
+        // 转为vo对象
         List<TrafficVo> trafficVoList = new ArrayList<>();
         for (Traffic traffic : records) {
             TrafficVo trafficVo = new TrafficVo();
@@ -150,6 +156,7 @@ public class TrafficServiceImpl implements TrafficService {
         return trafficVo;
     }
 
+
     /**
      * delete expired traffic.
      */
@@ -161,4 +168,82 @@ public class TrafficServiceImpl implements TrafficService {
 
         return false;
     }
+
+    /**
+     * reduce traffic.
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public JsonData reduce(UseTrafficRequest useTrafficRequest) {
+        Long accountNo = useTrafficRequest.getAccountNo();
+
+        // get not updated traffic and current used traffic.
+        UseTrafficVo useTrafficVo = getUseTrafficVo(accountNo);
+        log.info("today's total left times:{}, current traffic:{}", useTrafficVo.getDayTotalLeftTimes(), useTrafficVo.getCurrentTraffic());
+        if (useTrafficVo.getCurrentTraffic() == null) {
+            return JsonData.buildResult(BizCodeEnum.TRAFFIC_REDUCE_FAIL);
+        }
+
+        // update traffics that are not updated today.
+        log.info("not updated traffic id list: {}", useTrafficVo.getUnUpdatedTrafficIds());
+        if (!useTrafficVo.getUnUpdatedTrafficIds().isEmpty()) {
+            int updateRow = trafficManager.batchUpdateUsedTimes(accountNo, useTrafficVo.getUnUpdatedTrafficIds());
+            log.info("update not updated traffic:rows={}", updateRow);
+        }
+
+        // reduce traffic.
+        int rows = trafficManager.addDayUsedTimes(accountNo, useTrafficVo.getCurrentTraffic().getId(), 1);
+        if (rows != 1) {
+            throw new BizException(BizCodeEnum.TRAFFIC_REDUCE_FAIL);
+        }
+
+        return JsonData.buildSuccess();
+    }
+
+    /**
+     * get non updated traffic and current used traffic.
+     */
+    private UseTrafficVo getUseTrafficVo(Long accountNo) {
+        // get valid traffic list by accountNo.
+        List<Traffic> list = trafficManager.selectAvailableTraffics(accountNo);
+
+        String currentTime = TimeUtil.format(new Date(), "yyyy-MM-dd");
+
+        int dayTotalLeftTimes = 0;
+
+        Traffic currentTraffic = null;
+
+        List<Long> unUpdatedTrafficIds = new ArrayList<>();
+
+        for (Traffic traffic : list) {
+            String trafficUpdateTime = TimeUtil.format(traffic.getGmtModified(), "yyyy-MM-dd");
+
+            // updated traffic.
+            if (currentTime.equals(trafficUpdateTime)) {
+                int dayLeftTimes = traffic.getDayLimit() - traffic.getDayUsed();
+
+                dayTotalLeftTimes += dayLeftTimes;
+
+                // get current traffic.
+                if (currentTraffic == null && dayLeftTimes > 0) {
+                    currentTraffic = traffic;
+                }
+            }
+            // not updated traffic.
+            else {
+                dayTotalLeftTimes += traffic.getDayLimit();
+
+                // record not updated traffic id.
+                unUpdatedTrafficIds.add(traffic.getId());
+
+                if (currentTraffic == null) {
+                    currentTraffic = traffic;
+                }
+            }
+        }
+
+        return new UseTrafficVo(dayTotalLeftTimes, currentTraffic, unUpdatedTrafficIds);
+    }
+
+
 }

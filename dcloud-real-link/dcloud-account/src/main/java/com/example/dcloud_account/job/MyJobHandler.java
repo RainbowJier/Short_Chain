@@ -30,11 +30,11 @@ public class MyJobHandler {
     }
 
     private void init() {
-        log.info("【trafficExpiredHandler】 MyJobHandler init >>>>>");
+        log.info("【账号执行器】 MyJobHandler init >>>>>");
     }
 
     private void destroy() {
-        log.info("【trafficExpiredHandler】 MyJobHandler destroy>>>>>");
+        log.info("【账号执行器】 MyJobHandler destroy>>>>>");
     }
 }
 
