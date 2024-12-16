@@ -29,7 +29,12 @@ public interface TrafficManager {
     Traffic findByIdAndAccountNo(Long trafficId,Long accountNo);
 
     /**
-     * 增加某个流量包天使用次数
+     * delete expired traffic.
+     */
+    int deleteExpiredTraffic();
+
+    /**
+     * add used times for traffic in one day.
      */
     int addDayUsedTimes(long trafficId, Long accountNo, int dayUsedTimes);
 

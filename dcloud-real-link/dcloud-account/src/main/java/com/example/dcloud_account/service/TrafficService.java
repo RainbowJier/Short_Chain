@@ -23,4 +23,9 @@ public interface TrafficService {
      * 查询某个流量包的详情
      */
     TrafficVo detail(long trafficId);
+
+    /**
+     * delete expired traffic.
+     */
+    boolean deleteExpiredTraffic();
 }

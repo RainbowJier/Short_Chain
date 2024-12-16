@@ -1,9 +1,12 @@
 package com.example.dcloud_account.job;
 
+import com.example.dcloud_account.service.TrafficService;
 import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * @Author: RainbowJier
@@ -15,18 +18,23 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class MyJobHandler {
-    @XxlJob(value = "trafficJobHandler", init = "init", destroy = "destroy")
+    @Resource
+    private TrafficService trafficService;
+
+    @XxlJob(value = "trafficExpiredHandler", init = "init", destroy = "destroy")
     public ReturnT<String> execute(String param) {
-        log.info("【账号执行器】 execute 任务⽅法触发成功");
+        log.info("【trafficExpiredHandler】 execute success >>>>>");
+        trafficService.deleteExpiredTraffic();
+
         return ReturnT.SUCCESS;
     }
 
     private void init() {
-        log.info("【账号执行器】 MyJobHandler init >>>>>");
+        log.info("【trafficExpiredHandler】 MyJobHandler init >>>>>");
     }
 
     private void destroy() {
-        log.info("【账号执行器】 MyJobHandler destroy>>>>>");
+        log.info("【trafficExpiredHandler】 MyJobHandler destroy>>>>>");
     }
 }
 

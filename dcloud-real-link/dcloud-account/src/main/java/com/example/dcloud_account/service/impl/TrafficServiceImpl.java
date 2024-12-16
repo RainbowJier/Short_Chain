@@ -119,7 +119,7 @@ public class TrafficServiceImpl implements TrafficService {
         // 流量包列表
         List<Traffic> records = trafficPage.getRecords();
 
-        // 转为vo对象
+        // convert to vo object.
         List<TrafficVo> trafficVoList = new ArrayList<>();
         for (Traffic traffic : records) {
             TrafficVo trafficVo = new TrafficVo();
@@ -148,5 +148,17 @@ public class TrafficServiceImpl implements TrafficService {
         TrafficVo trafficVo = new TrafficVo();
         BeanUtils.copyProperties(traffic, trafficVo);
         return trafficVo;
+    }
+
+    /**
+     * delete expired traffic.
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean deleteExpiredTraffic() {
+        int count = trafficManager.deleteExpiredTraffic();
+        log.info("【Schedule Tasks】 Delete expired traffics :count={}", count);
+
+        return false;
     }
 }

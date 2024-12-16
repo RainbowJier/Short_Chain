@@ -50,7 +50,18 @@ public class TrafficManagerImpl implements TrafficManager {
     }
 
     /**
-     * 给某个流量包增加天使用次数
+     * delete expired traffic.
+     */
+    @Override
+    public int deleteExpiredTraffic() {
+        LambdaQueryWrapper<Traffic> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.le(Traffic::getExpiredDate, TimeUtil.format(new Date(), "yyyy-MM-dd"));
+
+        return trafficMapper.delete(queryWrapper);
+    }
+
+    /**
+     * add used times for traffic in one day.
      */
     @Override
     public int addDayUsedTimes(long trafficId, Long accountNo, int dayUsedTimes) {
