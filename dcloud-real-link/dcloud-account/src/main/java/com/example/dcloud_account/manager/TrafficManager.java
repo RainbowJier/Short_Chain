@@ -1,8 +1,9 @@
 package com.example.dcloud_account.manager;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.dcloud_account.entity.Traffic;
+
+import java.util.List;
 
 /**
  * @Author: RainbowJier
@@ -26,7 +27,7 @@ public interface TrafficManager {
     /**
      * 查找详情
      */
-    Traffic findByIdAndAccountNo(Long trafficId,Long accountNo);
+    Traffic findByIdAndAccountNo(Long trafficId, Long accountNo);
 
     /**
      * delete expired traffic.
@@ -36,6 +37,15 @@ public interface TrafficManager {
     /**
      * add used times for traffic in one day.
      */
-    int addDayUsedTimes(long trafficId, Long accountNo, int dayUsedTimes);
+    int addDayUsedTimes(Long accountNo, Long trafficId, Integer dayUsedTimes);
 
+    /**
+     * get valid traffic list by accountNo.
+     */
+    List<Traffic> selectAvailableTraffics(Long accountNo);
+
+    /**
+     * batch update used times for traffic.
+     */
+    int batchUpdateUsedTimes(Long accountNo,List<Long> unUpdatedTrafficIds);
 }

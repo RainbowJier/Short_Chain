@@ -70,9 +70,9 @@ public enum BizCodeEnum {
     /**
      * Traffic package operation.
      */
-    TRAFFIC_FREE_NOT_EXIST(600101, "免费流ᰁ包不存在，联系客服"),
-    TRAFFIC_REDUCE_FAIL(600102, "流ᰁ不⾜，扣减失败"),
-    TRAFFIC_EXCEPTION(600103, "流ᰁ包数据异常,⽤户⽆流包"),
+    TRAFFIC_FREE_NOT_EXIST(600101, "免费流量包不存在，联系客服"),
+    TRAFFIC_REDUCE_FAIL(600102, "流量包不⾜，扣减失败"),
+    TRAFFIC_EXCEPTION(600103, "流量包数据异常,⽤户⽆流包"),
 
     /**
      * Common operation code.
