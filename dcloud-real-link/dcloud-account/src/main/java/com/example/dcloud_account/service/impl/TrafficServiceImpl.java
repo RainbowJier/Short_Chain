@@ -13,6 +13,7 @@ import com.example.dcloud_account.entity.vo.UseTrafficVo;
 import com.example.dcloud_account.feign.ProductFeignService;
 import com.example.dcloud_account.manager.TrafficManager;
 import com.example.dcloud_account.service.TrafficService;
+import com.example.dcloud_common.constant.RedisKey;
 import com.example.dcloud_common.entity.EventMessage;
 import com.example.dcloud_common.enums.BizCodeEnum;
 import com.example.dcloud_common.enums.EventMessageType;
@@ -23,6 +24,7 @@ import com.example.dcloud_common.util.JsonUtil;
 import com.example.dcloud_common.util.TimeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +32,7 @@ import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
@@ -40,6 +43,9 @@ public class TrafficServiceImpl implements TrafficService {
 
     @Resource
     private ProductFeignService productFeignService;
+
+    @Resource
+    private RedisTemplate<Object, Object> redisTemplate;
 
     /**
      * 流量包发放
@@ -92,9 +98,7 @@ public class TrafficServiceImpl implements TrafficService {
 
             ProductVo productVo = jsonData.getData(new TypeReference<ProductVo>() {
             });
-            //ProductVo productVo = (ProductVo) jsonData.getData();
 
-            // 构建流量包对象
             Traffic traffic = Traffic.builder()
                     .accountNo(accountNo)
                     .dayLimit(productVo.getDayTimes())
@@ -112,7 +116,7 @@ public class TrafficServiceImpl implements TrafficService {
     }
 
     /**
-     * 查询可用流量包列表
+     * get available traffic list.
      */
     @Override
     public Map<String, Object> pageAvailable(TrafficPageRequest request) {
@@ -133,11 +137,10 @@ public class TrafficServiceImpl implements TrafficService {
             trafficVoList.add(trafficVo);
         }
 
-        // 封装查询结果
         Map<String, Object> pageMap = new HashMap<>(3);
-        pageMap.put("total_record", trafficPage.getTotal()); // 总记录数
-        pageMap.put("total_page", trafficPage.getPages());   // 总页数
-        pageMap.put("current_data", trafficVoList);      // 当前页数据
+        pageMap.put("total_record", trafficPage.getTotal()); // total records.
+        pageMap.put("total_page", trafficPage.getPages());   // total pages.
+        pageMap.put("current_data", trafficVoList);      // the current page data.
 
         return pageMap;
     }
@@ -158,7 +161,11 @@ public class TrafficServiceImpl implements TrafficService {
 
 
     /**
-     * delete expired traffic.
+     * Todo:delete expired traffic
+     * 1. get a part of traffic list randomly.
+     * 2. check if the traffic is expired.
+     * 3. delete expired traffic.
+     * 4. if more than 25% of the traffics are expired, start again from step 1.
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -196,6 +203,16 @@ public class TrafficServiceImpl implements TrafficService {
         if (rows != 1) {
             throw new BizException(BizCodeEnum.TRAFFIC_REDUCE_FAIL);
         }
+
+        // set total traffic to Redis.
+        long leftSeconds = TimeUtil.getRemainSecondsOneDay(new Date());
+        String totalTrafficTimesKey = String.format(RedisKey.DAY_TOTAL_TRAFFIC, accountNo);
+
+        redisTemplate.opsForValue()
+                .set(totalTrafficTimesKey,
+                        useTrafficVo.getDayTotalLeftTimes() - 1,
+                        leftSeconds,
+                        TimeUnit.SECONDS);
 
         return JsonData.buildSuccess();
     }

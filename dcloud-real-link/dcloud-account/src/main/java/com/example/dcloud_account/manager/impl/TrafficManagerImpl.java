@@ -41,6 +41,9 @@ public class TrafficManagerImpl implements TrafficManager {
         return trafficMapper.selectPage(pageInfo, wrapper);
     }
 
+    /**
+     * find traffic detail by id and accountNo.
+     */
     @Override
     public Traffic findByIdAndAccountNo(Long trafficId, Long accountNo) {
         LambdaQueryWrapper<Traffic> queryWrapper = new LambdaQueryWrapper<>();

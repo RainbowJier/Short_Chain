@@ -5,6 +5,7 @@ import com.example.dcloud_account.controller.request.UseTrafficRequest;
 import com.example.dcloud_account.entity.vo.TrafficVo;
 import com.example.dcloud_account.service.TrafficService;
 import com.example.dcloud_common.util.JsonData;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -26,6 +27,9 @@ public class TrafficController {
     @Resource
     private TrafficService trafficService;
 
+    @Value("${rpc.token}")
+    private String rpcToken;
+
     /**
      * 分页查询可用流量包
      */
@@ -45,14 +49,16 @@ public class TrafficController {
     }
 
     /**
-     * use traffic
+     * reduce traffic
      */
     @PostMapping("reduce")
     public JsonData useTraffic(@RequestBody UseTrafficRequest useTrafficRequest, HttpServletRequest request){
-        // todo:具体使用流量包逻辑
-
-        return trafficService.reduce(useTrafficRequest);
+        String requestToken = request.getHeader("rcp-token");
+        if(requestToken.equals(rpcToken)){
+            return trafficService.reduce(useTrafficRequest);
+        }else{
+            return JsonData.buildError("Illegal Access!!!");
+        }
     }
-
 
 }

@@ -11,14 +11,12 @@ import com.example.dcloud_common.util.JsonData;
 import com.example.dcloud_common.util.JsonUtil;
 import com.example.dcloud_link.component.ShortLinkComponent;
 import com.example.dcloud_link.config.RabbitMQConfig;
-import com.example.dcloud_link.controller.request.ShortLinkAddRequest;
-import com.example.dcloud_link.controller.request.ShortLinkDelRequest;
-import com.example.dcloud_link.controller.request.ShortLinkPageRequest;
-import com.example.dcloud_link.controller.request.ShortLinkUpdateRequest;
+import com.example.dcloud_link.controller.request.*;
 import com.example.dcloud_link.entity.GroupCodeMapping;
 import com.example.dcloud_link.entity.LinkGroup;
 import com.example.dcloud_link.entity.ShortLink;
 import com.example.dcloud_link.entity.vo.ShortLinkVo;
+import com.example.dcloud_link.feign.TrafficFeignService;
 import com.example.dcloud_link.manager.GroupCodeMappingManager;
 import com.example.dcloud_link.manager.LinkGroupManager;
 import com.example.dcloud_link.manager.ShortLinkManager;
@@ -56,11 +54,13 @@ public class ShortLinkServiceImpl implements ShortLinkService {
     private LinkGroupManager linkGroupManager;
 
     @Autowired
+    private TrafficFeignService trafficFeignService;
+
+    @Autowired
     private GroupCodeMappingManager groupCodeMappingManager;
 
     @Autowired
     private RedisTemplate<Object, Object> redisTemplate;
-
 
     /**
      * B 端-分页查找分组下的短链
@@ -219,22 +219,28 @@ public class ShortLinkServiceImpl implements ShortLinkService {
                     duplicateCode = true;
                     log.error("C 端短链码重复：{}", shortLinkCode);
                 } else {
-                    // 构建短链对象
-                    ShortLink shortLink = ShortLink.builder()
-                            .accountNo(accountNo)
-                            .code(shortLinkCode)
-                            .title(addRequest.getTitle())
-                            .originalUrl(addRequest.getOriginalUrl())
-                            .domain(null)
-                            .groupId(linkGroup.getId())
-                            .expired(addRequest.getExpired())
-                            .sign(originalUrlDigest)
-                            .state(ShortLinkStateEnum.ACTIVE.name())
-                            .del(0L)
-                            .build();
 
-                    shortLinkManager.addShortLink(shortLink);
-                    return true;
+                    // 发送扣减流量包MQ
+                    boolean reduceFlag = reduceTraffic(eventMessage, shortLinkCode);
+
+                    if (reduceFlag) {
+                        // 构建短链对象
+                        ShortLink shortLink = ShortLink.builder()
+                                .accountNo(accountNo)
+                                .code(shortLinkCode)
+                                .title(addRequest.getTitle())
+                                .originalUrl(addRequest.getOriginalUrl())
+                                .domain(null)
+                                .groupId(linkGroup.getId())
+                                .expired(addRequest.getExpired())
+                                .sign(originalUrlDigest)
+                                .state(ShortLinkStateEnum.ACTIVE.name())
+                                .del(0L)
+                                .build();
+
+                        shortLinkManager.addShortLink(shortLink);
+                        return true;
+                    }
                 }
             }
             // B端
@@ -326,6 +332,23 @@ public class ShortLinkServiceImpl implements ShortLinkService {
         Assert.notNull(linkGroup, "组名不合法");
         return linkGroup;
     }
+
+    /**
+     * reduce traffic
+     */
+    private boolean reduceTraffic(EventMessage eventMessage, String shortLinkCode) {
+        UseTrafficRequest request = UseTrafficRequest.builder()
+                .accountNo(eventMessage.getAccountNo()).bizId(shortLinkCode).build();
+
+        JsonData jsonData = trafficFeignService.useTraffic(request);
+
+        if (jsonData.getCode() != 0) {
+            log.error("流量包不足，扣减失败:{}", eventMessage);
+            return false;
+        }
+        return true;
+    }
+
 
     @Override
     public boolean handlerDelShortLink(EventMessage eventMessage) {
