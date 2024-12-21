@@ -88,6 +88,10 @@ public class TrafficServiceImpl implements TrafficService {
             // 新增流量包
             int rows = trafficManager.add(traffic);
             log.info("【流量包消费者】新增流量包:rows={},traffic={}", rows, traffic);
+
+            // delete total traffics in the Redis.
+            String totalTrafficTimesKey = String.format(RedisKey.DAY_TOTAL_TRAFFIC, accountNo);
+            redisTemplate.delete(totalTrafficTimesKey);
         }
 
         // 免费流量包
@@ -161,7 +165,7 @@ public class TrafficServiceImpl implements TrafficService {
 
 
     /**
-     * Todo:delete expired traffic
+     * delete expired traffic
      * 1. get a part of traffic list randomly.
      * 2. check if the traffic is expired.
      * 3. delete expired traffic.
@@ -204,7 +208,7 @@ public class TrafficServiceImpl implements TrafficService {
             throw new BizException(BizCodeEnum.TRAFFIC_REDUCE_FAIL);
         }
 
-        // set total traffic to Redis.
+        // store total traffic to Redis.
         long leftSeconds = TimeUtil.getRemainSecondsOneDay(new Date());
         String totalTrafficTimesKey = String.format(RedisKey.DAY_TOTAL_TRAFFIC, accountNo);
 

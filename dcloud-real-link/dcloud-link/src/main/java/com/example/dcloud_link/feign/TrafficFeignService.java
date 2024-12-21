@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface TrafficFeignService {
 
     /**
-     * 使用流量包
+     * use traffic.
      */
     @PostMapping(value = "/api/traffic/v1/reduce",headers = {"rpc-token=${rpc.token}"})
     JsonData useTraffic(@RequestBody UseTrafficRequest request);

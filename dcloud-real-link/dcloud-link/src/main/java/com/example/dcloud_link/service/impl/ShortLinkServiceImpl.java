@@ -1,7 +1,9 @@
 package com.example.dcloud_link.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Assert;
+import com.example.dcloud_common.constant.RedisKey;
 import com.example.dcloud_common.entity.EventMessage;
+import com.example.dcloud_common.enums.BizCodeEnum;
 import com.example.dcloud_common.enums.EventMessageType;
 import com.example.dcloud_common.enums.ShortLinkStateEnum;
 import com.example.dcloud_common.interceptor.LoginInterceptor;
@@ -62,6 +64,8 @@ public class ShortLinkServiceImpl implements ShortLinkService {
     @Autowired
     private RedisTemplate<Object, Object> redisTemplate;
 
+
+
     /**
      * B 端-分页查找分组下的短链
      */
@@ -74,8 +78,9 @@ public class ShortLinkServiceImpl implements ShortLinkService {
     }
 
 
-    // -------------------------- 发送消息到 RabbitMQ  --------------------
-
+    /**
+     * parse short link code to get the original url.
+     */
     @Override
     public ShortLinkVo parseShortLinkCode(String shortLinkCode) {
         ShortLink shortLink = shortLinkManager.findbyShortLink(shortLinkCode);
@@ -97,25 +102,42 @@ public class ShortLinkServiceImpl implements ShortLinkService {
     public JsonData createShortLink(ShortLinkAddRequest request) {
         Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
 
-        // 原始 URL 加上时间戳前缀
-        String tameStampUrl = CommonUtil.addUrlPrefix(request.getOriginalUrl());
-        request.setOriginalUrl(tameStampUrl);
 
-        // 封装消息对象
-        EventMessage eventMessage = EventMessage.builder()
-                .accountNo(accountNo)
-                .content(JsonUtil.objToJsonStr(request))
-                .messageId(IDUtil.generateSnowFlakeID().toString())
-                .eventMessageType(EventMessageType.SHORT_LINK_ADD.name())
-                .build();
+        String totalTrafficKey = String.format(RedisKey.DAY_TOTAL_TRAFFIC, accountNo);
+        // check if the key is existed.
+        // if existed, reduce one traffic and check if the number of traffic greater than 0 by using lua script.
+        // if not, lua return 0 and the traffic service will calculate the total traffic of the day.
+        String luaScript =
+                        "if redis.call('get',KEYS[1]) then return redis.call('decr',KEYS[1])" +
+                        "else return 0" +
+                        "end";
 
-        rabbitTemplate.convertAndSend(
-                rabbitMQConfig.getShortLinkEventExchange(),   // 交换机名称
-                rabbitMQConfig.getShortLinkAddRoutingKey(),   // 消息对象的 routing key
-                eventMessage                                  // 消息对象
-        );
+        Long leftTrafficTimes = redisTemplate.execute(new DefaultRedisScript<>(luaScript, Long.class), Arrays.asList(totalTrafficKey));
+        log.info("【Redis 流量包次数】left traffic times of the day: {}", leftTrafficTimes);
 
-        return JsonData.buildSuccess();
+        if(leftTrafficTimes >= 0){
+            // 原始 URL 加上时间戳前缀
+            String tameStampUrl = CommonUtil.addUrlPrefix(request.getOriginalUrl());
+            request.setOriginalUrl(tameStampUrl);
+
+            // 封装消息对象
+            EventMessage eventMessage = EventMessage.builder()
+                    .accountNo(accountNo)
+                    .content(JsonUtil.objToJsonStr(request))
+                    .messageId(IDUtil.generateSnowFlakeID().toString())
+                    .eventMessageType(EventMessageType.SHORT_LINK_ADD.name())
+                    .build();
+
+            rabbitTemplate.convertAndSend(
+                    rabbitMQConfig.getShortLinkEventExchange(),   // 交换机名称
+                    rabbitMQConfig.getShortLinkAddRoutingKey(),   // 消息对象的 routing key
+                    eventMessage                                  // 消息对象
+            );
+            return JsonData.buildSuccess();
+        }else{
+            return JsonData.buildResult(BizCodeEnum.TRAFFIC_REDUCE_FAIL);
+        }
+
     }
 
     /**
@@ -184,7 +206,6 @@ public class ShortLinkServiceImpl implements ShortLinkService {
     public boolean handlerAddShortLink(EventMessage eventMessage) {
         Long accountNo = eventMessage.getAccountNo();
 
-        // 消息类型
         String eventMessageType = eventMessage.getEventMessageType();
 
         // 解析消息内容
@@ -192,7 +213,7 @@ public class ShortLinkServiceImpl implements ShortLinkService {
 
         // 域名
 
-        // 校验组名是否合法、
+        // check if the group name is valid.
         Long groupId = addRequest.getGroupId();
         LinkGroup linkGroup = checkLinkGroup(accountNo, groupId);
 
@@ -200,7 +221,7 @@ public class ShortLinkServiceImpl implements ShortLinkService {
         String originalUrl = addRequest.getOriginalUrl();
         String originalUrlDigest = CommonUtil.MD5(originalUrl);
 
-        // 生成短链码
+        // generate short link code.
         String shortLinkCode = shortLinkComponent.createShortLinkCode(originalUrlDigest);
 
         // 短链码是否重复
@@ -340,6 +361,7 @@ public class ShortLinkServiceImpl implements ShortLinkService {
         UseTrafficRequest request = UseTrafficRequest.builder()
                 .accountNo(eventMessage.getAccountNo()).bizId(shortLinkCode).build();
 
+        // RCP to reduce traffic.
         JsonData jsonData = trafficFeignService.useTraffic(request);
 
         if (jsonData.getCode() != 0) {
