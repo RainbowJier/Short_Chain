@@ -106,7 +106,6 @@ public class ShortLinkServiceImpl implements ShortLinkService {
     public JsonData createShortLink(ShortLinkAddRequest request) {
         Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
 
-        // todo:解决redis存储乱码问题
         String totalTrafficKey = String.format(RedisKey.DAY_TOTAL_TRAFFIC, accountNo);
         // check if the key is existed.
         // if existed, reduce one traffic and check if the number of traffic greater than 0 by using lua script.
