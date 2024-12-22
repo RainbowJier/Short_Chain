@@ -81,7 +81,6 @@ public class ShortLinkServiceImpl implements ShortLinkService {
         return groupCodeMappingManager.pageShortLinkByGroupId(request.getPage(), request.getSize(), accountNo, groupId);
     }
 
-
     /**
      * parse short link code to get the original url.
      */
@@ -100,7 +99,7 @@ public class ShortLinkServiceImpl implements ShortLinkService {
     }
 
     /**
-     * 【新增】发送消息到 RabbitMQ
+     * add short link and send message to RabbitMQ.
      */
     @Override
     public JsonData createShortLink(ShortLinkAddRequest request) {
