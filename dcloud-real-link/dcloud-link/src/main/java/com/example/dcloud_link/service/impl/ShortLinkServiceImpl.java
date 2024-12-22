@@ -65,7 +65,6 @@ public class ShortLinkServiceImpl implements ShortLinkService {
     private RedisTemplate<Object, Object> redisTemplate;
 
 
-
     /**
      * B 端-分页查找分组下的短链
      */
@@ -103,19 +102,21 @@ public class ShortLinkServiceImpl implements ShortLinkService {
         Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
 
 
+        // todo:解决redis存储乱码问题
         String totalTrafficKey = String.format(RedisKey.DAY_TOTAL_TRAFFIC, accountNo);
         // check if the key is existed.
         // if existed, reduce one traffic and check if the number of traffic greater than 0 by using lua script.
         // if not, lua return 0 and the traffic service will calculate the total traffic of the day.
-        String luaScript =
-                        "if redis.call('get',KEYS[1]) then return redis.call('decr',KEYS[1])" +
-                        "else return 0" +
-                        "end";
+        String script = "if redis.call('get',KEYS[1]) then return redis.call('decr',KEYS[1]) else return 0 end";
 
-        Long leftTrafficTimes = redisTemplate.execute(new DefaultRedisScript<>(luaScript, Long.class), Arrays.asList(totalTrafficKey));
+        Long leftTrafficTimes = redisTemplate.execute(
+                new DefaultRedisScript<>(script, Long.class),
+                Arrays.asList(totalTrafficKey),
+                "");
+
         log.info("【Redis 流量包次数】left traffic times of the day: {}", leftTrafficTimes);
 
-        if(leftTrafficTimes >= 0){
+        if (leftTrafficTimes >= 0) {
             // 原始 URL 加上时间戳前缀
             String tameStampUrl = CommonUtil.addUrlPrefix(request.getOriginalUrl());
             request.setOriginalUrl(tameStampUrl);
@@ -134,7 +135,7 @@ public class ShortLinkServiceImpl implements ShortLinkService {
                     eventMessage                                  // 消息对象
             );
             return JsonData.buildSuccess();
-        }else{
+        } else {
             return JsonData.buildResult(BizCodeEnum.TRAFFIC_REDUCE_FAIL);
         }
 
@@ -165,13 +166,12 @@ public class ShortLinkServiceImpl implements ShortLinkService {
     }
 
     /**
-     * 【更新】短链，发送更新消息到 RabbitMQ.
+     * update short link and sed the updating message to RabbitMQ.
      */
     @Override
     public JsonData updateShortLink(ShortLinkUpdateRequest request) {
         Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
 
-        // 封装消息对象
         EventMessage eventMessage = EventMessage.builder()
                 .accountNo(accountNo)
                 .content(JsonUtil.objToJsonStr(request))
@@ -224,15 +224,17 @@ public class ShortLinkServiceImpl implements ShortLinkService {
         // generate short link code.
         String shortLinkCode = shortLinkComponent.createShortLinkCode(originalUrlDigest);
 
-        // 短链码是否重复
+        // duplicate code.
         boolean duplicateCode = false;
 
-        // 加锁
+        // lock
         boolean getLock = tryAcquireLock(shortLinkCode, accountNo);
 
-        // 加锁成功
+        // lock success
         if (getLock) {
-            // C端
+            boolean reduceFlag = reduceTraffic(eventMessage, shortLinkCode);
+
+            // C end.
             if (EventMessageType.SHORT_LINK_ADD_LINK.name().equals(eventMessageType)) {
                 // 短链码是否存在
                 ShortLink shortLinkCodeInDB = shortLinkManager.findbyShortLink(shortLinkCode);
@@ -240,12 +242,7 @@ public class ShortLinkServiceImpl implements ShortLinkService {
                     duplicateCode = true;
                     log.error("C 端短链码重复：{}", shortLinkCode);
                 } else {
-
-                    // 发送扣减流量包MQ
-                    boolean reduceFlag = reduceTraffic(eventMessage, shortLinkCode);
-
                     if (reduceFlag) {
-                        // 构建短链对象
                         ShortLink shortLink = ShortLink.builder()
                                 .accountNo(accountNo)
                                 .code(shortLinkCode)
@@ -264,29 +261,30 @@ public class ShortLinkServiceImpl implements ShortLinkService {
                     }
                 }
             }
-            // B端
+            // B END.
             else if (EventMessageType.SHORT_LINK_ADD_MAPPING.name().equals(eventMessageType)) {
-                // 短链码是否存在
                 GroupCodeMapping groupCodeMappingInDB = groupCodeMappingManager.findByCodeAndGroupId(shortLinkCode, groupId, accountNo);
                 if (groupCodeMappingInDB != null) {
                     duplicateCode = true;
                     log.error("B 端短链码重复：{}", shortLinkCode);
                 } else {
-                    GroupCodeMapping groupCodeMapping = GroupCodeMapping.builder()
-                            .accountNo(accountNo)
-                            .code(shortLinkCode)
-                            .title(addRequest.getTitle())
-                            .originalUrl(addRequest.getOriginalUrl())
-                            .domain(null)
-                            .groupId(linkGroup.getId())
-                            .expired(addRequest.getExpired())
-                            .sign(originalUrlDigest)
-                            .state(ShortLinkStateEnum.ACTIVE.name())
-                            .del(0L)
-                            .build();
+                    if (reduceFlag) {
+                        GroupCodeMapping groupCodeMapping = GroupCodeMapping.builder()
+                                .accountNo(accountNo)
+                                .code(shortLinkCode)
+                                .title(addRequest.getTitle())
+                                .originalUrl(addRequest.getOriginalUrl())
+                                .domain(null)
+                                .groupId(linkGroup.getId())
+                                .expired(addRequest.getExpired())
+                                .sign(originalUrlDigest)
+                                .state(ShortLinkStateEnum.ACTIVE.name())
+                                .del(0L)
+                                .build();
 
-                    groupCodeMappingManager.add(groupCodeMapping);
-                    return true;
+                        groupCodeMappingManager.add(groupCodeMapping);
+                        return true;
+                    }
                 }
             }
         }
@@ -327,22 +325,23 @@ public class ShortLinkServiceImpl implements ShortLinkService {
 
     // 加锁
     private boolean tryAcquireLock(String shortLinkCode, Long accountNo) {
-        // lua 脚本
+        // lua script to acquire lock.
         String script = "if redis.call('EXISTS', KEYS[1]) == 0 then " +
-                "    redis.call('set', KEYS[1], ARGV[1]) " +
-                "    redis.call('expire', KEYS[1], ARGV[2]) " +
-                "    return 1 " +
-                "elseif redis.call('get', KEYS[1]) == ARGV[1] then " +
-                "    return 2 " +
-                "else " +
-                "    return 0 " +
-                "end;";
+                        "redis.call('set', KEYS[1], ARGV[1]); " +
+                        "redis.call('expire', KEYS[1], ARGV[2]); " +
+                        "return 1; " +
+                        "elseif redis.call('get', KEYS[1]) == ARGV[1] then " +
+                        "return 2; " +
+                        "else " +
+                        "return 0; " +
+                        "end;";
+
 
         Long result = redisTemplate.execute(
                 new DefaultRedisScript<>(script, Long.class),
-                Arrays.asList(shortLinkCode),   // 锁的 key
-                accountNo,  // 锁的 value
-                100);       // 锁的过期时间，单位秒
+                Arrays.asList(shortLinkCode),
+                accountNo,
+                10);
 
         return result > 0;
     }
@@ -350,7 +349,7 @@ public class ShortLinkServiceImpl implements ShortLinkService {
     // 检查组名是否合法
     private LinkGroup checkLinkGroup(Long accountNo, Long groupId) {
         LinkGroup linkGroup = linkGroupManager.detail(groupId, accountNo);
-        Assert.notNull(linkGroup, "组名不合法");
+        Assert.notNull(linkGroup, "Group name is not valid.");
         return linkGroup;
     }
 
@@ -361,7 +360,7 @@ public class ShortLinkServiceImpl implements ShortLinkService {
         UseTrafficRequest request = UseTrafficRequest.builder()
                 .accountNo(eventMessage.getAccountNo()).bizId(shortLinkCode).build();
 
-        // RCP to reduce traffic.
+        // RPC to reduce traffic.
         JsonData jsonData = trafficFeignService.useTraffic(request);
 
         if (jsonData.getCode() != 0) {

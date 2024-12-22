@@ -2,6 +2,7 @@ package com.example.dcloud_link.feign;
 
 import com.example.dcloud_common.util.JsonData;
 import com.example.dcloud_link.controller.request.UseTrafficRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,7 +13,7 @@ public interface TrafficFeignService {
     /**
      * use traffic.
      */
-    @PostMapping(value = "/api/traffic/v1/reduce",headers = {"rpc-token=${rpc.token}"})
+    @PostMapping(value = "/api/traffic/v1/reduce",headers = {"rpc-token=rainbow.net"})
     JsonData useTraffic(@RequestBody UseTrafficRequest request);
 
 }

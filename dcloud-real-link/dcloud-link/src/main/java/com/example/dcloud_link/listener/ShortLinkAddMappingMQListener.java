@@ -37,10 +37,8 @@ public class ShortLinkAddMappingMQListener {
         log.info("B 端监听到消息 ShortLinkAddMappingMQListener：message 消息内容：{}",message);
 
         try {
-            // 设置消息类型，B端
             eventMessage.setEventMessageType(EventMessageType.SHORT_LINK_ADD_MAPPING.name());
 
-            // 处理消息
             boolean b = shortLinkService.handlerAddShortLink(eventMessage);
 
         } catch (Exception e) {

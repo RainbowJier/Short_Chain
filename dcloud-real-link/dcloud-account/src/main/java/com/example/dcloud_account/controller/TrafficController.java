@@ -5,6 +5,7 @@ import com.example.dcloud_account.controller.request.UseTrafficRequest;
 import com.example.dcloud_account.entity.vo.TrafficVo;
 import com.example.dcloud_account.service.TrafficService;
 import com.example.dcloud_common.util.JsonData;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,7 @@ import java.util.Map;
  */
 
 
+@Slf4j
 @RestController
 @RequestMapping("/api/traffic/v1")
 public class TrafficController {
@@ -53,7 +55,7 @@ public class TrafficController {
      */
     @PostMapping("reduce")
     public JsonData useTraffic(@RequestBody UseTrafficRequest useTrafficRequest, HttpServletRequest request){
-        String requestToken = request.getHeader("rcp-token");
+        String requestToken = request.getHeader("rpc-token");
         if(requestToken.equals(rpcToken)){
             return trafficService.reduce(useTrafficRequest);
         }else{

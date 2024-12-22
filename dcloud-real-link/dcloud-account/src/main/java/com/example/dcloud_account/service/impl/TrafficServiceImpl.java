@@ -211,6 +211,8 @@ public class TrafficServiceImpl implements TrafficService {
         // store total traffic to Redis.
         long leftSeconds = TimeUtil.getRemainSecondsOneDay(new Date());
         String totalTrafficTimesKey = String.format(RedisKey.DAY_TOTAL_TRAFFIC, accountNo);
+        log.info("total traffic key : {}", totalTrafficTimesKey);
+
 
         redisTemplate.opsForValue()
                 .set(totalTrafficTimesKey,
