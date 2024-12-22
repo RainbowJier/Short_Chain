@@ -28,6 +28,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 
@@ -62,6 +63,10 @@ public class ShortLinkServiceImpl implements ShortLinkService {
     private GroupCodeMappingManager groupCodeMappingManager;
 
     @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+
+    @Resource
     private RedisTemplate<Object, Object> redisTemplate;
 
 
@@ -101,18 +106,19 @@ public class ShortLinkServiceImpl implements ShortLinkService {
     public JsonData createShortLink(ShortLinkAddRequest request) {
         Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
 
-
         // todo:解决redis存储乱码问题
         String totalTrafficKey = String.format(RedisKey.DAY_TOTAL_TRAFFIC, accountNo);
         // check if the key is existed.
         // if existed, reduce one traffic and check if the number of traffic greater than 0 by using lua script.
         // if not, lua return 0 and the traffic service will calculate the total traffic of the day.
-        String script = "if redis.call('get',KEYS[1]) then return redis.call('decr',KEYS[1]) else return 0 end";
+        String script = "if redis.call('get',KEYS[1]) then " +
+                "return redis.call('decr',KEYS[1]); " +
+                "else return 0; " +
+                "end";
 
-        Long leftTrafficTimes = redisTemplate.execute(
+        Long leftTrafficTimes = stringRedisTemplate.execute(
                 new DefaultRedisScript<>(script, Long.class),
-                Arrays.asList(totalTrafficKey),
-                "");
+                Arrays.asList(totalTrafficKey));
 
         log.info("【Redis 流量包次数】left traffic times of the day: {}", leftTrafficTimes);
 
@@ -232,8 +238,6 @@ public class ShortLinkServiceImpl implements ShortLinkService {
 
         // lock success
         if (getLock) {
-            boolean reduceFlag = reduceTraffic(eventMessage, shortLinkCode);
-
             // C end.
             if (EventMessageType.SHORT_LINK_ADD_LINK.name().equals(eventMessageType)) {
                 // 短链码是否存在
@@ -242,6 +246,7 @@ public class ShortLinkServiceImpl implements ShortLinkService {
                     duplicateCode = true;
                     log.error("C 端短链码重复：{}", shortLinkCode);
                 } else {
+                    boolean reduceFlag = reduceTraffic(eventMessage, shortLinkCode);
                     if (reduceFlag) {
                         ShortLink shortLink = ShortLink.builder()
                                 .accountNo(accountNo)
@@ -268,23 +273,21 @@ public class ShortLinkServiceImpl implements ShortLinkService {
                     duplicateCode = true;
                     log.error("B 端短链码重复：{}", shortLinkCode);
                 } else {
-                    if (reduceFlag) {
-                        GroupCodeMapping groupCodeMapping = GroupCodeMapping.builder()
-                                .accountNo(accountNo)
-                                .code(shortLinkCode)
-                                .title(addRequest.getTitle())
-                                .originalUrl(addRequest.getOriginalUrl())
-                                .domain(null)
-                                .groupId(linkGroup.getId())
-                                .expired(addRequest.getExpired())
-                                .sign(originalUrlDigest)
-                                .state(ShortLinkStateEnum.ACTIVE.name())
-                                .del(0L)
-                                .build();
+                    GroupCodeMapping groupCodeMapping = GroupCodeMapping.builder()
+                            .accountNo(accountNo)
+                            .code(shortLinkCode)
+                            .title(addRequest.getTitle())
+                            .originalUrl(addRequest.getOriginalUrl())
+                            .domain(null)
+                            .groupId(linkGroup.getId())
+                            .expired(addRequest.getExpired())
+                            .sign(originalUrlDigest)
+                            .state(ShortLinkStateEnum.ACTIVE.name())
+                            .del(0L)
+                            .build();
 
-                        groupCodeMappingManager.add(groupCodeMapping);
-                        return true;
-                    }
+                    groupCodeMappingManager.add(groupCodeMapping);
+                    return true;
                 }
             }
         }
@@ -327,21 +330,18 @@ public class ShortLinkServiceImpl implements ShortLinkService {
     private boolean tryAcquireLock(String shortLinkCode, Long accountNo) {
         // lua script to acquire lock.
         String script = "if redis.call('EXISTS', KEYS[1]) == 0 then " +
-                        "redis.call('set', KEYS[1], ARGV[1]); " +
-                        "redis.call('expire', KEYS[1], ARGV[2]); " +
-                        "return 1; " +
-                        "elseif redis.call('get', KEYS[1]) == ARGV[1] then " +
-                        "return 2; " +
-                        "else " +
-                        "return 0; " +
-                        "end;";
+                "redis.call('set', KEYS[1], ARGV[1]); " +
+                "redis.call('expire', KEYS[1], ARGV[2]); " +
+                "return 1; " +
+                "elseif redis.call('get', KEYS[1]) == ARGV[1] then " +
+                "return 2; " +
+                "else " +
+                "return 0; " +
+                "end;";
 
-
-        Long result = redisTemplate.execute(
+        Long result = stringRedisTemplate.execute(
                 new DefaultRedisScript<>(script, Long.class),
-                Arrays.asList(shortLinkCode),
-                accountNo,
-                10);
+                Arrays.asList(shortLinkCode), accountNo.toString(), "10");
 
         return result > 0;
     }

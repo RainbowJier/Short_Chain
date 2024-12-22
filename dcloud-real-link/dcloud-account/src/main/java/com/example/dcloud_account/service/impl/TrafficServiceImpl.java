@@ -25,6 +25,7 @@ import com.example.dcloud_common.util.TimeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,7 +46,7 @@ public class TrafficServiceImpl implements TrafficService {
     private ProductFeignService productFeignService;
 
     @Resource
-    private RedisTemplate<Object, Object> redisTemplate;
+    private StringRedisTemplate stringRedisTemplate;
 
     /**
      * 流量包发放
@@ -91,7 +92,7 @@ public class TrafficServiceImpl implements TrafficService {
 
             // delete total traffics in the Redis.
             String totalTrafficTimesKey = String.format(RedisKey.DAY_TOTAL_TRAFFIC, accountNo);
-            redisTemplate.delete(totalTrafficTimesKey);
+            stringRedisTemplate.delete(totalTrafficTimesKey);
         }
 
         // 免费流量包
@@ -211,12 +212,9 @@ public class TrafficServiceImpl implements TrafficService {
         // store total traffic to Redis.
         long leftSeconds = TimeUtil.getRemainSecondsOneDay(new Date());
         String totalTrafficTimesKey = String.format(RedisKey.DAY_TOTAL_TRAFFIC, accountNo);
-        log.info("total traffic key : {}", totalTrafficTimesKey);
 
-
-        redisTemplate.opsForValue()
-                .set(totalTrafficTimesKey,
-                        useTrafficVo.getDayTotalLeftTimes() - 1,
+        stringRedisTemplate.opsForValue().set(totalTrafficTimesKey,
+                String.valueOf(useTrafficVo.getDayTotalLeftTimes() - 1),
                         leftSeconds,
                         TimeUnit.SECONDS);
 
