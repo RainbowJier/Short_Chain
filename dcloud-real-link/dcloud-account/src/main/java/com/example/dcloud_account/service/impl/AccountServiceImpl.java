@@ -68,11 +68,11 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
         String phone = accountRegisterRequest.getPhone();
         String code = accountRegisterRequest.getCode();
 
-        // 判断验证码是否正确
+        // check if the verification code is correct.
         if (StringUtil.isNotBlank(phone)) {
             checkCode = notifyService.checkCode(SendCodeEnum.USER_REGISTER, phone, code);
 
-            // 验证码错误
+            // incorrect.
             if (!checkCode) {
                 return JsonData.buildResult(BizCodeEnum.CODE_ERROR);
             }
@@ -81,32 +81,41 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
         Account account = new Account();
         BeanUtils.copyProperties(accountRegisterRequest, account);
 
-        // 生成账号唯一编号
+        // generate accountNo that is unique.
         account.setAccountNo((Long) IDUtil.generateSnowFlakeID());
-
-        // 设置用户级别
         account.setAuth(AuthTypeEnum.DEFAULT.name());
 
-        // 设置密码加密的“秘钥”
+        // set password salt.
         account.setSecret("$1$" + CommonUtil.getStringNumRandom(8));
+
+        // encrypt password.
         String encryptedPassword = Md5Crypt.md5Crypt(accountRegisterRequest.getPwd().getBytes(), account.getSecret());
-        // 设置加密后的密码
         account.setPwd(encryptedPassword);
 
-        // 新增用户
         try{
             int insertRow = accountManager.insert(account);
             if(insertRow < 1){
                 return JsonData.buildResult(BizCodeEnum.PHONE_REPEAT);
             }
-            log.info("rows:{}，注册成功：{}", insertRow, account);
+            log.info("rows:{}，register success：{}", insertRow, account);
 
-            // 用户注册成功，新用户发放免费流量包
+            // add free traffic for new user.
             userRegisterInitTask(account);
             return JsonData.buildSuccess();
         }catch (Exception e){
             throw new RuntimeException(BizCodeEnum.PHONE_REPEAT.getMessage());
         }
+    }
+
+    private void userRegisterInitTask(Account account) {
+        EventMessage eventMessage = EventMessage.builder()
+                .bizId(FREE_TRAFFIC_PRODUCT_ID.toString())
+                .accountNo(account.getAccountNo())
+                .eventMessageType(EventMessageType.TRAFFIC_FREE_INIT.name())
+                .build();
+
+        rabbitTemplate.convertAndSend(rabbitMQConfig.getTrafficEventExchange(),
+                rabbitMQConfig.getTrafficFreeInitRoutingKey(), eventMessage);
 
     }
 
@@ -146,20 +155,6 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
         }
     }
 
-    /**
-     * 用户注册，发放福利：流量包
-     */
-    private void userRegisterInitTask(Account account) {
-        EventMessage eventMessage = EventMessage.builder()
-                .bizId(FREE_TRAFFIC_PRODUCT_ID.toString())
-                .accountNo(account.getAccountNo())
-                .eventMessageType(EventMessageType.TRAFFIC_FREE_INIT.name())
-                .build();
 
-        // 发送消息到MQ
-        rabbitTemplate.convertAndSend(rabbitMQConfig.getTrafficEventExchange(),
-                rabbitMQConfig.getTrafficFreeInitRoutingKey(), eventMessage);
-
-    }
 
 }

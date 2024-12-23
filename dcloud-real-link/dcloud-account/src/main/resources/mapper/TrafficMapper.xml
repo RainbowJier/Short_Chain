@@ -26,6 +26,12 @@
           and (t.day_limit - t.day_used) >= #{dayUsed}
     </update>
 
+    <!--select random traffic.-->
+    <select id="selectRandomTraffics" resultType="com.example.dcloud_account.entity.Traffic"
+            parameterType="int">
+        select * from traffic
+        order by rand(#{randomCount})
+    </select>
 
 
 </mapper>

@@ -109,5 +109,11 @@ public class TrafficManagerImpl implements TrafficManager {
         return trafficMapper.update(null, updateWrapper);
     }
 
-
+    /**
+     * get random traffic list.
+     */
+    @Override
+    public List<Traffic> selectRandomTraffics(int randomCount) {
+        return trafficMapper.selectRandomTraffics(randomCount);
+    }
 }

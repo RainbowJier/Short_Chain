@@ -48,4 +48,9 @@ public interface TrafficManager {
      * batch update used times for traffic.
      */
     int batchUpdateUsedTimes(Long accountNo,List<Long> unUpdatedTrafficIds);
+
+    /**
+     * get random traffic list.
+     */
+    List<Traffic> selectRandomTraffics(int randomCount);
 }

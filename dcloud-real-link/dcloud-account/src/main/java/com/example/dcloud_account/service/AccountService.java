@@ -12,7 +12,7 @@ import com.example.dcloud_common.util.JsonData;
 public interface AccountService{
 
     /**
-     * 用户注册
+     * register
      */
     JsonData register(AccountRegisterRequest accountRegisterRequest);
 

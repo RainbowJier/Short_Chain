@@ -25,7 +25,9 @@ public class AccountController {
     private AccountService accountService;
 
     /**
-     * 注册接口
+     * register
+     * <p>
+     * register user will get the free traffic.
      */
     @PostMapping("register")
     public JsonData register(@RequestBody AccountRegisterRequest accountRegisterRequest){

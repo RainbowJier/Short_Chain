@@ -100,7 +100,6 @@ public class NotifyServiceImpl implements NotifyService {
         if(StringUtils.isNotBlank(cacheValue)){
             String cacheCode = cacheValue.split("_")[0];
             if(cacheCode.equalsIgnoreCase(code)){
-                // 删除验证码
                 redisTemplate.delete(cacheKey);
                 return true;
             }

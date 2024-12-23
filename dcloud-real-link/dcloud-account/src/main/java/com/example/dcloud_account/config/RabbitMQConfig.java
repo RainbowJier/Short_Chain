@@ -22,24 +22,27 @@ import java.util.Map;
 @Configuration
 public class RabbitMQConfig {
     /**
-     * 消息转换器，设置消息的序列化方式
+     * message converter，message serializer
      */
     @Bean
     public MessageConverter messageConverter() {
         return new Jackson2JsonMessageConverter();
     }
 
-    //================流量包处理：用户初始化福利==================================
-    private String trafficFreeInitRoutingKey = "traffic.free_init.routing.key";
-
+    /**
+     * exchange.
+     */
     private String trafficEventExchange = "traffic.event.exchange";
-
-    private String trafficFreeInitQueue = "traffic.free_init.queue";
 
     @Bean
     public TopicExchange trafficEventExchange(){
         return new TopicExchange(trafficEventExchange,true,false);
     }
+
+    //===============free traffic init queue==================================
+    private String trafficFreeInitRoutingKey = "traffic.free_init.routing.key";
+
+    private String trafficFreeInitQueue = "traffic.free_init.queue";
 
     @Bean
     public Queue trafficFreeInitQueue(){

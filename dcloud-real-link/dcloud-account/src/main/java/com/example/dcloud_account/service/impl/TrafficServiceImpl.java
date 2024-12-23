@@ -24,7 +24,6 @@ import com.example.dcloud_common.util.JsonUtil;
 import com.example.dcloud_common.util.TimeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,23 +85,23 @@ public class TrafficServiceImpl implements TrafficService {
                     .expiredDate(date)
                     .build();
 
-            // 新增流量包
+            // add traffic to db.
             int rows = trafficManager.add(traffic);
-            log.info("【流量包消费者】新增流量包:rows={},traffic={}", rows, traffic);
+            log.info("【purchase traffics】:rows={},traffic={}", rows, traffic);
 
             // delete total traffics in the Redis.
             String totalTrafficTimesKey = String.format(RedisKey.DAY_TOTAL_TRAFFIC, accountNo);
             stringRedisTemplate.delete(totalTrafficTimesKey);
         }
 
-        // 免费流量包
+        // free traffic init.
         if (messageType.equalsIgnoreCase(EventMessageType.TRAFFIC_FREE_INIT.name())) {
-            // 获取商品信息
+            // get free traffic product detail.
             long productId = Long.parseLong(eventMessage.getBizId());
             JsonData jsonData = productFeignService.detail(productId);
 
-            ProductVo productVo = jsonData.getData(new TypeReference<ProductVo>() {
-            });
+            ProductVo productVo = jsonData.getData(
+                    new TypeReference<ProductVo>() {});
 
             Traffic traffic = Traffic.builder()
                     .accountNo(accountNo)
@@ -121,62 +120,40 @@ public class TrafficServiceImpl implements TrafficService {
     }
 
     /**
-     * get available traffic list.
-     */
-    @Override
-    public Map<String, Object> pageAvailable(TrafficPageRequest request) {
-        int page = request.getPage();
-        int size = request.getSize();
-        Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
-
-        Page<Traffic> trafficPage = trafficManager.pageAvailable(page, size, accountNo);
-
-        // 流量包列表
-        List<Traffic> records = trafficPage.getRecords();
-
-        // 转为vo对象
-        List<TrafficVo> trafficVoList = new ArrayList<>();
-        for (Traffic traffic : records) {
-            TrafficVo trafficVo = new TrafficVo();
-            BeanUtils.copyProperties(traffic, trafficVo);
-            trafficVoList.add(trafficVo);
-        }
-
-        Map<String, Object> pageMap = new HashMap<>(3);
-        pageMap.put("total_record", trafficPage.getTotal()); // total records.
-        pageMap.put("total_page", trafficPage.getPages());   // total pages.
-        pageMap.put("current_data", trafficVoList);      // the current page data.
-
-        return pageMap;
-    }
-
-    /**
-     * 查询某个流量包的详情
-     */
-    @Override
-    public TrafficVo detail(long trafficId) {
-        Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
-        Traffic traffic = trafficManager.findByIdAndAccountNo(trafficId, accountNo);
-
-        // 转为vo对象
-        TrafficVo trafficVo = new TrafficVo();
-        BeanUtils.copyProperties(traffic, trafficVo);
-        return trafficVo;
-    }
-
-
-    /**
-     * delete expired traffic
+     * todo:delete expired traffic
      * 1. get a part of traffic list randomly.
      * 2. check if the traffic is expired.
      * 3. delete expired traffic.
-     * 4. if more than 25% of the traffics are expired, start again from step 1.
+     * 4. if more than 30% of the traffics are expired, start again from step 1.
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean deleteExpiredTraffic() {
+        List<Long> trafficList = new ArrayList<>();
+        int expiredTrafficCount = 0;
+
+        // get 50 traffics randomly.
+        int randomCount = 50;
+        List<Traffic> list = trafficManager.selectRandomTraffics(randomCount);
+
+        // check if the traffic is expired.
+        for(Traffic traffic : list){
+            Date expiredDate = traffic.getExpiredDate();
+            Long id = traffic.getId();
+            if(expiredDate.before(new Date())){
+                trafficList.add(id);
+                expiredTrafficCount++;
+            }
+        }
+
+        // delete expired traffic.
         int count = trafficManager.deleteExpiredTraffic();
         log.info("【Schedule Tasks】 Delete expired traffics :count={}", count);
+
+        // if more than 30% of traffics are expired, get random traffic again.
+        if(expiredTrafficCount > randomCount * 0.3){
+            deleteExpiredTraffic();
+        }
 
         return false;
     }
@@ -215,11 +192,16 @@ public class TrafficServiceImpl implements TrafficService {
 
         stringRedisTemplate.opsForValue().set(totalTrafficTimesKey,
                 String.valueOf(useTrafficVo.getDayTotalLeftTimes() - 1),
-                        leftSeconds,
-                        TimeUnit.SECONDS);
+                leftSeconds,
+                TimeUnit.SECONDS);
 
         return JsonData.buildSuccess();
     }
+
+
+
+
+
 
     /**
      * get not-updated traffic and current used traffic.
@@ -266,5 +248,48 @@ public class TrafficServiceImpl implements TrafficService {
         return new UseTrafficVo(dayTotalLeftTimes, currentTraffic, unUpdatedTrafficIds);
     }
 
+    /**
+     * query available traffic list.
+     */
+    @Override
+    public Map<String, Object> pageAvailable(TrafficPageRequest request) {
+        int page = request.getPage();
+        int size = request.getSize();
+        Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
+
+        Page<Traffic> trafficPage = trafficManager.pageAvailable(page, size, accountNo);
+
+        // 流量包列表
+        List<Traffic> records = trafficPage.getRecords();
+
+        // 转为vo对象
+        List<TrafficVo> trafficVoList = new ArrayList<>();
+        for (Traffic traffic : records) {
+            TrafficVo trafficVo = new TrafficVo();
+            BeanUtils.copyProperties(traffic, trafficVo);
+            trafficVoList.add(trafficVo);
+        }
+
+        Map<String, Object> pageMap = new HashMap<>(3);
+        pageMap.put("total_record", trafficPage.getTotal()); // total records.
+        pageMap.put("total_page", trafficPage.getPages());   // total pages.
+        pageMap.put("current_data", trafficVoList);      // the current page data.
+
+        return pageMap;
+    }
+
+    /**
+     * get traffic detail.
+     */
+    @Override
+    public TrafficVo detail(long trafficId) {
+        Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
+        Traffic traffic = trafficManager.findByIdAndAccountNo(trafficId, accountNo);
+
+        // 转为vo对象
+        TrafficVo trafficVo = new TrafficVo();
+        BeanUtils.copyProperties(traffic, trafficVo);
+        return trafficVo;
+    }
 
 }

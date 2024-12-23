@@ -5,6 +5,8 @@ import com.example.dcloud_account.entity.Traffic;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 
 @Mapper
 public interface TrafficMapper extends BaseMapper<Traffic> {
@@ -14,6 +16,8 @@ public interface TrafficMapper extends BaseMapper<Traffic> {
      */
     int addDayUsedTimes(Traffic traffic);
 
-
-
+    /**
+     * select random traffic
+     */
+    List<Traffic> selectRandomTraffics(int randomCount);
 }
