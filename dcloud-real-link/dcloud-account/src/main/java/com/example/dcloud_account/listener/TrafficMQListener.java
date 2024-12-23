@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RabbitListener(queuesToDeclare = {
-        @Queue("order.traffic.queue"),        // 订单流量队列
+        @Queue("order.traffic.queue"),        // 发放流量包队列
         @Queue("traffic.free_init.queue")   // 免费流量初始化队列
 })
 public class TrafficMQListener {

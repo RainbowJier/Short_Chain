@@ -49,7 +49,7 @@ public class TrafficServiceImpl implements TrafficService {
     private StringRedisTemplate stringRedisTemplate;
 
     /**
-     * 流量包发放
+     * add traffic.
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -222,7 +222,7 @@ public class TrafficServiceImpl implements TrafficService {
     }
 
     /**
-     * get non updated traffic and current used traffic.
+     * get not-updated traffic and current used traffic.
      */
     private UseTrafficVo getUseTrafficVo(Long accountNo) {
         // get valid traffic list by accountNo.

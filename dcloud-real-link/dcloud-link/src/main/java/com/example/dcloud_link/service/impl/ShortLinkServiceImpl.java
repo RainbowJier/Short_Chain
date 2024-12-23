@@ -65,11 +65,6 @@ public class ShortLinkServiceImpl implements ShortLinkService {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
-
-    @Resource
-    private RedisTemplate<Object, Object> redisTemplate;
-
-
     /**
      * B 端-分页查找分组下的短链
      */
@@ -91,7 +86,6 @@ public class ShortLinkServiceImpl implements ShortLinkService {
             return null;
         }
 
-        // 拷贝属性
         ShortLinkVo shortLinkVo = new ShortLinkVo();
         BeanUtils.copyProperties(shortLink, shortLinkVo);
 
@@ -133,20 +127,22 @@ public class ShortLinkServiceImpl implements ShortLinkService {
                     .eventMessageType(EventMessageType.SHORT_LINK_ADD.name())
                     .build();
 
+            // send message to create short link.
             rabbitTemplate.convertAndSend(
                     rabbitMQConfig.getShortLinkEventExchange(),   // 交换机名称
                     rabbitMQConfig.getShortLinkAddRoutingKey(),   // 消息对象的 routing key
                     eventMessage                                  // 消息对象
             );
+
+            // respond success to user.
             return JsonData.buildSuccess();
         } else {
             return JsonData.buildResult(BizCodeEnum.TRAFFIC_REDUCE_FAIL);
         }
-
     }
 
     /**
-     * 【删除】短链，发送删除消息到 RabbitMQ.
+     * delete short link and send message to RabbitMQ.
      */
     @Override
     public JsonData delShortLink(ShortLinkDelRequest request) {
@@ -193,8 +189,6 @@ public class ShortLinkServiceImpl implements ShortLinkService {
     }
 
 
-    // -------------------------- 以下为 RabbitMQ 消息处理 --------------------
-
     /**
      * 处理【新增】短链消息
      * 1. 判断短链域名是否合法（这里不写）
@@ -212,16 +206,16 @@ public class ShortLinkServiceImpl implements ShortLinkService {
 
         String eventMessageType = eventMessage.getEventMessageType();
 
-        // 解析消息内容
+        // parse the message content.
         ShortLinkAddRequest addRequest = JsonUtil.jsonStrToObj(eventMessage.getContent(), ShortLinkAddRequest.class);
 
-        // 域名
+        // domain
 
         // check if the group name is valid.
         Long groupId = addRequest.getGroupId();
         LinkGroup linkGroup = checkLinkGroup(accountNo, groupId);
 
-        // 生成长链摘要（原始链接加密）
+        // encrypt OriginalUrl
         String originalUrl = addRequest.getOriginalUrl();
         String originalUrlDigest = CommonUtil.MD5(originalUrl);
 
@@ -289,7 +283,7 @@ public class ShortLinkServiceImpl implements ShortLinkService {
                 }
             }
         }
-        // 加锁失败
+        // acquire lock failed.
         else {
             log.error("加锁失败{}", eventMessage);
             // 短链码重复,导致加锁失败
@@ -324,7 +318,7 @@ public class ShortLinkServiceImpl implements ShortLinkService {
         handlerAddShortLink(eventMessage);
     }
 
-    // 加锁
+    // Acquire lock.
     private boolean tryAcquireLock(String shortLinkCode, Long accountNo) {
         // lua script to acquire lock.
         String script = "if redis.call('EXISTS', KEYS[1]) == 0 then " +
@@ -344,7 +338,7 @@ public class ShortLinkServiceImpl implements ShortLinkService {
         return result > 0;
     }
 
-    // 检查组名是否合法
+    // check if the group name is valid.
     private LinkGroup checkLinkGroup(Long accountNo, Long groupId) {
         LinkGroup linkGroup = linkGroupManager.detail(groupId, accountNo);
         Assert.notNull(linkGroup, "Group name is not valid.");

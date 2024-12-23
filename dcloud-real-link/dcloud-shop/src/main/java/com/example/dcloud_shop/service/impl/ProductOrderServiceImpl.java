@@ -24,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,7 +61,7 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     private PayFactory payFactory;
 
     @Autowired
-    private RedisTemplate<Object, Object> redisTemplate;
+    private StringRedisTemplate stringRedisTemplate;
 
     /**
      * 分页查询
@@ -251,8 +252,9 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         if (payType.name().equalsIgnoreCase(ProductOrderPayTypeEnum.WECHAT_PAY.name())) {
             if ("SUCCESS".equalsIgnoreCase(tradeState)) {
                 //如果key不存在，则设置成功，返回true
-                Boolean flag = redisTemplate.opsForValue().setIfAbsent(outTradeNo, "OK", 3, TimeUnit.DAYS);
+                Boolean flag = stringRedisTemplate.opsForValue().setIfAbsent(outTradeNo, "OK", 3, TimeUnit.DAYS);
 
+                // 更新订单状态、发放流量包
                 if (Boolean.TRUE.equals(flag)) {
                     rabbitTemplate.convertAndSend(rabbitMQConfig.getOrderEventExchange(),
                             rabbitMQConfig.getOrderUpdateTrafficRoutingKey(), eventMessage);
