@@ -101,7 +101,8 @@ public class TrafficServiceImpl implements TrafficService {
             JsonData jsonData = productFeignService.detail(productId);
 
             ProductVo productVo = jsonData.getData(
-                    new TypeReference<ProductVo>() {});
+                    new TypeReference<ProductVo>() {
+                    });
 
             Traffic traffic = Traffic.builder()
                     .accountNo(accountNo)
@@ -129,34 +130,49 @@ public class TrafficServiceImpl implements TrafficService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean deleteExpiredTraffic() {
-        List<Long> trafficList = new ArrayList<>();
-        int expiredTrafficCount = 0;
+        try {
+            List<Long> trafficList = new ArrayList<>();
+            int expiredTrafficCount = 0;
 
-        // get 50 traffics randomly.
-        int randomCount = 50;
-        List<Traffic> list = trafficManager.selectRandomTraffics(randomCount);
+            // get 20 traffics randomly.
+            int randomCount = 20;
+            List<Traffic> list = trafficManager.selectRandomTraffics(randomCount);
 
-        // check if the traffic is expired.
-        for(Traffic traffic : list){
-            Date expiredDate = traffic.getExpiredDate();
-            Long id = traffic.getId();
-            if(expiredDate.before(new Date())){
-                trafficList.add(id);
-                expiredTrafficCount++;
+            // check if the traffic is expired.
+            for (Traffic traffic : list) {
+                Date expiredDate = traffic.getExpiredDate();
+                Long id = traffic.getId();
+                if (expiredDate.before(new Date())) {
+                    trafficList.add(id);
+                    expiredTrafficCount++;
+                }
             }
+
+            // delete expired traffic.
+            //int count = trafficManager.deleteExpiredTraffic();
+            log.info("Total traffic count = {}", randomCount);
+            log.info("Total expired traffic count = {}", expiredTrafficCount);
+            Double expiredTrafficRate = (double) expiredTrafficCount / randomCount;
+            log.info("Expired = {}%", expiredTrafficRate*100);
+
+            // delete expired traffic.
+            if(expiredTrafficCount > 0){
+                trafficManager.deleteExpiredTraffic(trafficList);
+            }
+
+            // if more than 30% of traffics are expired, get random traffic again.
+            if (expiredTrafficRate >  0.3) {
+                log.info("More than 30% of traffics are expired, get random traffic and delete again.");
+                deleteExpiredTraffic();
+            }
+
+            return true;
+        }catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
-
-        // delete expired traffic.
-        int count = trafficManager.deleteExpiredTraffic();
-        log.info("【Schedule Tasks】 Delete expired traffics :count={}", count);
-
-        // if more than 30% of traffics are expired, get random traffic again.
-        if(expiredTrafficCount > randomCount * 0.3){
-            deleteExpiredTraffic();
-        }
-
-        return false;
     }
+
 
     /**
      * reduce traffic.
@@ -197,10 +213,6 @@ public class TrafficServiceImpl implements TrafficService {
 
         return JsonData.buildSuccess();
     }
-
-
-
-
 
 
     /**

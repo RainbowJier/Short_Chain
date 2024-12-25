@@ -27,10 +27,10 @@
     </update>
 
     <!--select random traffic.-->
-    <select id="selectRandomTraffics" resultType="com.example.dcloud_account.entity.Traffic"
-            parameterType="int">
+    <select id="selectRandomTraffics" resultMap="TrafficMap">
         select * from traffic
-        order by rand(#{randomCount})
+        order by rand()
+        limit #{randomCount}
     </select>
 
 

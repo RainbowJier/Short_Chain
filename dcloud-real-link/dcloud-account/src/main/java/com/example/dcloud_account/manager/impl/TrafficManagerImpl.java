@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -57,9 +56,10 @@ public class TrafficManagerImpl implements TrafficManager {
      * delete expired traffic.
      */
     @Override
-    public int deleteExpiredTraffic() {
+    public int deleteExpiredTraffic(List<Long> trafficList) {
         LambdaQueryWrapper<Traffic> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.le(Traffic::getExpiredDate, TimeUtil.format(new Date(), "yyyy-MM-dd"));
+        queryWrapper.le(Traffic::getExpiredDate, TimeUtil.format(new Date(), "yyyy-MM-dd"))
+                .in(Traffic::getId, trafficList);
 
         return trafficMapper.delete(queryWrapper);
     }

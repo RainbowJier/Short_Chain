@@ -15,26 +15,28 @@ import javax.annotation.Resource;
  * @Version: 1.0
  */
 
-@Component
 @Slf4j
-public class MyJobHandler {
+@Component
+public class TrafficJobHandler {
+
     @Resource
     private TrafficService trafficService;
 
+    private void init() {
+        log.info("【TrafficJobHandler】 init >>>>>");
+    }
+
     @XxlJob(value = "trafficExpiredHandler", init = "init", destroy = "destroy")
     public ReturnT<String> execute(String param) {
-        log.info("【trafficExpiredHandler】 execute success >>>>>");
+        log.info("=================【trafficExpiredHandler】=================");
+        log.info("=================Start execute=================");
         trafficService.deleteExpiredTraffic();
-
+        log.info("=================End execute=================");
         return ReturnT.SUCCESS;
     }
 
-    private void init() {
-        log.info("【账号执行器】 MyJobHandler init >>>>>");
-    }
-
     private void destroy() {
-        log.info("【账号执行器】 MyJobHandler destroy>>>>>");
+        log.info("【TrafficJobHandler】destroy>>>>>");
     }
 }
 
