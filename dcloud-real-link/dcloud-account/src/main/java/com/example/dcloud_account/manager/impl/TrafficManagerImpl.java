@@ -56,9 +56,10 @@ public class TrafficManagerImpl implements TrafficManager {
      * delete expired traffic.
      */
     @Override
-    public int deleteExpiredTraffic() {
+    public int deleteExpiredTraffic(List<Long> trafficList) {
         LambdaQueryWrapper<Traffic> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.le(Traffic::getExpiredDate, TimeUtil.format(new Date(), "yyyy-MM-dd"));
+        queryWrapper.le(Traffic::getExpiredDate, TimeUtil.format(new Date(), "yyyy-MM-dd"))
+                .in(Traffic::getId, trafficList);
 
         return trafficMapper.delete(queryWrapper);
     }

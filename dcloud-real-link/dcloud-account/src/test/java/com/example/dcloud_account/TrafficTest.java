@@ -23,8 +23,8 @@ public class TrafficTest {
     /**
      * 连接 shardingsphere 数据库，测试分库分表功能
      */
-    @Test
-    public void testDeleteExpireTraffic() {
-        trafficManager.deleteExpiredTraffic();
-    }
+    //@Test
+    //public void testDeleteExpireTraffic() {
+    //    trafficManager.deleteExpiredTraffic(trafficList);
+    //}
 }

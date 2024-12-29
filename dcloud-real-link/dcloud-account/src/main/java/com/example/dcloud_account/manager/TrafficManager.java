@@ -32,7 +32,7 @@ public interface TrafficManager {
     /**
      * delete expired traffic.
      */
-    int deleteExpiredTraffic();
+    int deleteExpiredTraffic(List<Long> trafficList);
 
     /**
      * add used times for traffic in one day.
