@@ -5,11 +5,11 @@ import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.dcloud_account.controller.request.TrafficPageRequest;
 import com.example.dcloud_account.controller.request.UseTrafficRequest;
-import com.example.dcloud_account.entity.Product;
-import com.example.dcloud_account.entity.Traffic;
-import com.example.dcloud_account.entity.vo.ProductVo;
-import com.example.dcloud_account.entity.vo.TrafficVo;
-import com.example.dcloud_account.entity.vo.UseTrafficVo;
+import com.example.dcloud_account.model.entity.Product;
+import com.example.dcloud_account.model.entity.Traffic;
+import com.example.dcloud_account.model.vo.ProductVo;
+import com.example.dcloud_account.model.vo.TrafficVo;
+import com.example.dcloud_account.model.vo.UseTrafficVo;
 import com.example.dcloud_account.feign.ProductFeignService;
 import com.example.dcloud_account.manager.TrafficManager;
 import com.example.dcloud_account.service.TrafficService;
@@ -72,7 +72,6 @@ public class TrafficServiceImpl implements TrafficService {
             LocalDateTime expiredDateTime = LocalDateTime.now().plusDays(product.getValidDay());
             Date date = Date.from(expiredDateTime.atZone(ZoneId.systemDefault()).toInstant());
 
-            // 构建流量包对象
             Traffic traffic = Traffic.builder()
                     .accountNo(accountNo)
                     .dayLimit(product.getDayTimes() * buyNum)
@@ -120,7 +119,7 @@ public class TrafficServiceImpl implements TrafficService {
     }
 
     /**
-     * todo:delete expired traffic
+     * delete expired traffic
      * 1. get a part of traffic list randomly.
      * 2. check if the traffic is expired.
      * 3. delete expired traffic.
@@ -132,7 +131,6 @@ public class TrafficServiceImpl implements TrafficService {
         List<Long> trafficList = new ArrayList<>();
         int expiredTrafficCount = 0;
 
-        // get 50 traffics randomly.
         int randomCount = 50;
         List<Traffic> list = trafficManager.selectRandomTraffics(randomCount);
 
@@ -146,7 +144,6 @@ public class TrafficServiceImpl implements TrafficService {
             }
         }
 
-        // delete expired traffic.
         int count = trafficManager.deleteExpiredTraffic();
         log.info("【Schedule Tasks】 Delete expired traffics :count={}", count);
 
@@ -186,6 +183,10 @@ public class TrafficServiceImpl implements TrafficService {
             throw new BizException(BizCodeEnum.TRAFFIC_REDUCE_FAIL);
         }
 
+        // todo:add traffic task.
+
+
+
         // store total traffic to Redis.
         long leftSeconds = TimeUtil.getRemainSecondsOneDay(new Date());
         String totalTrafficTimesKey = String.format(RedisKey.DAY_TOTAL_TRAFFIC, accountNo);
@@ -197,10 +198,6 @@ public class TrafficServiceImpl implements TrafficService {
 
         return JsonData.buildSuccess();
     }
-
-
-
-
 
 
     /**

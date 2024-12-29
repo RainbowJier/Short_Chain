@@ -2,7 +2,7 @@ package com.example.dcloud_account.controller;
 
 import com.example.dcloud_account.controller.request.TrafficPageRequest;
 import com.example.dcloud_account.controller.request.UseTrafficRequest;
-import com.example.dcloud_account.entity.vo.TrafficVo;
+import com.example.dcloud_account.model.vo.TrafficVo;
 import com.example.dcloud_account.service.TrafficService;
 import com.example.dcloud_common.util.JsonData;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.Map;
 
 /**

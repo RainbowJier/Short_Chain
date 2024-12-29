@@ -3,7 +3,7 @@ package com.example.dcloud_account.manager.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.dcloud_account.entity.Traffic;
+import com.example.dcloud_account.model.entity.Traffic;
 import com.example.dcloud_account.manager.TrafficManager;
 import com.example.dcloud_account.mapper.TrafficMapper;
 import com.example.dcloud_common.util.TimeUtil;
@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 

@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @Slf4j
 @EnableAsync     // Enable asynchronous method.
-public class DcloudAccountApplication {
+public class AccountApplication {
 
     public static final String BANNER = "\n" +
             "   _____   _    _    _____    _____   ______    _____    _____ \n" +
@@ -30,7 +30,7 @@ public class DcloudAccountApplication {
             "                                                               \n";
 
     public static void main(String[] args) {
-        SpringApplication.run(DcloudAccountApplication.class, args);
+        SpringApplication.run(AccountApplication.class, args);
         log.info(BANNER);
     }
 }

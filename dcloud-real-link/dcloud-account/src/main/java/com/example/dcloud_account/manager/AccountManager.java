@@ -1,7 +1,7 @@
 package com.example.dcloud_account.manager;
 
 
-import com.example.dcloud_account.entity.Account;
+import com.example.dcloud_account.model.entity.Account;
 
 import java.util.List;
 

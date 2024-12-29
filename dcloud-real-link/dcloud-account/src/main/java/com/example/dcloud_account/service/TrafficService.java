@@ -3,7 +3,7 @@ package com.example.dcloud_account.service;
 
 import com.example.dcloud_account.controller.request.TrafficPageRequest;
 import com.example.dcloud_account.controller.request.UseTrafficRequest;
-import com.example.dcloud_account.entity.vo.TrafficVo;
+import com.example.dcloud_account.model.vo.TrafficVo;
 import com.example.dcloud_common.entity.EventMessage;
 import com.example.dcloud_common.util.JsonData;
 

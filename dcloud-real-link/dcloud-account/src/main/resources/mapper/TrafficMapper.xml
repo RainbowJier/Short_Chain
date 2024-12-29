@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.dcloud_account.mapper.TrafficMapper">
 
-    <resultMap type="com.example.dcloud_account.entity.Traffic" id="TrafficMap">
+    <resultMap type="com.example.dcloud_account.model.entity.Traffic" id="TrafficMap">
         <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="dayLimit" column="day_limit" jdbcType="INTEGER"/>
         <result property="dayUsed" column="day_used" jdbcType="INTEGER"/>
@@ -18,7 +18,7 @@
     </resultMap>
 
     <!--add day used times.-->
-    <update id="addDayUsedTimes" parameterType="com.example.dcloud_account.entity.Traffic">
+    <update id="addDayUsedTimes" parameterType="com.example.dcloud_account.model.entity.Traffic">
         update traffic t
         set t.day_used = t.day_used + #{dayUsed}
         where t.id = #{id}
@@ -27,7 +27,7 @@
     </update>
 
     <!--select random traffic.-->
-    <select id="selectRandomTraffics" resultType="com.example.dcloud_account.entity.Traffic"
+    <select id="selectRandomTraffics" resultType="com.example.dcloud_account.model.entity.Traffic"
             parameterType="int">
         select * from traffic
         order by rand(#{randomCount})

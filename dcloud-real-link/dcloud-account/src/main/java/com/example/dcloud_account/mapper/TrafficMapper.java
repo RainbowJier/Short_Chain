@@ -1,9 +1,8 @@
 package com.example.dcloud_account.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.dcloud_account.entity.Traffic;
+import com.example.dcloud_account.model.entity.Traffic;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 

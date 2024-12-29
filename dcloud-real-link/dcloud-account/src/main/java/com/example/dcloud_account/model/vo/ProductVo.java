@@ -1,4 +1,4 @@
-package com.example.dcloud_account.entity.vo;
+package com.example.dcloud_account.model.vo;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

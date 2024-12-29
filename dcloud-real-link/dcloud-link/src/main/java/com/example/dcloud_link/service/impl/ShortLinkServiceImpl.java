@@ -206,7 +206,6 @@ public class ShortLinkServiceImpl implements ShortLinkService {
 
         String eventMessageType = eventMessage.getEventMessageType();
 
-        // parse the message content.
         ShortLinkAddRequest addRequest = JsonUtil.jsonStrToObj(eventMessage.getContent(), ShortLinkAddRequest.class);
 
         // domain

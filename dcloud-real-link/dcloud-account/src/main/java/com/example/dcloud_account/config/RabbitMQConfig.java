@@ -35,8 +35,8 @@ public class RabbitMQConfig {
     private String trafficEventExchange = "traffic.event.exchange";
 
     @Bean
-    public TopicExchange trafficEventExchange(){
-        return new TopicExchange(trafficEventExchange,true,false);
+    public TopicExchange trafficEventExchange() {
+        return new TopicExchange(trafficEventExchange, true, false);
     }
 
     //===============free traffic init queue==================================
@@ -45,18 +45,60 @@ public class RabbitMQConfig {
     private String trafficFreeInitQueue = "traffic.free_init.queue";
 
     @Bean
-    public Queue trafficFreeInitQueue(){
-        return new Queue(trafficFreeInitQueue,true,false,false);
+    public Queue trafficFreeInitQueue() {
+        return new Queue(trafficFreeInitQueue, true, false, false);
     }
 
     @Bean
-    public Binding trafficFreeInitBinding(){
+    public Binding trafficFreeInitBinding() {
         return BindingBuilder.bind(trafficFreeInitQueue()).to(trafficEventExchange())
                 .with(trafficFreeInitRoutingKey);
     }
 
 
+    //===============traffic reduction delay queue===================================
+    // delay exchange --> delay queue --> release.queue 延迟队列，不能被监听消费
 
+    /**
+     * delayer time, unit: milliseconds
+     */
+    private Integer ttl = 60000;
+
+    private String trafficReleaseDelayRoutingKey = "traffic.release.delay.routing.key";
+
+    private String trafficReleaseDelayQueue = "traffic.release.delay.queue";
+
+    @Bean
+    public Queue trafficReleaseDelayQueue() {
+        Map<String, Object> args = new HashMap<>(3);
+        args.put("x-message-ttl", ttl);
+        args.put("x-dead-letter-exchange", trafficEventExchange);
+        args.put("x-dead-letter-routing-key", trafficReleaseRoutingKey);
+
+        return new Queue(trafficReleaseDelayQueue, true, false, false, args);
+    }
+
+    @Bean
+    public Binding trafficReleaseDelayBinding() {
+        return BindingBuilder.bind(trafficReleaseDelayQueue()).to(trafficEventExchange())
+                .with(trafficReleaseDelayRoutingKey);
+    }
+
+
+    private String trafficReleaseRoutingKey = "traffic.release.routing.key";
+
+    private String trafficReleaseQueue = "traffic.release.queue";
+
+    @Bean
+    public Queue trafficReleaseQueue() {
+        return new Queue(trafficReleaseQueue, true, false, false);
+    }
+
+    @Bean
+    public Binding trafficReleaseBinding() {
+        return BindingBuilder.bind(trafficReleaseQueue()).to(trafficEventExchange())
+               .with(trafficReleaseRoutingKey);
+    }
 
 
 }

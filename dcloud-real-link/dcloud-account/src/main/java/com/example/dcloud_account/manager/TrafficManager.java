@@ -1,7 +1,7 @@
 package com.example.dcloud_account.manager;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.dcloud_account.entity.Traffic;
+import com.example.dcloud_account.model.entity.Traffic;
 
 import java.util.List;
 

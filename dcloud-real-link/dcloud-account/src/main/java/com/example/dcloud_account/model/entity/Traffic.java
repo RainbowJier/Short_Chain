@@ -1,4 +1,4 @@
-package com.example.dcloud_account.entity;
+package com.example.dcloud_account.model.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;

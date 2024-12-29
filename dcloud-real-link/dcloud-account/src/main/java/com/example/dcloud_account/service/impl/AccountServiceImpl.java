@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.dcloud_account.config.RabbitMQConfig;
 import com.example.dcloud_account.controller.request.AccountLoginRequest;
 import com.example.dcloud_account.controller.request.AccountRegisterRequest;
-import com.example.dcloud_account.entity.Account;
+import com.example.dcloud_account.model.entity.Account;
 import com.example.dcloud_account.manager.AccountManager;
 import com.example.dcloud_account.mapper.AccountMapper;
 import com.example.dcloud_account.service.AccountService;

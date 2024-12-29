@@ -1,6 +1,6 @@
-package com.example.dcloud_account.entity.vo;
+package com.example.dcloud_account.model.vo;
 
-import com.example.dcloud_account.entity.Traffic;
+import com.example.dcloud_account.model.entity.Traffic;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

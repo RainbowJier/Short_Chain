@@ -327,7 +327,7 @@
                     <option name="comment" value="Unique identifier" />
                     <option name="custom" value="false" />
                     <option name="ext" value="{}" />
-                    <option name="name" value="messageId" />
+                    <option name="name" value="bizId" />
                     <option name="type" value="java.lang.String" />
                   </ColumnInfoDTO>
                   <ColumnInfoDTO>
@@ -349,7 +349,7 @@
               <option name="saveModelName" value="dcloud-account" />
               <option name="savePackageName" value="" />
               <option name="savePath" value="./dcloud-real-link/dcloud-account/src/main/java" />
-              <option name="templateGroupName" value="" />
+              <option name="templateGroupName" value="MybatisPlus-Mixed" />
             </TableInfoDTO>
           </value>
         </entry>
