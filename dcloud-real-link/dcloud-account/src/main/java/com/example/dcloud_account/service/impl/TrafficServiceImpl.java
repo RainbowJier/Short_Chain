@@ -144,7 +144,7 @@ public class TrafficServiceImpl implements TrafficService {
             }
         }
 
-        int count = trafficManager.deleteExpiredTraffic();
+        int count = trafficManager.deleteExpiredTraffic(trafficList);
         log.info("【Schedule Tasks】 Delete expired traffics :count={}", count);
 
         // if more than 30% of traffics are expired, get random traffic again.
