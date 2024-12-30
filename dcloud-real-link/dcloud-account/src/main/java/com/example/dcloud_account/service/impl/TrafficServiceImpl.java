@@ -356,6 +356,4 @@ public class TrafficServiceImpl implements TrafficService {
         }
     }
 
-
-
 }
