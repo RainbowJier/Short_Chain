@@ -30,9 +30,6 @@ public class SmsComponent {
 
     /**
      * Send verification code by SMS.
-     * @param to : Phone number
-     * @param templateId : SMS template ID
-     * @param value : Verification code
      */
     @Async("threadPoolTaskExecutor")
     public void send(String to, String templateId,String value) {

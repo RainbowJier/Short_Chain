@@ -21,12 +21,17 @@ import java.util.Map;
 @Data
 public class RabbitMQConfig {
     /**
-     * 过期时间，60秒，单位：毫秒
+     * expired time = 1 minute, unit: milliseconds
      */
-    private Integer ttl = 1000 * 60;
+    private Integer ttl = 1000 * 60 * 1;
+
+    @Bean
+    public MessageConverter messageConverter() {
+        return new Jackson2JsonMessageConverter();
+    }
 
     /**
-     * --------------交换机----------------
+     * Exchange.
      */
     private String orderEventExchange = "order.event.exchange";
 
@@ -35,9 +40,7 @@ public class RabbitMQConfig {
         return new TopicExchange(orderEventExchange, true, false);
     }
 
-    /**
-     * 死信队列
-     */
+    //=============Failed to pay and close order===================
     private String orderCloseQueue = "order.close.queue";
 
     private String orderCloseRoutingKey = "order.close.routing.key";
@@ -54,28 +57,20 @@ public class RabbitMQConfig {
                 .with(orderCloseRoutingKey);
     }
 
-    /**
-     * 延迟队列
-     */
     private String orderCloseDelayQueue = "order.close.delay.queue";
 
     private String orderCloseDelayRoutingKey = "order.close.delay.routing.key";
 
-    /**
-     * 设置消息的过期时间，单位：毫秒
-     * 过期后，使用指定的routing key，将消息发送到指定的交换机
-     */
     @Bean
     public Queue orderCloseDelayQueue() {
         Map<String, Object> arguments = new HashMap<>(3);
-        arguments.put("x-dead-letter-exchange", orderEventExchange);  // 死信交换机
-        arguments.put("x-dead-letter-routing-key", orderCloseRoutingKey); // 死信路由键
-        arguments.put("x-message-ttl", ttl);    // 过期时间
+        arguments.put("x-dead-letter-exchange", orderEventExchange);
+        arguments.put("x-dead-letter-routing-key", orderCloseRoutingKey);
+        arguments.put("x-message-ttl", ttl);
 
         return new Queue(orderCloseDelayQueue, true, false, false, arguments);
     }
 
-    // 交换机绑定队列
     @Bean
     public Binding orderCloseDelayBinding() {
         return BindingBuilder.bind(orderCloseDelayQueue())
@@ -83,24 +78,9 @@ public class RabbitMQConfig {
                 .with(orderCloseDelayRoutingKey);
     }
 
-    /**
-     * 消息转换器，设置消息的序列化方式
-     */
-    @Bean
-    public MessageConverter messageConverter() {
-        return new Jackson2JsonMessageConverter();
-    }
-
-
-    //=============订单支付成功配置===================
-    /**
-     * 支付成功后routing key
-     */
+    //=============Payment Success and update traffic status==================
     private String orderUpdateTrafficRoutingKey = "order.update.traffic.routing.key";
 
-    /**
-     * 更新订单 队列
-     */
     private String orderUpdateQueue = "order.update.queue";
 
     private String orderUpdateBindingKey = "order.update.*.routing.key";
@@ -117,9 +97,6 @@ public class RabbitMQConfig {
                 .with(orderUpdateBindingKey);
     }
 
-    /**
-     * 订单发放流量包 队列
-     */
     private String orderTrafficQueue = "order.traffic.queue";
 
     private String orderTrafficBindingKey = "order.*.traffic.routing.key";

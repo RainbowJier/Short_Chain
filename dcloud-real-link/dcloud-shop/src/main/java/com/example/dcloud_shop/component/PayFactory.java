@@ -1,15 +1,12 @@
 package com.example.dcloud_shop.component;
 
 import com.example.dcloud_common.enums.ProductOrderPayTypeEnum;
-import com.example.dcloud_shop.entity.vo.PayInfoVo;
+import com.example.dcloud_shop.model.vo.PayInfoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
-/**
- * 简单工厂模式，创建支付策略
- */
 @Component
 @Slf4j
 public class PayFactory {
@@ -20,19 +17,13 @@ public class PayFactory {
     @Autowired
     private WechatPayStrategy wechatPayStrategy;
 
-    /**
-     * 创建支付，简单工厂模式
-     */
     public String pay(PayInfoVo payInfoVo){
-        // 支付类型
         String payType = payInfoVo.getPayType();
 
-        //支付宝支付
         if (ProductOrderPayTypeEnum.ALI_PAY.name().equals(payType)) {
             PayStrategyContext payStrategyContext = new PayStrategyContext(aliPayStrategy);
             return payStrategyContext.executeUnifiedOrder(payInfoVo);
         }
-        //微信支付
         else if(ProductOrderPayTypeEnum.WECHAT_PAY.name().equals(payType)){
             PayStrategyContext payStrategyContext = new PayStrategyContext(wechatPayStrategy);
             return payStrategyContext.executeUnifiedOrder(payInfoVo);

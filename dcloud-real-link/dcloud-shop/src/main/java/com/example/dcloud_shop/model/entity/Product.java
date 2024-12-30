@@ -1,4 +1,4 @@
-package com.example.dcloud_shop.entity;
+package com.example.dcloud_shop.model.entity;
 
 import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.TableName;

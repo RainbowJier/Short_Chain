@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
@@ -28,32 +29,27 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/api/order/v1")
 public class ProductOrderController {
 
-    @Autowired
+    @Resource
     private ProductOrderService productOrderService;
 
-    @Autowired
+    @Resource
     private StringRedisTemplate redisTemplate;
 
     /**
-     * 保存、获取订单令牌
+     * Generate order token to avoid repeating submission.
      */
     @GetMapping("/token")
     public JsonData getOrderToken() {
         Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
-
         String token = CommonUtil.getStringNumRandom(32);
         String key = String.format(RedisKey.SUBMIT_ORDER_TOKEN_KEY, accountNo, token);
 
-        // 保存令牌有效时间，30分钟
         redisTemplate.opsForValue().set(key, String.valueOf(Thread.currentThread().getId()), 30, TimeUnit.MINUTES);
-
-        // 获取令牌
         return JsonData.buildSuccess(token);
     }
 
-
     /**
-     * 分页查询订单列表
+     * Get order list by page.
      */
     @PostMapping("/page")
     public JsonData page(@RequestBody ProductOrderPageRequest orderPageRequest) {
@@ -62,8 +58,7 @@ public class ProductOrderController {
     }
 
     /**
-     * 查询订单状态
-     * 前端轮询查询状态
+     * Get order status.
      */
     @GetMapping("/query_state")
     public JsonData queryState(@RequestParam(value = "out_trade_no") String outTradeNo) {
@@ -75,7 +70,7 @@ public class ProductOrderController {
     }
 
     /**
-     * 创建订单
+     * Create order.
      */
     @PostMapping("/confirm")
     @RepeatSubmit(limitType = RepeatSubmit.Type.PARAM)
@@ -107,7 +102,6 @@ public class ProductOrderController {
         //    log.error("创建确认失败：{}", jsonData);
         //    CommonUtil.sendJsonMessage(response, jsonData);
         //}
-
         return JsonData.buildSuccess();
     }
 }

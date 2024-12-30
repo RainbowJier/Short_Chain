@@ -1,6 +1,6 @@
 package com.example.dcloud_shop.mapper;
 
-import com.example.dcloud_shop.entity.ProductOrder;
+import com.example.dcloud_shop.model.entity.ProductOrder;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 

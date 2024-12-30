@@ -15,14 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccountLoginRequest {
-
-    /**
-     * 手机号
-     */
     private String phone;
 
-    /**
-     * 密码
-     */
     private String pwd;
 }

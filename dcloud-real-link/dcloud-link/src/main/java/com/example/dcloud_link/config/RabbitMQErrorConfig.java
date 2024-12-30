@@ -22,41 +22,33 @@ import org.springframework.context.annotation.Configuration;
 @Data
 @Configuration
 public class RabbitMQErrorConfig {
-    /**
-     * 交换机名称
-     */
-    private String shortLinkErrorExchange = "short_link.error.exchange";
-    /**
-     * 队列名称
-     */
-    private String shortLinkErrorQueue = "short_link.error.queue";
-    /**
-     * 路由键
-     */
-    private String shortLinkErrorBindKey = "short_link.error.routing.key";
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+
     /**
-     * 异常交换机
+     * Exchange
      */
+    private String shortLinkErrorExchange = "short_link.error.exchange";
+
     @Bean
     public TopicExchange errorTopicExchange(){
         return new TopicExchange(shortLinkErrorExchange,true,false);
     }
 
     /**
-     * 创建异常队列
+     * Queue
      */
+    private String shortLinkErrorQueue = "short_link.error.queue";
+
+    private String shortLinkErrorBindKey = "short_link.error.routing.key";
+
     @Bean
     public Queue errorQueue(){
         return new Queue(shortLinkErrorQueue,true);
     }
 
-    /**
-     * 队列与交换机进行绑定
-     */
     @Bean
     public Binding bindingErrorQueueAndExchange(Queue errorQueue, TopicExchange errorTopicExchange){
         return BindingBuilder
@@ -66,10 +58,7 @@ public class RabbitMQErrorConfig {
     }
 
     /**
-     * 配置 RepublishMessageRecoverer
-     * 用途：消息重试⼀定次数后，特定的 routingKey 转发到指定的交换机中，⽅便后续排查和告警
-     * 顶层是 MessageRecoverer 接⼝，多个实现类
-     * shortLinkErrorBindKey作为消息的路由键
+     * The message will be sent to exception exchange if it fails to be routed to the queue.
      */
     @Bean
     public MessageRecoverer messageRecoverer(){

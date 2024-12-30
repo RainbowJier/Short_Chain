@@ -7,33 +7,23 @@ import com.example.dcloud_shop.controller.request.ConfirmOrderRequest;
 
 import java.util.Map;
 
-/**
- * <p>
- *  服务类
- * </p>
- *
- * @author RainbowJier
- * @since 2024-11-23
- */
+
 public interface ProductOrderService {
 
     /**
-     * 分页查询
+     * Get order list by page.
      */
     Map<String, Object> page(int page, int size, String state);
 
     /**
-     * 查询订单状态
+     * Get order status.
      */
     String queryProductrOrderState(String outTradeNo);
 
     /**
-     * 创建订单
+     * Create product order.
      */
     JsonData confirmOrder(ConfirmOrderRequest confirmOrderRequest);
 
-    /**
-     * 支付成功后，更新订单、发放流量包
-     */
     void handleProductOrderMessage(EventMessage eventMessage);
 }

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.dcloud_shop.mapper.ProductMapper">
 
-    <resultMap type="com.example.dcloud_shop.entity.Product" id="ProductMap">
+    <resultMap type="com.example.dcloud_shop.model.entity.Product" id="ProductMap">
         <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="title" column="title" jdbcType="VARCHAR"/>
         <result property="detail" column="detail" jdbcType="VARCHAR"/>

@@ -3,45 +3,29 @@ package com.example.dcloud_shop.Manager.impl;
 import com.alibaba.cloud.commons.lang.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.dcloud_shop.Manager.ProductOrderManager;
-import com.example.dcloud_shop.entity.ProductOrder;
-import com.example.dcloud_shop.entity.vo.ProductOrderVo;
+import com.example.dcloud_shop.model.entity.ProductOrder;
+import com.example.dcloud_shop.model.vo.ProductOrderVo;
 import com.example.dcloud_shop.mapper.ProductOrderMapper;
-import com.example.dcloud_shop.service.ProductOrderService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.*;
 
-/**
- * <p>
- *  服务实现类
- * </p>
- *
- * @author RainbowJier
- * @since 2024-11-23
- */
+
 @Component
 public class ProductOrderManagerImpl implements ProductOrderManager {
 
     @Resource
     private ProductOrderMapper productOrderMapper;
 
-    /**
-     * 新增订单
-     */
     @Override
     public int add(ProductOrder productOrder) {
         return productOrderMapper.insert(productOrder);
     }
 
-    /**
-     * 通过订单号和账号查询
-     */
     @Override
     public ProductOrder findByOutTradeNoAndAccountNo(String outTradeNo, Long accountNo) {
         LambdaQueryWrapper<ProductOrder> wrapper = new LambdaQueryWrapper<>();
@@ -52,9 +36,6 @@ public class ProductOrderManagerImpl implements ProductOrderManager {
         return productOrderMapper.selectOne(wrapper);
     }
 
-    /**
-     * 更新订单支付状态
-     */
     @Override
     public int updateOrderPayState(String outTradeNo, Long accountNo, String newState, String oldState) {
         LambdaUpdateWrapper<ProductOrder> wrapper = new LambdaUpdateWrapper<>();
@@ -66,9 +47,6 @@ public class ProductOrderManagerImpl implements ProductOrderManager {
         return productOrderMapper.update(null, wrapper);
     }
 
-    /**
-     * 分页查询订单
-     */
     @Override
     public Map<String, Object> page(int page, int size, Long accountNo, String state) {
         Page<ProductOrder> pageInfo = new Page<>(page, size);
@@ -92,24 +70,21 @@ public class ProductOrderManagerImpl implements ProductOrderManager {
         }
 
         Map<String, Object> result = new HashMap<>();
-        result.put("total_record", pageMap.getTotal()); // 总数据量
-        result.put("total_page", pageMap.getPages());   // 总页数
+        result.put("total_record", pageMap.getTotal()); // total number of records.
+        result.put("total_page", pageMap.getPages());   // total number of pages.
 
         List<ProductOrderVo> list = new ArrayList<>();
-        List<ProductOrder> records = pageMap.getRecords();  // 获取数据列表
+        List<ProductOrder> records = pageMap.getRecords();  // current page data.
         for (ProductOrder object : records) {
             ProductOrderVo productOrderVo = new ProductOrderVo();
             BeanUtils.copyProperties(object, productOrderVo);
             list.add(productOrderVo);
         }
-        result.put("current_data", list); // 当前页的数据量
+        result.put("current_data", list);
 
         return result;
     }
 
-    /**
-     * 删除订单
-     */
     @Override
     public int del(Long accountNo, String productOrderId) {
         LambdaUpdateWrapper<ProductOrder> wrapper = new LambdaUpdateWrapper<>();

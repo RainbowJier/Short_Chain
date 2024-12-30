@@ -1,4 +1,4 @@
-package com.example.dcloud_shop.entity.vo;
+package com.example.dcloud_shop.model.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

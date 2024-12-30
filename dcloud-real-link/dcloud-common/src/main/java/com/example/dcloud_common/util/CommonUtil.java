@@ -179,7 +179,6 @@ public class CommonUtil {
         return Hashing.murmur3_32().hashUnencodedChars(param).padToLong();
     }
 
-
     /**
      * URL增加前缀
      */
@@ -202,7 +201,6 @@ public class CommonUtil {
         // 前缀
         String result = url.substring(0, url.indexOf("&"));
 
-        //原始地址
         String originalUrl = url.substring(url.indexOf("&") + 1);
 
         //新id编号

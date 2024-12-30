@@ -1,11 +1,8 @@
 package com.example.dcloud_shop.mapper;
 
-import com.example.dcloud_shop.entity.Product;
+import com.example.dcloud_shop.model.entity.Product;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.dcloud_shop.entity.vo.ProductVo;
 import org.apache.ibatis.annotations.Mapper;
-
-import java.util.List;
 
 /**
  * <p>

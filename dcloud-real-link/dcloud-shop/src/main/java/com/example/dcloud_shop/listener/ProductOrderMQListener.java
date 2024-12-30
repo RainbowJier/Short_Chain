@@ -23,8 +23,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RabbitListener(queuesToDeclare = {
-        @Queue("order.close.queue"),    // 订单延迟关闭队列
-        @Queue("order.update.queue"),   // 订单更新队列，关闭订单
+        @Queue("order.close.queue"),
+        @Queue("order.update.queue"),
 })
 public class ProductOrderMQListener {
     @Autowired
@@ -32,16 +32,15 @@ public class ProductOrderMQListener {
 
     @RabbitHandler
     public void orderHandler(EventMessage eventMessage, Message message, Channel channel){
-        log.info("监听到消息 ProductOrderMQListener：message 消息内容：{}",message);
+        log.info("===ProductOrderMQListener=== \n message: {}",message);
 
         try {
-            // 支付成功后，更新订单状态，关闭订单
             productOrderService.handleProductOrderMessage(eventMessage);
 
         } catch (Exception e) {
-            log.error("消费异常：{}", e.getMessage());
+            log.error(e.getMessage());
             throw new BizException(BizCodeEnum.MQ_CONSUME_EXCEPTION);
         }
-        log.info("消费成功{}", eventMessage);
+        log.info("===ProductOrderMQListener Handle Success!===");
     }
 }

@@ -6,12 +6,6 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-/**
- *@Description：order request.
- *@Author： RainbowJier
- *@Data： 2024/11/25 21:07
- */
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

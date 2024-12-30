@@ -11,18 +11,15 @@ import java.util.Map;
 
 public interface TrafficService {
 
-    /**
-     * 流量包发放
-     */
     void handleTrafficMessage(EventMessage eventMessage);
 
     /**
-     * 查询可用流量包列表
+     * Get available traffic list by page.
      */
     Map<String, Object> pageAvailable(TrafficPageRequest request);
 
     /**
-     * 查询某个流量包的详情
+     * Get traffic detail by id.
      */
     TrafficVo detail(long trafficId);
 

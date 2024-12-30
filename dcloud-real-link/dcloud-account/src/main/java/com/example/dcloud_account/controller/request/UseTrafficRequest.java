@@ -8,7 +8,7 @@ public class UseTrafficRequest {
     private Long accountNo;
 
     /**
-     * 业务id, 短链码
+     * business id or short link.
      */
     private String bizId;
 

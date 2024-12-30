@@ -1,15 +1,15 @@
-package com.example.dcloud_shop.entity;
+package com.example.dcloud_shop.model.vo;
 
-import java.math.BigDecimal;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
-import java.util.Date;
-
-import lombok.*;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -20,30 +20,13 @@ import lombok.experimental.Accessors;
  * @since 2024-11-23
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@Builder
-@TableName("product_order")
-public class ProductOrder implements Serializable {
+public class ProductOrderVo implements Serializable {
     private Long id;
 
-    // ---------------------用户信息---------------------
     /**
-     * 账号昵称
-     */
-    private String nickname;
-
-    /**
-     * 用户ID
-     */
-    private Long accountNo;
-
-
-    // ---------------------商品信息---------------------
-    /**
-     * 商品id
+     * 订单类型
      */
     private Long productId;
 
@@ -62,8 +45,6 @@ public class ProductOrder implements Serializable {
      */
     private String productSnapshot;
 
-
-    // ---------------------订单信息---------------------
     /**
      * 购买数量
      */
@@ -82,10 +63,8 @@ public class ProductOrder implements Serializable {
     /**
      * 订单生成时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
-
-    // ----------------------订单总价---------------------
     /**
      * 订单总金额
      */
@@ -101,6 +80,15 @@ public class ProductOrder implements Serializable {
      */
     private String payType;
 
+    /**
+     * 账号昵称
+     */
+    private String nickname;
+
+    /**
+     * 用户ID
+     */
+    private Long accountNo;
 
     /**
      * 0表示未删除，1表示已经删除
@@ -110,16 +98,12 @@ public class ProductOrder implements Serializable {
     /**
      * 更新时间
      */
-    private Date gmtModified;
+    private LocalDateTime gmtModified;
 
-
-    /**
-     * ------------发票信息--------------
-     */
     /**
      * 创建时间
      */
-    private Date gmtCreate;
+    private LocalDateTime gmtCreate;
 
     /**
      * 发票类型：0->不开发票；1->电子发票；2->纸质发票

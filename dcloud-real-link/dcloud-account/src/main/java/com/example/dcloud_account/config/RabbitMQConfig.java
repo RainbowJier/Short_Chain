@@ -22,6 +22,11 @@ import java.util.Map;
 @Configuration
 public class RabbitMQConfig {
     /**
+     * delayer time 1 minute, unit: milliseconds
+     */
+    private Integer ttl = 1000 * 60 * 1;
+
+    /**
      * message converter，message serializer
      */
     @Bean
@@ -30,7 +35,7 @@ public class RabbitMQConfig {
     }
 
     /**
-     * exchange.
+     * Exchange.
      */
     private String trafficEventExchange = "traffic.event.exchange";
 
@@ -58,14 +63,7 @@ public class RabbitMQConfig {
 
     //===============traffic reduction delay queue===================================
     // delay exchange --> delay queue --> release.queue
-
-    /**
-     * delayer time 1 minute, unit: milliseconds
-     */
-    private Integer ttl = 1000 * 60 * 1;
-
     private String trafficReleaseDelayRoutingKey = "traffic.release.delay.routing.key";
-
     private String trafficReleaseDelayQueue = "traffic.release.delay.queue";
 
     @Bean
@@ -85,7 +83,6 @@ public class RabbitMQConfig {
     }
 
     private String trafficReleaseRoutingKey = "traffic.release.routing.key";
-
     private String trafficReleaseQueue = "traffic.release.queue";
 
     @Bean

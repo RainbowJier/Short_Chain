@@ -1,6 +1,6 @@
 package com.example.dcloud_shop.Manager;
 
-import com.example.dcloud_shop.entity.ProductOrder;
+import com.example.dcloud_shop.model.entity.ProductOrder;
 
 import java.util.Map;
 
@@ -14,30 +14,23 @@ import java.util.Map;
  */
 public interface ProductOrderManager {
 
-    /**
-     * 新增订单
-     */
     int add(ProductOrder productOrder);
 
-    /**
-     * 通过订单号和账号查询
-     */
     ProductOrder findByOutTradeNoAndAccountNo(String outTradeNo, Long accountNo);
 
-
     /**
-     * 更新订单支付状态
+     * Update order payment status.
      */
     int updateOrderPayState(String outTradeNo, Long accountNo, String newState, String oldState);
 
     /**
-     * 分页查询订单
+     * Get order list by page.
      */
     Map<String, Object> page(int page, int size, Long accountNo, String state);
 
 
     /**
-     * 删除订单
+     * Delete order.
      */
     int del(Long accountNo,String productOrderId);
 }

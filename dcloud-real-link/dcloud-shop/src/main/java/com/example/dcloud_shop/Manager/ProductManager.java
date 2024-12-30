@@ -1,7 +1,7 @@
 package com.example.dcloud_shop.Manager;
 
-import com.example.dcloud_shop.entity.Product;
-import com.example.dcloud_shop.entity.vo.ProductVo;
+import com.example.dcloud_shop.model.entity.Product;
+import com.example.dcloud_shop.model.vo.ProductVo;
 
 import java.util.List;
 

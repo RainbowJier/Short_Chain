@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.dcloud_account.config.RabbitMQConfig;
 import com.example.dcloud_account.controller.request.AccountLoginRequest;
 import com.example.dcloud_account.controller.request.AccountRegisterRequest;
-import com.example.dcloud_account.model.entity.Account;
 import com.example.dcloud_account.manager.AccountManager;
 import com.example.dcloud_account.mapper.AccountMapper;
+import com.example.dcloud_account.model.entity.Account;
 import com.example.dcloud_account.service.AccountService;
 import com.example.dcloud_account.service.NotifyService;
 import com.example.dcloud_common.entity.EventMessage;
@@ -24,7 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.Md5Crypt;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,18 +31,15 @@ import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * @author RainbowJier
- * @since 2024-08-17
- */
+
 @Service
 @Slf4j
 public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> implements AccountService {
 
-    @Autowired
+    @Resource
     private NotifyService notifyService;
 
-    @Autowired
+    @Resource
     private AccountManager accountManager;
 
     @Resource
@@ -52,14 +48,10 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
     @Resource
     private RabbitMQConfig rabbitMQConfig;
 
-    /**
-     * 免费流量包商品id
-     */
     private static final Long FREE_TRAFFIC_PRODUCT_ID = 1L;
 
-
     /**
-     * 用户注册
+     * Register and add free traffic for new user.
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -72,7 +64,6 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
         if (StringUtil.isNotBlank(phone)) {
             checkCode = notifyService.checkCode(SendCodeEnum.USER_REGISTER, phone, code);
 
-            // incorrect.
             if (!checkCode) {
                 return JsonData.buildResult(BizCodeEnum.CODE_ERROR);
             }
@@ -81,28 +72,26 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
         Account account = new Account();
         BeanUtils.copyProperties(accountRegisterRequest, account);
 
-        // generate accountNo that is unique.
         account.setAccountNo((Long) IDUtil.generateSnowFlakeID());
         account.setAuth(AuthTypeEnum.DEFAULT.name());
-
-        // set password salt.
-        account.setSecret("$1$" + CommonUtil.getStringNumRandom(8));
+        account.setSecret("$1$" + CommonUtil.getStringNumRandom(8)); // set password salt.
 
         // encrypt password.
         String encryptedPassword = Md5Crypt.md5Crypt(accountRegisterRequest.getPwd().getBytes(), account.getSecret());
         account.setPwd(encryptedPassword);
 
-        try{
+        try {
             int insertRow = accountManager.insert(account);
-            if(insertRow < 1){
+            if (insertRow < 1) {
                 return JsonData.buildResult(BizCodeEnum.PHONE_REPEAT);
             }
             log.info("rows:{}，register success：{}", insertRow, account);
 
             // add free traffic for new user.
             userRegisterInitTask(account);
+
             return JsonData.buildSuccess();
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(BizCodeEnum.PHONE_REPEAT.getMessage());
         }
     }
@@ -114,17 +103,15 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
                 .eventMessageType(EventMessageType.TRAFFIC_FREE_INIT.name())
                 .build();
 
-        rabbitTemplate.convertAndSend(rabbitMQConfig.getTrafficEventExchange(),
-                rabbitMQConfig.getTrafficFreeInitRoutingKey(), eventMessage);
-
+        rabbitTemplate.convertAndSend(
+                rabbitMQConfig.getTrafficEventExchange(),
+                rabbitMQConfig.getTrafficFreeInitRoutingKey(),
+                eventMessage);
     }
 
-    /**
-     * 用户登录
-     */
+
     @Override
     public JsonData login(AccountLoginRequest accountLoginRequest) {
-        // 根据手机号查找账号
         List<Account> accountList = accountManager.selectByPhone(accountLoginRequest.getPhone());
 
         if (accountList.size() == 1) {
@@ -133,28 +120,21 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
             String loginPwd = accountLoginRequest.getPwd();
             String encryptedPwd = Md5Crypt.md5Crypt(loginPwd.getBytes(), secret);
 
-            // 密码校验
             if (encryptedPwd.equalsIgnoreCase(account.getPwd())) {
-                // 密码正确
-                // 封装login user
                 LoginUser loginUser = LoginUser.builder().build();
                 BeanUtils.copyProperties(account, loginUser);
 
-                // 生成token
                 String token = JWTUtil.generateJsonToken(loginUser);
                 HashMap<String, Object> data = new HashMap<>();
                 data.put("token", token);
-                return JsonData.buildSuccess(data, "登录成功");
+                return JsonData.buildSuccess(data, "login success");
             } else {
-                // 密码错误
                 return JsonData.buildResult(BizCodeEnum.ACCOUNT_PWD_ERROR);
             }
         } else {
-            // 密码错误
             return JsonData.buildResult(BizCodeEnum.ACCOUNT_PWD_ERROR);
         }
     }
-
 
 
 }

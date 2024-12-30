@@ -16,17 +16,15 @@ import com.example.dcloud_shop.Manager.ProductOrderManager;
 import com.example.dcloud_shop.component.PayFactory;
 import com.example.dcloud_shop.config.RabbitMQConfig;
 import com.example.dcloud_shop.controller.request.ConfirmOrderRequest;
-import com.example.dcloud_shop.entity.Product;
-import com.example.dcloud_shop.entity.ProductOrder;
-import com.example.dcloud_shop.entity.vo.PayInfoVo;
+import com.example.dcloud_shop.model.entity.Product;
+import com.example.dcloud_shop.model.entity.ProductOrder;
+import com.example.dcloud_shop.model.vo.PayInfoVo;
 import com.example.dcloud_shop.service.ProductOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -63,18 +61,12 @@ public class ProductOrderServiceImpl implements ProductOrderService {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
-    /**
-     * 分页查询
-     */
     @Override
     public Map<String, Object> page(int page, int size, String state) {
         Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
         return productOrderManager.page(page, size, accountNo, state);
     }
 
-    /**
-     * 查询订单状态
-     */
     @Override
     public String queryProductrOrderState(String outTradeNo) {
         Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
@@ -87,40 +79,20 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         }
     }
 
-    /**
-     * 创建订单
-     */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public JsonData confirmOrder(ConfirmOrderRequest orderRequest) {
         LoginUser loginUser = LoginInterceptor.threadLocal.get();
-
-        // 账号
         Long accountNo = LoginInterceptor.threadLocal.get().getAccountNo();
-
-        // 订单号
         String orderOutTradeNo = CommonUtil.getStringNumRandom(32);
 
-        // 获取最新的商品
         Product product = productManager.findDetailById(orderRequest.getProductId());
 
-        // 验证价格
-        this.checkPrice(product, orderRequest);
+        checkPrice(product, orderRequest);
 
-        // 保存订单到数据库
-        ProductOrder productOrder = this.saveProductOrder(orderRequest, loginUser, orderOutTradeNo, product);
+        saveProductOrder(orderRequest, loginUser, orderOutTradeNo, product);
 
-        // 创建支付信息，对接第三方支付
-        PayInfoVo payInfoVo = new PayInfoVo()
-                .setAccountNo(accountNo)
-                .setClientType(orderRequest.getClientType())
-                .setPayType(orderRequest.getPayType())
-                .setTitle(product.getTitle())
-                .setDescription("")
-                .setPayFee(orderRequest.getPayAmount())
-                .setOrderPayTimeoutMills(TimeConstant.ORDER_PAY_TIMEOUT_MILLS);
-
-        // 发送延迟消息，订单超时，自动关闭订单
+        // Send message that closes order automatically to Delay queue.
         EventMessage eventMessage = EventMessage.builder()
                 .messageId(IDUtil.generateSnowFlakeID().toString())
                 .eventMessageType(EventMessageType.PRODUCT_ORDER_NEW.name())
@@ -133,10 +105,19 @@ public class ProductOrderServiceImpl implements ProductOrderService {
                 rabbitMQConfig.getOrderCloseDelayRoutingKey(),
                 eventMessage);
 
-        // 调用支付信息
-        String codeUrl = payFactory.pay(payInfoVo);   // 返回的是二维码，这里默认创建成功
+        // Payment information.
+        PayInfoVo payInfoVo = new PayInfoVo()
+                .setAccountNo(accountNo)
+                .setClientType(orderRequest.getClientType())
+                .setPayType(orderRequest.getPayType())
+                .setTitle(product.getTitle())
+                .setDescription("")
+                .setPayFee(orderRequest.getPayAmount())
+                .setOrderPayTimeoutMills(TimeConstant.ORDER_PAY_TIMEOUT_MILLS);
 
-        // 返回二维码
+        String codeUrl = payFactory.pay(payInfoVo);
+
+        // return QR code.
         //if (StringUtils.isNotBlank(codeUrl)) {
         //    Map<String, String> resultMap = new HashMap<>(2);
         //    resultMap.put("code_url", codeUrl);   // 二维码
@@ -144,24 +125,34 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         //    return JsonData.buildSuccess(resultMap);
         //}
 
-        // 这里默认支付成功
         HashMap<String, Object> payMap = new HashMap<>(2);
         payMap.put("out_trade_no", orderOutTradeNo);
         payMap.put("account_no", accountNo);
         payMap.put("trade_state", "SUCCESS");
         boolean payState = processOrderCallbackMsg(ProductOrderPayTypeEnum.WECHAT_PAY, payMap);
-        if(payState){
-            return JsonData.buildSuccess("支付成功");
-        }else{
+
+        if (payState) {
+            return JsonData.buildSuccess("Pay success");
+        } else {
             JsonData.buildResult(BizCodeEnum.PAY_ORDER_CALLBACK_NOT_SUCCESS);
         }
 
         return JsonData.buildResult(BizCodeEnum.PAY_ORDER_FAIL);
     }
 
-    /**
-     * 保存订单
-     */
+    private void checkPrice(Product product, ConfirmOrderRequest orderRequest) {
+        BigDecimal totalFrontAmount = orderRequest.getTotalAmount();
+
+        int buyNum = orderRequest.getBuyNum();
+        BigDecimal amount = product.getAmount();
+        BigDecimal totalEndAmount = BigDecimal.valueOf(buyNum).multiply(amount);
+
+        if (totalEndAmount.compareTo(totalFrontAmount) != 0) {
+            log.error("Failed to check the price, Front price = {}, Back price = {}", totalFrontAmount, totalEndAmount);
+            throw new BizException(BizCodeEnum.ORDER_CONFIRM_PRICE_FAIL);
+        }
+    }
+
     private ProductOrder saveProductOrder(ConfirmOrderRequest orderRequest, LoginUser loginUser, String orderOutTradeNo, Product product) {
         // 设置用户基本信息
         ProductOrder productOrder = new ProductOrder()
@@ -199,38 +190,11 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         return productOrder;
     }
 
-    /**
-     * 校验前端/后端价格计算是否一致
-     */
-    private void checkPrice(Product product, ConfirmOrderRequest orderRequest) {
-        // 如果有优惠券也要计算
-
-        // 计算后台价格
-        int buyNum = orderRequest.getBuyNum();  // 购买数量
-        BigDecimal amount = product.getAmount(); // 商品最新价格
-        BigDecimal totalPrice = BigDecimal.valueOf(buyNum).multiply(amount);   // 总价格
-
-        // 前端计算价格
-        BigDecimal totalAmount = orderRequest.getTotalAmount();
-
-        if (totalPrice.compareTo(totalAmount) != 0) {
-            log.error("验证价格失败，前端计算价格: {} 和后台计算价格:{} 不一致", totalPrice, totalAmount);
-            throw new BizException(BizCodeEnum.ORDER_CONFIRM_PRICE_FAIL);
-        }
-    }
-
-    /**
-     * 支付成功回调
-     */
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public boolean processOrderCallbackMsg(ProductOrderPayTypeEnum payType, Map<String, Object> paramsMap) {
         Long accountNo = Long.valueOf(paramsMap.get("account_no").toString());
-        //获取商户订单号
         String outTradeNo = paramsMap.get("out_trade_no").toString();
-        //交易状态
         String tradeState = paramsMap.get("trade_state").toString();
 
-        // 获取订单
         ProductOrder productOrder = productOrderManager.findByOutTradeNoAndAccountNo(outTradeNo, accountNo);
 
         Map<String, Object> content = new HashMap<>(4);
@@ -239,7 +203,6 @@ public class ProductOrderServiceImpl implements ProductOrderService {
         content.put("accountNo", accountNo);
         content.put("productSnapshot", productOrder.getProductSnapshot());
 
-        //构建消息
         EventMessage eventMessage = EventMessage.builder()
                 .bizId(outTradeNo)
                 .accountNo(accountNo)
@@ -248,82 +211,72 @@ public class ProductOrderServiceImpl implements ProductOrderService {
                 .eventMessageType(EventMessageType.PRODUCT_ORDER_PAY.name())
                 .build();
 
-        // 微信支付
-        if (payType.name().equalsIgnoreCase(ProductOrderPayTypeEnum.WECHAT_PAY.name())) {
-            if ("SUCCESS".equalsIgnoreCase(tradeState)) {
-                //如果key不存在，则设置成功，返回true
+        if ("SUCCESS".equals(tradeState)) {
+            if (payType.name().equalsIgnoreCase(ProductOrderPayTypeEnum.WECHAT_PAY.name())) {
                 Boolean flag = stringRedisTemplate.opsForValue().setIfAbsent(outTradeNo, "OK", 3, TimeUnit.DAYS);
 
-                // 更新订单状态、发放流量包
+                // Release traffic and update order status.
                 if (Boolean.TRUE.equals(flag)) {
-                    rabbitTemplate.convertAndSend(rabbitMQConfig.getOrderEventExchange(),
-                            rabbitMQConfig.getOrderUpdateTrafficRoutingKey(), eventMessage);
+                    rabbitTemplate.convertAndSend(
+                            rabbitMQConfig.getOrderEventExchange(),
+                            rabbitMQConfig.getOrderUpdateTrafficRoutingKey(),
+                            eventMessage);
 
                     return true;
                 }
             }
-        }
-        // 支付宝
-        else if (payType.name().equalsIgnoreCase(ProductOrderPayTypeEnum.ALI_PAY.name())) {
-            // 支付宝支付回调逻辑
-            return true;
+
+            if (payType.name().equalsIgnoreCase(ProductOrderPayTypeEnum.ALI_PAY.name())) {
+                // 支付宝支付回调逻辑
+                return true;
+            }
         }
 
-        // 支付失败
         return false;
     }
 
-    /**
-     * 更新订单状态，关闭订单
-     */
+
+    // =============== RabbitMQ Handler=====================
     @Override
     public void handleProductOrderMessage(EventMessage eventMessage) {
         String messageType = eventMessage.getEventMessageType();
-        try{
-            // 关闭订单
-            if(messageType.equalsIgnoreCase(EventMessageType.PRODUCT_ORDER_NEW.name())){
+        try {
+            // Automatically close the order if payment is not made after a certain period of time.
+            if (messageType.equalsIgnoreCase(EventMessageType.PRODUCT_ORDER_NEW.name())) {
                 this.closeProductOrder(eventMessage);
             }
-            // 支付成功
-            else if(messageType.equalsIgnoreCase(EventMessageType.PRODUCT_ORDER_PAY.name())){
-                String outTradeNo = eventMessage.getBizId();  // 订单号
-                Long accountNo = eventMessage.getAccountNo();  // 用户账号
-                String content = eventMessage.getContent();  // 订单内容
+            // Pay success and update order status.
+            else if (messageType.equalsIgnoreCase(EventMessageType.PRODUCT_ORDER_PAY.name())) {
+                String outTradeNo = eventMessage.getBizId();
+                Long accountNo = eventMessage.getAccountNo();
+                String content = eventMessage.getContent();
 
-                // 更新支付状态（关闭订单）
                 int rows = productOrderManager.updateOrderPayState(outTradeNo, accountNo, ProductOrderStateEnum.PAY.name(), ProductOrderStateEnum.NEW.name());
-                log.info("订单支付成功，rows: {}, everMessage: {}",rows, eventMessage);
+                log.info("订单支付成功，rows: {}, everMessage: {}", rows, eventMessage);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("订单消费者失败, 错误信息: {}", e.getMessage());
             throw new BizException(BizCodeEnum.MQ_CONSUME_EXCEPTION);
         }
     }
 
-    /**
-     * 关闭订单
-     */
     public void closeProductOrder(EventMessage eventMessage) {
-        String outTradeNo = eventMessage.getBizId();  // 订单号
-        Long accountNo = eventMessage.getAccountNo();  // 用户账号
+        String outTradeNo = eventMessage.getBizId();
+        Long accountNo = eventMessage.getAccountNo();
 
-        // 获取订单
         ProductOrder productOrder = productOrderManager.findByOutTradeNoAndAccountNo(outTradeNo, accountNo);
 
-        // 订单不存在
         if (productOrder == null) {
-            log.warn("订单不存在，订单号: {}", outTradeNo);
+            log.warn("This order dose not exist，outTradeNo =  {}", outTradeNo);
             return;
         }
 
         String state = productOrder.getState();
-        // 已经支付
         if (state.equalsIgnoreCase(ProductOrderStateEnum.PAY.name())) {
-            log.info("订单已经支付，订单号: {}", eventMessage);
+            log.info("Payment is made, outTradeNo = {}", outTradeNo);
         }
 
-        String payResult;  // 支付状态
-
+        String payStatus;
         // 还未支付，查询第三方支付接口再次校验支付状态
         if (state.equalsIgnoreCase(ProductOrderStateEnum.NEW.name())) {
             PayInfoVo payInfoVo = new PayInfoVo()
@@ -332,9 +285,9 @@ public class ProductOrderServiceImpl implements ProductOrderService {
                     .setAccountNo(accountNo);
 
             // 查询第三方支付接口，校验支付状态，默认成功
-            payResult = "SUCCESS";
+            payStatus = "SUCCESS";
 
-            if (StringUtils.isBlank(payResult)) {
+            if (StringUtils.isBlank(payStatus)) {
                 // 支付失败，订单关闭
                 productOrderManager.updateOrderPayState(outTradeNo, accountNo, ProductOrderStateEnum.CANCEL.name(), ProductOrderStateEnum.NEW.name());
                 log.info("订单未支付，取消订单: {}", eventMessage);
@@ -345,8 +298,6 @@ public class ProductOrderServiceImpl implements ProductOrderService {
             }
         }
     }
-
-
 
 
 }

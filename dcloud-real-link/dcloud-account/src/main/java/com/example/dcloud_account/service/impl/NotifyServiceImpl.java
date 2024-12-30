@@ -43,9 +43,6 @@ public class NotifyServiceImpl implements NotifyService {
 
     /**
      * Send SMS code.
-     *
-     * @param sendCodeEnum : Login or Register
-     * @param to           : Phone or Email
      */
     @Override
     public JsonData sendCode(SendCodeEnum sendCodeEnum, String to) {
@@ -87,10 +84,6 @@ public class NotifyServiceImpl implements NotifyService {
         return JsonData.buildSuccess();
     }
 
-
-    /**
-     * 校验验证码
-     */
     @Override
     public boolean checkCode(SendCodeEnum sendCodeEnum, String to, String code) {
         // Get the code from Redis.

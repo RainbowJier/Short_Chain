@@ -11,7 +11,6 @@ import org.apache.shardingsphere.sharding.algorithm.keygen.SnowflakeKeyGenerateA
 
 public class IDUtil {
 
-
     private static SnowflakeKeyGenerateAlgorithm shardingKeyGenerator = new SnowflakeKeyGenerateAlgorithm();
     /**
      * 雪花算法⽣成器,配置workId，避免重复

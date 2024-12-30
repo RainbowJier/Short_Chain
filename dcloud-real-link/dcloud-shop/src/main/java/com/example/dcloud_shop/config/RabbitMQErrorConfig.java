@@ -50,8 +50,7 @@ public class RabbitMQErrorConfig {
     }
 
     /**
-     * 消息重转发器
-     * 消费消息重试⼀定次数后，⽤特定的routingKey转发到指定的交换机中，⽅便后续排查和告警
+     * The message will be sent to exception exchange if it fails to be routed to the queue in the specified number of times.
      */
     @Bean
     public MessageRecoverer messageRecoverer() {

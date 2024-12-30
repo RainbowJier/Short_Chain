@@ -1,6 +1,6 @@
 package com.example.dcloud_shop.component;
 
-import com.example.dcloud_shop.entity.vo.PayInfoVo;
+import com.example.dcloud_shop.model.vo.PayInfoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

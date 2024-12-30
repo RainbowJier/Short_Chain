@@ -24,15 +24,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @Slf4j
 public class RabbitMQErrorConfig {
-
-    private String trafficErrorExchange = "traffic.error.exchange";
-
-    private String trafficErrorQueue = "traffic.error.queue";
-
-    private String trafficErrorRoutingKey = "traffic.error.routing.key";
-
     @Autowired
     private RabbitTemplate rabbitTemplate;
+
+    private String trafficErrorExchange = "traffic.error.exchange";
+    private String trafficErrorQueue = "traffic.error.queue";
+    private String trafficErrorRoutingKey = "traffic.error.routing.key";
 
     @Bean
     public TopicExchange errorTopicExchange() {
@@ -53,8 +50,7 @@ public class RabbitMQErrorConfig {
     }
 
     /**
-     * 消息重转发器
-     * 消费消息重试⼀定次数后，⽤特定的routingKey转发到指定的交换机中，⽅便后续排查和告警
+     * The message will be sent to exception exchange if it fails to be routed to the queue in the specified number of times.
      */
     @Bean
     public MessageRecoverer messageRecoverer() {
