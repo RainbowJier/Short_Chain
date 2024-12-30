@@ -1,4 +1,4 @@
-package com.example.dcloud_link;
+package com.example.dcloud_shop;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
@@ -8,14 +8,14 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-
-@ComponentScan(basePackages  = {"com.example.dcloud_link", "com.example.dcloud_common"})
+@Slf4j
+@ComponentScan(basePackages  = {"com.example.dcloud_shop", "com.example.dcloud_common"})
 @EnableTransactionManagement  // Open Database Transaction.
 @EnableFeignClients          // Enable OpenFeign
 @EnableDiscoveryClient      // Enable Service register and discovery.
-@Slf4j
 @SpringBootApplication
-public class DcloudLinkApplication {
+public class ShopApplication {
+
     public static final String BANNER = "\n" +
             "   _____   _    _    _____    _____   ______    _____    _____ \n" +
             "  / ____| | |  | |  / ____|  / ____| |  ____|  / ____|  / ____|\n" +
@@ -26,8 +26,7 @@ public class DcloudLinkApplication {
             "                                                               \n" +
             "                                                               \n";
     public static void main(String[] args) {
-        SpringApplication.run(DcloudLinkApplication.class, args);
+        SpringApplication.run(ShopApplication.class, args);
         log.info(BANNER);
     }
-
 }

@@ -44,25 +44,25 @@ public class ShortLinkServiceImpl implements ShortLinkService {
     @Resource
     private ShortLinkManager shortLinkManager;
 
-    @Autowired
+    @Resource
     private ShortLinkComponent shortLinkComponent;
 
-    @Autowired
+    @Resource
     private RabbitTemplate rabbitTemplate;
 
-    @Autowired
+    @Resource
     private RabbitMQConfig rabbitMQConfig;
 
-    @Autowired
+    @Resource
     private LinkGroupManager linkGroupManager;
 
-    @Autowired
+    @Resource
     private TrafficFeignService trafficFeignService;
 
-    @Autowired
+    @Resource
     private GroupCodeMappingManager groupCodeMappingManager;
 
-    @Autowired
+    @Resource
     private StringRedisTemplate stringRedisTemplate;
 
     /**

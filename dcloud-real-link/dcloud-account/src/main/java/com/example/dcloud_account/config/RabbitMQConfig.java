@@ -57,12 +57,12 @@ public class RabbitMQConfig {
 
 
     //===============traffic reduction delay queue===================================
-    // delay exchange --> delay queue --> release.queue 延迟队列，不能被监听消费
+    // delay exchange --> delay queue --> release.queue
 
     /**
-     * delayer time, unit: milliseconds
+     * delayer time 1 minute, unit: milliseconds
      */
-    private Integer ttl = 60000;
+    private Integer ttl = 1000 * 60 * 1;
 
     private String trafficReleaseDelayRoutingKey = "traffic.release.delay.routing.key";
 
@@ -83,7 +83,6 @@ public class RabbitMQConfig {
         return BindingBuilder.bind(trafficReleaseDelayQueue()).to(trafficEventExchange())
                 .with(trafficReleaseDelayRoutingKey);
     }
-
 
     private String trafficReleaseRoutingKey = "traffic.release.routing.key";
 

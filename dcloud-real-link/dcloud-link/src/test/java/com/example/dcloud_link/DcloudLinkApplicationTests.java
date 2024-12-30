@@ -4,7 +4,6 @@ import com.example.dcloud_common.util.CommonUtil;
 import com.example.dcloud_link.component.ShortLinkComponent;
 import com.example.dcloud_link.entity.ShortLink;
 import com.example.dcloud_link.manager.ShortLinkManager;
-import com.example.dcloud_link.strategy.ShardingDBConfig;
 import com.example.dcloud_link.strategy.ShardingTableConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Random;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = DcloudLinkApplication.class)
+@SpringBootTest(classes = LinkApplication.class)
 @Slf4j
 class DcloudLinkApplicationTests {
 

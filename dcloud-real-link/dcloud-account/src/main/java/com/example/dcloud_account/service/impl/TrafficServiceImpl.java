@@ -3,26 +3,32 @@ package com.example.dcloud_account.service.impl;
 
 import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.dcloud_account.config.RabbitMQConfig;
 import com.example.dcloud_account.controller.request.TrafficPageRequest;
 import com.example.dcloud_account.controller.request.UseTrafficRequest;
+import com.example.dcloud_account.feign.ProductFeignService;
+import com.example.dcloud_account.feign.ShortLinkFeignService;
+import com.example.dcloud_account.manager.TrafficManager;
+import com.example.dcloud_account.manager.TrafficTaskManager;
 import com.example.dcloud_account.model.entity.Product;
 import com.example.dcloud_account.model.entity.Traffic;
+import com.example.dcloud_account.model.entity.TrafficTask;
 import com.example.dcloud_account.model.vo.ProductVo;
 import com.example.dcloud_account.model.vo.TrafficVo;
 import com.example.dcloud_account.model.vo.UseTrafficVo;
-import com.example.dcloud_account.feign.ProductFeignService;
-import com.example.dcloud_account.manager.TrafficManager;
 import com.example.dcloud_account.service.TrafficService;
 import com.example.dcloud_common.constant.RedisKey;
 import com.example.dcloud_common.entity.EventMessage;
 import com.example.dcloud_common.enums.BizCodeEnum;
 import com.example.dcloud_common.enums.EventMessageType;
+import com.example.dcloud_common.enums.TaskStateEnum;
 import com.example.dcloud_common.exception.BizException;
 import com.example.dcloud_common.interceptor.LoginInterceptor;
 import com.example.dcloud_common.util.JsonData;
 import com.example.dcloud_common.util.JsonUtil;
 import com.example.dcloud_common.util.TimeUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -47,74 +53,125 @@ public class TrafficServiceImpl implements TrafficService {
     @Resource
     private StringRedisTemplate stringRedisTemplate;
 
-    /**
-     * add traffic.
-     */
+    @Resource
+    private TrafficTaskManager trafficTaskManager;
+
+    @Resource
+    private RabbitTemplate rabbitTemplate;
+
+    @Resource
+    private RabbitMQConfig rabbitMQConfig;
+
+    @Resource
+    private ShortLinkFeignService shortLinkFeignService;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void handleTrafficMessage(EventMessage eventMessage) {
-        String messageType = eventMessage.getEventMessageType();   // 订单支付类型
-        Long accountNo = eventMessage.getAccountNo();  // 账号
+        String messageType = eventMessage.getEventMessageType();
 
-        // 订单已经支付，新增流量包
+        // Paid traffic package.
         if (messageType.equalsIgnoreCase(EventMessageType.PRODUCT_ORDER_PAY.name())) {
-            // 订单信息
-            String outTradeNo = eventMessage.getBizId();   // 订单号
-            String content = eventMessage.getContent();
-            Map<String, Object> orderInfoMap = JsonUtil.jsonStrToObj(content, Map.class);
-            Integer buyNum = (Integer) orderInfoMap.get("buyNum");  // 购买数量
-            String productSnapshotStr = (String) orderInfoMap.get("productSnapshot");  // 产品快照
-            Product product = JsonUtil.jsonStrToObj(productSnapshotStr, Product.class);
-
-            log.info("订单号：{}，购买数量：{}，产品快照：{}", outTradeNo, buyNum, product);
-
-            // 流量包有效期
-            LocalDateTime expiredDateTime = LocalDateTime.now().plusDays(product.getValidDay());
-            Date date = Date.from(expiredDateTime.atZone(ZoneId.systemDefault()).toInstant());
-
-            Traffic traffic = Traffic.builder()
-                    .accountNo(accountNo)
-                    .dayLimit(product.getDayTimes() * buyNum)
-                    .dayUsed(0)
-                    .totalLimit(product.getTotalTimes())
-                    .pluginType(product.getPluginType())
-                    .level(product.getLevel())
-                    .productId(product.getId())
-                    .outTradeNo(outTradeNo)
-                    .expiredDate(date)
-                    .build();
-
-            // add traffic to db.
-            int rows = trafficManager.add(traffic);
-            log.info("【purchase traffics】:rows={},traffic={}", rows, traffic);
-
-            // delete total traffics in the Redis.
-            String totalTrafficTimesKey = String.format(RedisKey.DAY_TOTAL_TRAFFIC, accountNo);
-            stringRedisTemplate.delete(totalTrafficTimesKey);
+            paidTraffic(eventMessage);
         }
+        // Free traffic init.
+        else if (messageType.equalsIgnoreCase(EventMessageType.TRAFFIC_FREE_INIT.name())) {
+            freeTraffic(eventMessage);
+        }
+        // save traffic used task.
+        else if (messageType.equalsIgnoreCase(EventMessageType.TRAFFIC_USED.name())) {
+            trafficTask(eventMessage);
+        }
+    }
 
-        // free traffic init.
-        if (messageType.equalsIgnoreCase(EventMessageType.TRAFFIC_FREE_INIT.name())) {
-            // get free traffic product detail.
-            long productId = Long.parseLong(eventMessage.getBizId());
-            JsonData jsonData = productFeignService.detail(productId);
+    private void paidTraffic(EventMessage eventMessage) {
+        // 订单信息
+        Long accountNo = eventMessage.getAccountNo();
+        String outTradeNo = eventMessage.getBizId();   // 订单号
+        String content = eventMessage.getContent();
+        Map<String, Object> orderInfoMap = JsonUtil.jsonStrToObj(content, Map.class);
+        Integer buyNum = (Integer) orderInfoMap.get("buyNum");  // 购买数量
+        String productSnapshotStr = (String) orderInfoMap.get("productSnapshot");  // 产品快照
+        Product product = JsonUtil.jsonStrToObj(productSnapshotStr, Product.class);
 
-            ProductVo productVo = jsonData.getData(
-                    new TypeReference<ProductVo>() {});
+        log.info("===Purchase traffics=== \n " +
+                "Order Number: {} \n " +
+                "Number of purchases: {} \n " +
+                "Product Snapshot: {}", outTradeNo, buyNum, product);
 
-            Traffic traffic = Traffic.builder()
-                    .accountNo(accountNo)
-                    .dayLimit(productVo.getDayTimes())
-                    .dayUsed(0)
-                    .totalLimit(productVo.getTotalTimes())
-                    .pluginType(productVo.getPluginType())
-                    .level(productVo.getLevel())
-                    .productId(productVo.getId())
-                    .outTradeNo("free_init")
-                    .expiredDate(new Date())
-                    .build();
+        LocalDateTime expiredDateTime = LocalDateTime.now().plusDays(product.getValidDay());
+        Date date = Date.from(expiredDateTime.atZone(ZoneId.systemDefault()).toInstant());
 
-            trafficManager.add(traffic);
+        Traffic traffic = Traffic.builder()
+                .accountNo(accountNo)
+                .dayLimit(product.getDayTimes() * buyNum)
+                .dayUsed(0)
+                .totalLimit(product.getTotalTimes())
+                .pluginType(product.getPluginType())
+                .level(product.getLevel())
+                .productId(product.getId())
+                .outTradeNo(outTradeNo)
+                .expiredDate(date)
+                .build();
+
+        int rows = trafficManager.add(traffic);
+        log.info("===Purchase traffics=== \n " +
+                "rows = {},traffic={}", rows, traffic);
+
+        // delete total traffics in the Redis.
+        String totalTrafficTimesKey = String.format(RedisKey.DAY_TOTAL_TRAFFIC, accountNo);
+        stringRedisTemplate.delete(totalTrafficTimesKey);
+    }
+
+    private void freeTraffic(EventMessage eventMessage) {
+        Long accountNo = eventMessage.getAccountNo();
+
+        // get free traffic product detail.
+        long productId = Long.parseLong(eventMessage.getBizId());
+        JsonData jsonData = productFeignService.detail(productId);
+
+        ProductVo productVo = jsonData.getData(new TypeReference<ProductVo>() {
+        });
+
+        Traffic traffic = Traffic.builder()
+                .accountNo(accountNo)
+                .dayLimit(productVo.getDayTimes())
+                .dayUsed(0)
+                .totalLimit(productVo.getTotalTimes())
+                .pluginType(productVo.getPluginType())
+                .level(productVo.getLevel())
+                .productId(productVo.getId())
+                .outTradeNo("free_init")
+                .expiredDate(new Date())
+                .build();
+
+        trafficManager.add(traffic);
+    }
+
+    private void trafficTask(EventMessage eventMessage) {
+        Long accountNo = eventMessage.getAccountNo();
+        Long trafficTaskId = Long.valueOf(eventMessage.getBizId());
+        TrafficTask trafficTask = trafficTaskManager.findByIdAndAccountNo(trafficTaskId, accountNo);
+
+        if (trafficTask != null && trafficTask.getLockState().equals(TaskStateEnum.LOCK.name())) {
+            // RPC to check if the short link exists.
+            JsonData jsonData = shortLinkFeignService.check(trafficTask.getBizId());
+
+            if (jsonData.getCode() != 0) {
+                log.error("Failed to generate short link!!!");
+
+                // Restore the number of times the traffic has been used.
+                String useDateStr = TimeUtil.format(trafficTask.getGmtCreate(), "yyyy-MM-dd");
+                trafficManager.restoreUsedTimes(accountNo, trafficTask.getTrafficId(), 1, useDateStr);
+
+                // Remove the key that records the total available number of traffics.
+                String totalTrafficTimesKey = String.format(RedisKey.DAY_TOTAL_TRAFFIC, accountNo);
+                stringRedisTemplate.delete(totalTrafficTimesKey);
+            }
+
+            // delete traffic task.
+            // You can use different ways to delete the traffic task.
+            trafficTaskManager.deleteByIdAndAccountNo(trafficTaskId, accountNo);
         }
     }
 
@@ -135,10 +192,10 @@ public class TrafficServiceImpl implements TrafficService {
         List<Traffic> list = trafficManager.selectRandomTraffics(randomCount);
 
         // check if the traffic is expired.
-        for(Traffic traffic : list){
+        for (Traffic traffic : list) {
             Date expiredDate = traffic.getExpiredDate();
             Long id = traffic.getId();
-            if(expiredDate.before(new Date())){
+            if (expiredDate.before(new Date())) {
                 trafficList.add(id);
                 expiredTrafficCount++;
             }
@@ -147,8 +204,7 @@ public class TrafficServiceImpl implements TrafficService {
         int count = trafficManager.deleteExpiredTraffic(trafficList);
         log.info("【Schedule Tasks】 Delete expired traffics :count={}", count);
 
-        // if more than 30% of traffics are expired, get random traffic again.
-        if(expiredTrafficCount > randomCount * 0.3){
+        if (expiredTrafficCount > randomCount * 0.3) {
             deleteExpiredTraffic();
         }
 
@@ -183,22 +239,39 @@ public class TrafficServiceImpl implements TrafficService {
             throw new BizException(BizCodeEnum.TRAFFIC_REDUCE_FAIL);
         }
 
-        // todo:add traffic task.
+        // add traffic task.
+        TrafficTask trafficTask = new TrafficTask();
+        trafficTask.setAccountNo(accountNo)
+                .setBizId(useTrafficRequest.getBizId())
+                .setUseTimes(1)
+                .setTrafficId(useTrafficVo.getCurrentTraffic().getId())
+                .setLockState(TaskStateEnum.LOCK.name());
 
+        trafficTaskManager.add(trafficTask);
 
+        EventMessage trafficUseEventMessage = new EventMessage();
+        trafficUseEventMessage
+                .setAccountNo(accountNo)
+                .setBizId(String.valueOf(trafficTask.getId()))
+                .setEventMessageType(EventMessageType.TRAFFIC_USED.name());
+
+        rabbitTemplate.convertAndSend(
+                rabbitMQConfig.getTrafficEventExchange(),
+                rabbitMQConfig.getTrafficReleaseDelayRoutingKey(),
+                trafficUseEventMessage);
 
         // store total traffic to Redis.
         long leftSeconds = TimeUtil.getRemainSecondsOneDay(new Date());
         String totalTrafficTimesKey = String.format(RedisKey.DAY_TOTAL_TRAFFIC, accountNo);
 
-        stringRedisTemplate.opsForValue().set(totalTrafficTimesKey,
+        stringRedisTemplate.opsForValue().set(
+                totalTrafficTimesKey,
                 String.valueOf(useTrafficVo.getDayTotalLeftTimes() - 1),
                 leftSeconds,
                 TimeUnit.SECONDS);
 
         return JsonData.buildSuccess();
     }
-
 
     /**
      * get not-updated traffic and current used traffic.

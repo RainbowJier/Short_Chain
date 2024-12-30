@@ -1,7 +1,7 @@
 package com.example.dcloudshop;
 
 import com.example.dcloud_common.util.CommonUtil;
-import com.example.dcloud_shop.DcloudShopApplication;
+import com.example.dcloud_shop.ShopApplication;
 import com.example.dcloud_shop.Manager.ProductOrderManager;
 import com.example.dcloud_shop.entity.ProductOrder;
 import lombok.extern.slf4j.Slf4j;
@@ -11,12 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.annotation.Resource;
 import java.math.BigDecimal;
 
 @Slf4j
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = DcloudShopApplication.class)
+@SpringBootTest(classes = ShopApplication.class)
 class DcloudShopApplicationTests {
 
     @Autowired

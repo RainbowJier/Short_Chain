@@ -116,4 +116,9 @@ public class TrafficManagerImpl implements TrafficManager {
     public List<Traffic> selectRandomTraffics(int randomCount) {
         return trafficMapper.selectRandomTraffics(randomCount);
     }
+
+    @Override
+    public int restoreUsedTimes(Long accountNo, Long trafficId, Integer usedTimes, String useDateStr) {
+        return trafficMapper.restoreUsedTimes(accountNo,trafficId,usedTimes,useDateStr);
+    }
 }

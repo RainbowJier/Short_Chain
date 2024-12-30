@@ -26,12 +26,24 @@
           and (t.day_limit - t.day_used) >= #{dayUsed}
     </update>
 
+
     <!--select random traffic.-->
     <select id="selectRandomTraffics" resultType="com.example.dcloud_account.model.entity.Traffic"
             parameterType="int">
         select * from traffic
         order by rand(#{randomCount})
     </select>
+
+    <!--Restore the used times the traffic has been used.-->
+    <update id="restoreUsedTimes">
+        update traffic
+        set day_used = day_used - #{usedTimes}
+        where id = #{trafficId}
+          and account_no = #{accountNo}
+          and (day_used - #{usedTimes}) >= 0
+          and date_format(gmt_modified, '%Y-%m-%d') = #{useDateStr}
+        limit 1;
+    </update>
 
 
 </mapper>

@@ -53,4 +53,11 @@ public interface TrafficManager {
      * get random traffic list.
      */
     List<Traffic> selectRandomTraffics(int randomCount);
+
+
+    /**
+     * restore the used times the traffic has been used.
+     */
+    int restoreUsedTimes(Long accountNo, Long trafficId, Integer usedTimes, String useDateStr);
+
 }

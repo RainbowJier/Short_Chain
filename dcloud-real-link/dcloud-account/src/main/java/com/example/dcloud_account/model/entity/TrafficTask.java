@@ -1,4 +1,4 @@
-﻿package com.example.dcloud_account.model.entity;
+package com.example.dcloud_account.model.entity;
 
 
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -24,7 +23,7 @@ import java.util.Date;
 @Accessors(chain = true)
 @TableName("traffic_task")
 @Builder
-public class TrafficTask extends Model<TrafficTask> {
+public class TrafficTask{
 
     private Long id;
 
@@ -33,9 +32,14 @@ public class TrafficTask extends Model<TrafficTask> {
     private Long trafficId;
 
     private Integer useTimes;
-    //Lock state: LOCK, FINISH, CANCEL
+    /**
+     * Lock state: LOCK, FINISH, CANCEL
+     */
     private String lockState;
-    //Unique identifier
+
+    /**
+     * Unique identifier
+     */
     private String bizId;
 
     private Date gmtCreate;
