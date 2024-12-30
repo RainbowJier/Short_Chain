@@ -13,16 +13,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.*;
 
-/**
- * @Description：Common Util
- * @Author： RainbowJier
- * @Data： 2024/8/13 21:21
- */
-
 @Slf4j
 public class CommonUtil {
-
-
     /**
      * Get ip
      */
