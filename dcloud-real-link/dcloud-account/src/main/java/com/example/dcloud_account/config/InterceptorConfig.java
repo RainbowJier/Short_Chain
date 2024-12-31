@@ -6,15 +6,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-/**
- * @Author: RainbowJier
- * @Description: 👺🐉😎账号拦截器
- * @Date: 2024/10/5 20:52
- * @Version: 1.0
- */
-
-@Component
 @Slf4j
+@Component
 public class InterceptorConfig implements WebMvcConfigurer {
 
     @Override

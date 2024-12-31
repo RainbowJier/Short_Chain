@@ -9,12 +9,6 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Properties;
 
-/**
- * @Description：CaptchaConfig
- * @Author： RainbowJier
- * @Data： 2024/9/17 16:27
- */
-
 @Configuration
 public class CaptchaConfig {
     @Bean

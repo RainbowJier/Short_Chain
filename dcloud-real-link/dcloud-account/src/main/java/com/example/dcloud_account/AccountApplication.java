@@ -9,13 +9,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-
+@Slf4j
 @ComponentScan(basePackages  = {"com.example.dcloud_account", "com.example.dcloud_common"})
 @EnableTransactionManagement  // Open Database Transaction.
 @EnableFeignClients          // Enable OpenFeign
 @EnableDiscoveryClient      // Enable Service register and discovery.
 @SpringBootApplication
-@Slf4j
 @EnableAsync     // Enable asynchronous method.
 public class AccountApplication {
 

@@ -5,15 +5,11 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 
 /**
  * @Description：RedisTemplate配置类
@@ -21,6 +17,7 @@ import java.nio.charset.StandardCharsets;
  * @Data： 2024/9/22 14:05
  */
 
+@Configuration
 public class RedisTemplateConfiguration {
     @Bean
     public RedisTemplate<String,Object> redisTemplate(RedisConnectionFactory redisConnectionFactory){
@@ -44,5 +41,4 @@ public class RedisTemplateConfiguration {
 
         return redisTemplate;
     }
-
 }

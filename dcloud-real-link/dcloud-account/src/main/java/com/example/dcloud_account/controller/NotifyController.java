@@ -1,7 +1,7 @@
 package com.example.dcloud_account.controller;
 
-import com.example.dcloud_account.service.NotifyService;
 import com.example.dcloud_account.controller.request.SendCodeRequest;
+import com.example.dcloud_account.service.NotifyService;
 import com.example.dcloud_common.enums.SendCodeEnum;
 import com.example.dcloud_common.util.CommonUtil;
 import com.example.dcloud_common.util.JsonData;
@@ -19,14 +19,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-/**
- * @Description：获取图形验证码并验证短信验证码
- * @Author： RainbowJier
- * @Data： 2024/8/29 21:28
- */
+@Slf4j
 @RestController
 @RequestMapping("/api/notify/v1")
-@Slf4j
 public class NotifyController {
 
     @Autowired
@@ -38,7 +33,10 @@ public class NotifyController {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
-    private static final long CAPTCHA_EXPIRE_TIME = 60 * 1000 * 10; // 10 minutes.
+    /**
+     * Captcha expire time 10 minutes, unit is milliseconds.
+     */
+    private static final long CAPTCHA_EXPIRE_TIME = 60 * 1000 * 10;
 
     /**
      * Get captcha image.
@@ -48,32 +46,21 @@ public class NotifyController {
         String captchaText = captchaProducer.createText();
         log.info("Captcha text：{}", captchaText);
 
-        // Store the captcha text in the Redis, and set expire time.
         redisTemplate.opsForValue().set(getCaptchaKey(request), captchaText, CAPTCHA_EXPIRE_TIME, TimeUnit.SECONDS);
 
         BufferedImage bufferedImage = captchaProducer.createImage(captchaText);
         try {
-            // Get output stream.
             ServletOutputStream outputStream = response.getOutputStream();
-
-            // Write image data to output stream.
             ImageIO.write(bufferedImage, "jpg", outputStream);
 
-            // Close output stream.
             outputStream.flush();
         } catch (IOException e) {
             log.error("Failed to get output stream: {}", e.getMessage());
         }
     }
 
-    /**
-     * 生成验证码key
-     */
     public String getCaptchaKey(HttpServletRequest request) {
-        // 获取IP
         String ipAddr = CommonUtil.getIpAddr(request);
-
-        // 获取浏览器指纹
         String userAgent = request.getHeader("User-Agent");
 
         String key = "account-service:captcha:" + CommonUtil.MD5(ipAddr + userAgent);
@@ -82,9 +69,8 @@ public class NotifyController {
         return key;
     }
 
-
     /**
-     * 发送短信验证码
+     * Send SMS code to the specified phone number.
      */
     @PostMapping("/send_code")
     public JsonData notify(@RequestBody SendCodeRequest sendCodeRequest, HttpServletRequest request) {
@@ -96,7 +82,6 @@ public class NotifyController {
         if (captchaCache != null && captcha!=null) {
             // equalsIgnoreCase ignores case.
            if(captchaCache.equalsIgnoreCase(captcha)){
-               // Delete captcha from Redis.
                redisTemplate.delete(key);
 
                // Send SMS code.
