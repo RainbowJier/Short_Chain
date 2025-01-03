@@ -17,19 +17,16 @@ import java.util.Map;
  * @since 2024-10-29 14:11:16
  */
 public interface ShortLinkService {
-
     /**
-     * 解析短链
+     * Parse short link to original uel.
      */
     ShortLinkVo parseShortLinkCode(String shortLinkCode);
 
     /**
-     * 分页查找分组下的短链
+     * B-end, get short link list by page.
      */
     Map<String, Object> page(ShortLinkPageRequest request);
 
-
-    // -------------------------- 发送消息到 RabbitMQ  --------------------
     /**
      * 创建短链
      */

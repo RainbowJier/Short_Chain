@@ -18,8 +18,8 @@ public class ShortLinkComponent {
         long murmur32 = CommonUtil.murmurHash32(originalUrl);
         String code = encodeToBase62(murmur32);
 
-        String dbPrefix = ShardingDBConfig.getRandomDBPrefix(code);
-        String tableSuffix = ShardingTableConfig.getRandomTableSubfix(code);
+        String dbPrefix = ShardingDBConfig.getHashDBPrefix(code);
+        String tableSuffix = ShardingTableConfig.getHashTableSuffix(code);
 
         return dbPrefix + code + tableSuffix;
     }

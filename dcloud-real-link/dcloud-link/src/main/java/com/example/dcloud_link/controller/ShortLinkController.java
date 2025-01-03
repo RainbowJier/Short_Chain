@@ -1,12 +1,10 @@
 package com.example.dcloud_link.controller;
 
 import com.example.dcloud_common.util.JsonData;
-import com.example.dcloud_link.component.ShortLinkComponent;
 import com.example.dcloud_link.controller.request.ShortLinkAddRequest;
 import com.example.dcloud_link.controller.request.ShortLinkDelRequest;
 import com.example.dcloud_link.controller.request.ShortLinkPageRequest;
 import com.example.dcloud_link.controller.request.ShortLinkUpdateRequest;
-import com.example.dcloud_link.entity.ShortLink;
 import com.example.dcloud_link.entity.vo.ShortLinkVo;
 import com.example.dcloud_link.service.ShortLinkService;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,20 +25,19 @@ public class ShortLinkController {
     private String rpcToken;
 
     @GetMapping("check")
-    public JsonData check(@RequestParam("shortLinkCode") String shortLinkCode, HttpServletRequest request){
+    public JsonData check(@RequestParam("shortLinkCode") String shortLinkCode, HttpServletRequest request) {
         String token = request.getHeader("rpc-token");
 
-        if(rpcToken.equalsIgnoreCase(token)){
+        if (rpcToken.equalsIgnoreCase(token)) {
             ShortLinkVo shortLinkVo = shortLinkService.parseShortLinkCode(shortLinkCode);
-            return shortLinkVo == null ? JsonData.buildError("Short link is not found."):JsonData.buildSuccess();
-        }else {
+            return shortLinkVo == null ? JsonData.buildError("Short link is not found.") : JsonData.buildSuccess();
+        } else {
             return JsonData.buildError("Illegal Access.");
         }
-
     }
 
     /**
-     * 分页查找短链
+     * B-end, get short link by page.
      */
     @GetMapping("page")
     public JsonData pageByGroupId(@RequestBody ShortLinkPageRequest request) {
@@ -48,8 +45,9 @@ public class ShortLinkController {
         return JsonData.buildSuccess(result);
     }
 
+
     /**
-     * 新增短链
+     * add short link.
      */
     @PostMapping("add")
     public JsonData createShortLink(@RequestBody ShortLinkAddRequest shortLinkRequest) {
@@ -57,7 +55,7 @@ public class ShortLinkController {
     }
 
     /**
-     * 删除短链
+     * delete short link.
      */
     @PostMapping("del")
     public JsonData delShortLink(@RequestBody ShortLinkDelRequest request) {
@@ -65,15 +63,12 @@ public class ShortLinkController {
     }
 
     /**
-     * 更新短链
+     * update short link.
      */
     @PostMapping("update")
     public JsonData updateShortLink(@RequestBody ShortLinkUpdateRequest request) {
         return shortLinkService.updateShortLink(request);
     }
-
-
-
 
 
 }

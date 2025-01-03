@@ -2,7 +2,9 @@
 /*    dcloud_account */
 /******************************************/
 
-CREATE DATABASE dcloud_account;
+/*------------账号数据库创建-----------------*/
+CREATE DATABASE IF NOT EXISTS `dcloud_account`;
+/*------------账号数据库创建-----------------*/
 
 /*------------account-----------------*/
 CREATE TABLE `account`
