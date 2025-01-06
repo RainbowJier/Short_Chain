@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" version="26.0.2">
   <diagram id="BT_9d3tybcS5t6vmlCDs" name="第 1 页">
-    <mxGraphModel dx="875" dy="5111" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1235" dy="5290" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -15,7 +15,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="jNLhBHDHFFRCfszbqo9E-76" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="jNLhBHDHFFRCfszbqo9E-35" target="jNLhBHDHFFRCfszbqo9E-55">
+        <mxCell id="jNLhBHDHFFRCfszbqo9E-76" value="生产者/消费者" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="jNLhBHDHFFRCfszbqo9E-35" target="jNLhBHDHFFRCfszbqo9E-55">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="2200" y="-1898" />
@@ -24,7 +24,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="jNLhBHDHFFRCfszbqo9E-35" value="&lt;b&gt;dcloud_service&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;dashed=1;verticalAlign=top;" vertex="1" parent="1">
-          <mxGeometry x="1730" y="-2130.97" width="440" height="280.97" as="geometry" />
+          <mxGeometry x="1730" y="-2130.97" width="440" height="370.97" as="geometry" />
         </mxCell>
         <mxCell id="jNLhBHDHFFRCfszbqo9E-59" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
           <mxGeometry x="1745" y="-2099.2799999999997" width="140" height="200" as="geometry" />
@@ -3533,6 +3533,17 @@
         </mxCell>
         <mxCell id="jNLhBHDHFFRCfszbqo9E-73" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/databases/Azure_Database_MySQL_Server.svg;" vertex="1" parent="1">
           <mxGeometry x="2362" y="-2012" width="48" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="jNLhBHDHFFRCfszbqo9E-77" value="XXL_JOB" style="verticalLabelPosition=bottom;html=1;verticalAlign=top;align=center;strokeColor=none;fillColor=#00BEF2;shape=mxgraph.azure.scheduler;pointerEvents=1;" vertex="1" parent="1">
+          <mxGeometry x="2285" y="-1830" width="40" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="jNLhBHDHFFRCfszbqo9E-79" value="任务调度" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.04;entryY=0.48;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="jNLhBHDHFFRCfszbqo9E-35" target="jNLhBHDHFFRCfszbqo9E-77">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2200" y="-1806" />
+              <mxPoint x="2200" y="-1806" />
+            </Array>
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
