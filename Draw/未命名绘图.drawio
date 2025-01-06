@@ -3487,7 +3487,7 @@
         <mxCell id="jNLhBHDHFFRCfszbqo9E-42" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/databases/Azure_Database_MySQL_Server.svg;" vertex="1" parent="1">
           <mxGeometry x="2340" y="-2034.97" width="48" height="64" as="geometry" />
         </mxCell>
-        <mxCell id="jNLhBHDHFFRCfszbqo9E-51" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="jNLhBHDHFFRCfszbqo9E-35" target="jNLhBHDHFFRCfszbqo9E-50">
+        <mxCell id="jNLhBHDHFFRCfszbqo9E-51" value="数据存储" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="jNLhBHDHFFRCfszbqo9E-35" target="jNLhBHDHFFRCfszbqo9E-50">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="2160" y="-2000" />
