@@ -3,8 +3,6 @@ package com.example.dcloud_shop.controller;
 import com.alibaba.cloud.commons.lang.StringUtils;
 import com.example.dcloud_common.constant.RedisKey;
 import com.example.dcloud_common.enums.BizCodeEnum;
-import com.example.dcloud_common.enums.ClientTypeEnum;
-import com.example.dcloud_common.enums.ProductOrderPayTypeEnum;
 import com.example.dcloud_common.interceptor.LoginInterceptor;
 import com.example.dcloud_common.util.CommonUtil;
 import com.example.dcloud_common.util.JsonData;
@@ -13,7 +11,6 @@ import com.example.dcloud_shop.controller.request.ConfirmOrderRequest;
 import com.example.dcloud_shop.controller.request.ProductOrderPageRequest;
 import com.example.dcloud_shop.service.ProductOrderService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +30,7 @@ public class ProductOrderController {
     private ProductOrderService productOrderService;
 
     @Resource
-    private StringRedisTemplate redisTemplate;
+    private StringRedisTemplate stringRedisTemplate;
 
     /**
      * Generate order token to avoid repeating submission.
@@ -44,7 +41,7 @@ public class ProductOrderController {
         String token = CommonUtil.getStringNumRandom(32);
         String key = String.format(RedisKey.SUBMIT_ORDER_TOKEN_KEY, accountNo, token);
 
-        redisTemplate.opsForValue().set(key, String.valueOf(Thread.currentThread().getId()), 30, TimeUnit.MINUTES);
+        stringRedisTemplate.opsForValue().set(key, String.valueOf(Thread.currentThread().getId()), 30, TimeUnit.MINUTES);
         return JsonData.buildSuccess(token);
     }
 

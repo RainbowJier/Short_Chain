@@ -90,6 +90,12 @@
             <artifactId>redisson</artifactId>
         </dependency>
 
+        <!-- Gateway-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-gateway</artifactId>
+        </dependency>
+
         <!--Hoxton.M2版本之后不再使⽤Ribbon⽽是使⽤spring-cloud-loadbalancer，所以不引⼊spring-cloud-loadbalancer会报
         错，所以加⼊spring-cloud-loadbalancer依赖 并且在nacos中排
         除ribbon依赖，不然loadbalancer⽆效 -->
@@ -109,15 +115,16 @@
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
         </dependency>
 
-        <!--配置中⼼， 留坑，后续⽤的时候再讲-->
+        <!--配置中⼼，留坑，后续⽤的时候再讲-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
-        <!--<dependency>-->
-        <!--    <groupId>org.springframework.cloud</groupId>-->
-        <!--    <artifactId>spring-cloud-starter-bootstrap</artifactId>-->
-        <!--</dependency>-->
+        <!--坑：spring-cloud-dependencies 2020.0.0 默认不在加载bootstrap配置⽂件-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
 
         <!--Feign远程调⽤-->
         <dependency>
