@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @Data： 2024/8/24 8:55
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = DcloudAccountApplication.class)
+@SpringBootTest(classes = AccountApplication.class)
 public class SmsTest {
 
     @Autowired

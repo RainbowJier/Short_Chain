@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @Slf4j
 @ComponentScan(basePackages  = {"com.example.dcloud_gateway", "com.example.dcloud_common"})
-@EnableDiscoveryClient      // Enable Service register and discovery.
+@EnableDiscoveryClient      
 @SpringBootApplication
 public class GatewayApplication {
 
