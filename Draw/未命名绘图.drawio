@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" version="26.0.4">
   <diagram id="BT_9d3tybcS5t6vmlCDs" name="第 1 页">
-    <mxGraphModel dx="750" dy="5049" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1500" dy="5422" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -3571,11 +3571,12 @@
           <mxGeometry x="2090" y="-2263.61" width="85" height="85" as="geometry" />
         </mxCell>
         <mxCell id="JsmoGGVePTYYPnhxTUri-8" value="1.推送代码" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="JsmoGGVePTYYPnhxTUri-5" target="JsmoGGVePTYYPnhxTUri-6">
-          <mxGeometry relative="1" as="geometry">
+          <mxGeometry x="0.4706" relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="1210" y="-2740" />
-              <mxPoint x="1210" y="-2860" />
+              <mxPoint x="1210" y="-2830" />
             </Array>
+            <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="JsmoGGVePTYYPnhxTUri-9" value="2.前端页面点击构建按钮" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="JsmoGGVePTYYPnhxTUri-5" target="JsmoGGVePTYYPnhxTUri-7">
@@ -3603,7 +3604,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="JsmoGGVePTYYPnhxTUri-6" value="Git平台" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#D4E1F5;" vertex="1" parent="1">
-          <mxGeometry x="1380" y="-2900" width="120" height="80" as="geometry" />
+          <mxGeometry x="1380" y="-2870" width="120" height="80" as="geometry" />
         </mxCell>
         <mxCell id="JsmoGGVePTYYPnhxTUri-12" value="2.3.推送到镜像仓库" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="JsmoGGVePTYYPnhxTUri-7" target="JsmoGGVePTYYPnhxTUri-11">
           <mxGeometry relative="1" as="geometry" />
@@ -3611,11 +3612,20 @@
         <mxCell id="JsmoGGVePTYYPnhxTUri-7" value="CI平台" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#D4E1F5;strokeColor=#36393d;" vertex="1" parent="1">
           <mxGeometry x="1380" y="-2735.05" width="120" height="80" as="geometry" />
         </mxCell>
+        <mxCell id="JsmoGGVePTYYPnhxTUri-17" value="3.2.拉去镜像" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="JsmoGGVePTYYPnhxTUri-11" target="JsmoGGVePTYYPnhxTUri-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="JsmoGGVePTYYPnhxTUri-11" value="镜像仓库" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#D4E1F5;strokeColor=#36393d;" vertex="1" parent="1">
-          <mxGeometry x="1380" y="-2594.05" width="120" height="80" as="geometry" />
+          <mxGeometry x="1380" y="-2606.55" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="JsmoGGVePTYYPnhxTUri-22" value="3.3.部署服务器" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="JsmoGGVePTYYPnhxTUri-13" target="JsmoGGVePTYYPnhxTUri-20">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="JsmoGGVePTYYPnhxTUri-13" value="CD平台" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#D4E1F5;strokeColor=#36393d;" vertex="1" parent="1">
-          <mxGeometry x="1390" y="-2495.9500000000003" width="120" height="80" as="geometry" />
+          <mxGeometry x="1380" y="-2480.0000000000005" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="JsmoGGVePTYYPnhxTUri-20" value="" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.traditional_server;fillColor=#7D7C7C;gradientColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1616.75" y="-2471.5" width="46.5" height="63" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
