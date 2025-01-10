@@ -1,6 +1,8 @@
 package com.example.dcloud_common.enums;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * @Description：TODO

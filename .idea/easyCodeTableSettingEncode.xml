@@ -3,9 +3,216 @@
   <component name="EasyCodeTableSetting">
     <option name="tableInfoMap">
       <map>
-        <entry key="dcloud_account.traffic" value="eyJuYW1lIjoiVHJhZmZpYyIsInByZU5hbWUiOiIiLCJ0ZW1wbGF0ZUdyb3VwTmFtZSI6IkRlZmF1bHQiLCJmdWxsQ29sdW1uIjpbeyJuYW1lIjoiaWQiLCJ0eXBlIjoiamF2YS5sYW5nLkxvbmciLCJjdXN0b20iOmZhbHNlLCJleHQiOiJ7fSJ9LHsibmFtZSI6ImRheUxpbWl0IiwiY29tbWVudCI6IkRhaWx5IGxpbWl0IGZvciBzaG9ydCBsaW5rcyIsInR5cGUiOiJqYXZhLmxhbmcuSW50ZWdlciIsImN1c3RvbSI6ZmFsc2UsImV4dCI6Int9In0seyJuYW1lIjoiZGF5VXNlZCIsImNvbW1lbnQiOiJOdW1iZXIgb2Ygc2hvcnQgbGlua3MgdXNlZCBmb3IgdGhlIGRheSIsInR5cGUiOiJqYXZhLmxhbmcuSW50ZWdlciIsImN1c3RvbSI6ZmFsc2UsImV4dCI6Int9In0seyJuYW1lIjoidG90YWxMaW1pdCIsImNvbW1lbnQiOiJUb3RhbCBsaW1pdCwgdXNlZCBmb3IgbGl2ZSBjb2RlcyIsInR5cGUiOiJqYXZhLmxhbmcuSW50ZWdlciIsImN1c3RvbSI6ZmFsc2UsImV4dCI6Int9In0seyJuYW1lIjoiYWNjb3VudE5vIiwiY29tbWVudCI6IkFjY291bnQgbnVtYmVyIiwidHlwZSI6ImphdmEubGFuZy5Mb25nIiwiY3VzdG9tIjpmYWxzZSwiZXh0Ijoie30ifSx7Im5hbWUiOiJvdXRUcmFkZU5vIiwiY29tbWVudCI6Ik9yZGVyIG51bWJlciIsInR5cGUiOiJqYXZhLmxhbmcuU3RyaW5nIiwiY3VzdG9tIjpmYWxzZSwiZXh0Ijoie30ifSx7Im5hbWUiOiJsZXZlbCIsImNvbW1lbnQiOiJQcm9kdWN0IGxldmVsOiBGSVJTVChCcm9uemUpLCBTRUNPTkQoR29sZCksIFRISVJEKERpYW1vbmQpIiwidHlwZSI6ImphdmEubGFuZy5TdHJpbmciLCJjdXN0b20iOmZhbHNlLCJleHQiOiJ7fSJ9LHsibmFtZSI6ImV4cGlyZWREYXRlIiwiY29tbWVudCI6IkV4cGlyYXRpb24gZGF0ZSIsInR5cGUiOiJqYXZhLnV0aWwuRGF0ZSIsImN1c3RvbSI6ZmFsc2UsImV4dCI6Int9In0seyJuYW1lIjoicGx1Z2luVHlwZSIsImNvbW1lbnQiOiJQbHVnaW4gdHlwZSIsInR5cGUiOiJqYXZhLmxhbmcuU3RyaW5nIiwiY3VzdG9tIjpmYWxzZSwiZXh0Ijoie30ifSx7Im5hbWUiOiJwcm9kdWN0SWQiLCJjb21tZW50IjoiUHJvZHVjdCBwcmltYXJ5IGtleSIsInR5cGUiOiJqYXZhLmxhbmcuTG9uZyIsImN1c3RvbSI6ZmFsc2UsImV4dCI6Int9In0seyJuYW1lIjoiZ210Q3JlYXRlIiwidHlwZSI6ImphdmEudXRpbC5EYXRlIiwiY3VzdG9tIjpmYWxzZSwiZXh0Ijoie30ifSx7Im5hbWUiOiJnbXRNb2RpZmllZCIsInR5cGUiOiJqYXZhLnV0aWwuRGF0ZSIsImN1c3RvbSI6ZmFsc2UsImV4dCI6Int9In1dLCJzYXZlUGFja2FnZU5hbWUiOiIiLCJzYXZlUGF0aCI6Ii4vZGNsb3VkLXJlYWwtbGluayIsInNhdmVNb2RlbE5hbWUiOiJkY2xvdWQtZGF0YSJ9" />
-        <entry key="dcloud_account.traffic_0" value="eyJuYW1lIjoiVHJhZmZpYzAiLCJwcmVOYW1lIjoiIiwidGVtcGxhdGVHcm91cE5hbWUiOiJEZWZhdWx0IiwiZnVsbENvbHVtbiI6W3sibmFtZSI6ImlkIiwidHlwZSI6ImphdmEubGFuZy5Mb25nIiwiY3VzdG9tIjpmYWxzZSwiZXh0Ijoie30ifSx7Im5hbWUiOiJkYXlMaW1pdCIsImNvbW1lbnQiOiLDv8zsz97WxrbgydnM9SIsInR5cGUiOiJqYXZhLmxhbmcuSW50ZWdlciIsImN1c3RvbSI6ZmFsc2UsImV4dCI6Int9In0seyJuYW1lIjoiZGF5VXNlZCIsImNvbW1lbnQiOiK1sczs08PBy7bgydnM9SIsInR5cGUiOiJqYXZhLmxhbmcuSW50ZWdlciIsImN1c3RvbSI6ZmFsc2UsImV4dCI6Int9In0seyJuYW1lIjoidG90YWxMaW1pdCIsImNvbW1lbnQiOiLX3LTOyv2jrLvuwuuyydPDIiwidHlwZSI6ImphdmEubGFuZy5JbnRlZ2VyIiwiY3VzdG9tIjpmYWxzZSwiZXh0Ijoie30ifSx7Im5hbWUiOiJhY2NvdW50Tm8iLCJjb21tZW50Ijoi1cu6xSIsInR5cGUiOiJqYXZhLmxhbmcuTG9uZyIsImN1c3RvbSI6ZmFsc2UsImV4dCI6Int9In0seyJuYW1lIjoib3V0VHJhZGVObyIsImNvbW1lbnQiOiK2qbWlusUiLCJ0eXBlIjoiamF2YS5sYW5nLlN0cmluZyIsImN1c3RvbSI6ZmFsc2UsImV4dCI6Int9In0seyJuYW1lIjoibGV2ZWwiLCJjb21tZW50IjoiUHJvZHVjdCBsZXZlbDogRklSU1QoQnJvbnplKSwgU0VDT05EKEdvbGQpLCBUSElSRChEaWFtb25kKSIsInR5cGUiOiJqYXZhLmxhbmcuU3RyaW5nIiwiY3VzdG9tIjpmYWxzZSwiZXh0Ijoie30ifSx7Im5hbWUiOiJleHBpcmVkRGF0ZSIsImNvbW1lbnQiOiK5/cbayNXG2iIsInR5cGUiOiJqYXZhLnV0aWwuRGF0ZSIsImN1c3RvbSI6ZmFsc2UsImV4dCI6Int9In0seyJuYW1lIjoicGx1Z2luVHlwZSIsImNvbW1lbnQiOiKy5bz+wODQzSIsInR5cGUiOiJqYXZhLmxhbmcuU3RyaW5nIiwiY3VzdG9tIjpmYWxzZSwiZXh0Ijoie30ifSx7Im5hbWUiOiJwcm9kdWN0SWQiLCJjb21tZW50IjoiyczGt9b3vPwiLCJ0eXBlIjoiamF2YS5sYW5nLkxvbmciLCJjdXN0b20iOmZhbHNlLCJleHQiOiJ7fSJ9LHsibmFtZSI6ImdtdENyZWF0ZSIsInR5cGUiOiJqYXZhLnV0aWwuRGF0ZSIsImN1c3RvbSI6ZmFsc2UsImV4dCI6Int9In0seyJuYW1lIjoiZ210TW9kaWZpZWQiLCJ0eXBlIjoiamF2YS51dGlsLkRhdGUiLCJjdXN0b20iOmZhbHNlLCJleHQiOiJ7fSJ9XSwic2F2ZVBhY2thZ2VOYW1lIjoiIiwic2F2ZVBhdGgiOiIuL2RjbG91ZC1yZWFsLWxpbmsiLCJzYXZlTW9kZWxOYW1lIjoiZGNsb3VkLWRhdGEifQ==" />
-        <entry key="dcloud_account.traffic_task" value="eyJuYW1lIjoiVHJhZmZpY1Rhc2siLCJwcmVOYW1lIjoiIiwidGVtcGxhdGVHcm91cE5hbWUiOiJNeWJhdGlzUGx1cyIsImZ1bGxDb2x1bW4iOlt7Im5hbWUiOiJpZCIsInR5cGUiOiJqYXZhLmxhbmcuTG9uZyIsImN1c3RvbSI6ZmFsc2UsImV4dCI6Int9In0seyJuYW1lIjoiYWNjb3VudE5vIiwidHlwZSI6ImphdmEubGFuZy5Mb25nIiwiY3VzdG9tIjpmYWxzZSwiZXh0Ijoie30ifSx7Im5hbWUiOiJ0cmFmZmljSWQiLCJ0eXBlIjoiamF2YS5sYW5nLkxvbmciLCJjdXN0b20iOmZhbHNlLCJleHQiOiJ7fSJ9LHsibmFtZSI6InVzZVRpbWVzIiwidHlwZSI6ImphdmEubGFuZy5JbnRlZ2VyIiwiY3VzdG9tIjpmYWxzZSwiZXh0Ijoie30ifSx7Im5hbWUiOiJsb2NrU3RhdGUiLCJjb21tZW50IjoiTG9jayBzdGF0ZTogTE9DSywgRklOSVNILCBDQU5DRUwiLCJ0eXBlIjoiamF2YS5sYW5nLlN0cmluZyIsImN1c3RvbSI6ZmFsc2UsImV4dCI6Int9In0seyJuYW1lIjoibWVzc2FnZUlkIiwiY29tbWVudCI6IlVuaXF1ZSBpZGVudGlmaWVyIiwidHlwZSI6ImphdmEubGFuZy5TdHJpbmciLCJjdXN0b20iOmZhbHNlLCJleHQiOiJ7fSJ9LHsibmFtZSI6ImdtdENyZWF0ZSIsInR5cGUiOiJqYXZhLnV0aWwuRGF0ZSIsImN1c3RvbSI6ZmFsc2UsImV4dCI6Int9In0seyJuYW1lIjoiZ210TW9kaWZpZWQiLCJ0eXBlIjoiamF2YS51dGlsLkRhdGUiLCJjdXN0b20iOmZhbHNlLCJleHQiOiJ7fSJ9XSwic2F2ZVBhY2thZ2VOYW1lIjoiIiwic2F2ZVBhdGgiOiIuL2RjbG91ZC1yZWFsLWxpbmsvZGNsb3VkLWFjY291bnQvc3JjL21haW4vamF2YSIsInNhdmVNb2RlbE5hbWUiOiJkY2xvdWQtYWNjb3VudCJ9" />
+        <entry key="dcloud_account.traffic">
+          <value>
+            <TableInfoDTO>
+              <option name="fullColumn">
+                <list>
+                  <ColumnInfoDTO>
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="id" />
+                    <option name="type" value="java.lang.Long" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="Daily limit for short links" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="dayLimit" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="Number of short links used for the day" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="dayUsed" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="Total limit, used for live codes" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="totalLimit" />
+                    <option name="type" value="java.lang.Integer" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="Account number" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="accountNo" />
+                    <option name="type" value="java.lang.Long" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="Order number" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="outTradeNo" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="Product level: FIRST(Bronze), SECOND(Gold), THIRD(Diamond)" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="level" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="Expiration date" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="expiredDate" />
+                    <option name="type" value="java.util.Date" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="Plugin type" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="pluginType" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="Product primary key" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="productId" />
+                    <option name="type" value="java.lang.Long" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="gmtCreate" />
+                    <option name="type" value="java.util.Date" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="gmtModified" />
+                    <option name="type" value="java.util.Date" />
+                  </ColumnInfoDTO>
+                </list>
+              </option>
+              <option name="name" value="Traffic" />
+              <option name="preName" value="" />
+              <option name="saveModelName" value="dcloud-data" />
+              <option name="savePackageName" value="com.example.dcloudaccount.mapper" />
+              <option name="savePath" value="./dcloud-real-link/dcloud-data/src/main/java/com/example/dcloudaccount/mapper" />
+              <option name="templateGroupName" value="Default" />
+            </TableInfoDTO>
+          </value>
+        </entry>
+        <entry key="dcloud_link.short_link">
+          <value>
+            <TableInfoDTO>
+              <option name="fullColumn">
+                <list>
+                  <ColumnInfoDTO>
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="id" />
+                    <option name="type" value="java.lang.Long" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="分组" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="groupId" />
+                    <option name="type" value="java.lang.Long" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="短链标题" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="title" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="原始url地址" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="originalUrl" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="短链域名" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="domain" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="短链压缩码" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="code" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="长链的md5码，方便查找" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="sign" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="过期时间，长久就是-1" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="expired" />
+                    <option name="type" value="java.util.Date" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="账号唯一编号" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="accountNo" />
+                    <option name="type" value="java.lang.Long" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="创建时间" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="gmtCreate" />
+                    <option name="type" value="java.util.Date" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="修改时间" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="gmtModified" />
+                    <option name="type" value="java.util.Date" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="0是默认，1是删除" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="del" />
+                    <option name="type" value="java.lang.Long" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="状态，lock是锁定不可用，active是可用" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="state" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                  <ColumnInfoDTO>
+                    <option name="comment" value="链接产品层级：FIRST 免费青铜、SECOND黄金、THIRD钻石" />
+                    <option name="custom" value="false" />
+                    <option name="ext" value="{}" />
+                    <option name="name" value="linkType" />
+                    <option name="type" value="java.lang.String" />
+                  </ColumnInfoDTO>
+                </list>
+              </option>
+              <option name="name" value="ShortLink" />
+              <option name="preName" value="" />
+              <option name="saveModelName" value="dcloud-link" />
+              <option name="savePackageName" value="" />
+              <option name="savePath" value="./dcloud-link/src/main/java" />
+              <option name="templateGroupName" value="Default" />
+            </TableInfoDTO>
+          </value>
+        </entry>
       </map>
     </option>
   </component>

@@ -1,7 +1,6 @@
 package com.example.dcloud_link.config;
 
 import com.example.dcloud_common.interceptor.LoginInterceptor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

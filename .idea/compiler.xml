@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <option name="BUILD_PROCESS_HEAP_SIZE" value="2000" />
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
@@ -11,30 +10,20 @@
         <module name="xxl-job-core" />
         <module name="dcloud-app" />
         <module name="dcloud-data" />
-        <module name="xxl-job-executor-sample-frameless" />
         <module name="dcloud-shop" />
         <module name="dcloud-gateway" />
         <module name="dcloud-link" />
         <module name="xxl-job-admin" />
-        <module name="xxl-job-executor-sample-springboot" />
-        <module name="dcloud-common" />
         <module name="dcloud-account" />
+        <module name="dcloud-common" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="test" target="1.8" />
+      <module name="xxl-job-executor-sample-frameless" target="11" />
+      <module name="xxl-job-executor-sample-frameless (1)" target="11" />
+      <module name="xxl-job-executor-sample-springboot" target="11" />
+      <module name="xxl-job-executor-sample-springboot (2)" target="11" />
+      <module name="xxl-job-executor-samples" target="11" />
     </bytecodeTargetLevel>
-  </component>
-  <component name="JavacSettings">
-    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="dcloud-account" options="-parameters" />
-      <module name="dcloud-app" options="-parameters" />
-      <module name="dcloud-common" options="-parameters" />
-      <module name="dcloud-data" options="-parameters" />
-      <module name="dcloud-gateway" options="-parameters" />
-      <module name="dcloud-link" options="-parameters" />
-      <module name="dcloud-shop" options="-parameters" />
-      <module name="test" options="-parameters" />
-    </option>
   </component>
 </project>

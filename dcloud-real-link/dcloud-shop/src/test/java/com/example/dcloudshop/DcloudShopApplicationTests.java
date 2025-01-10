@@ -1,8 +1,8 @@
 package com.example.dcloudshop;
 
 import com.example.dcloud_common.util.CommonUtil;
-import com.example.dcloud_shop.ShopApplication;
 import com.example.dcloud_shop.Manager.ProductOrderManager;
+import com.example.dcloud_shop.ShopApplication;
 import com.example.dcloud_shop.model.entity.ProductOrder;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;

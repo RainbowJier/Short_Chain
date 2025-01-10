@@ -3,7 +3,6 @@ package com.example.dcloud_link.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.dcloud_link.entity.GroupCodeMapping;
-import com.example.dcloud_link.entity.LinkGroup;
 import org.apache.ibatis.annotations.Mapper;
 
 
