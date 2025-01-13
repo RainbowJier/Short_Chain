@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" version="26.0.5">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" version="26.0.4">
   <diagram id="BT_9d3tybcS5t6vmlCDs" name="第 1 页">
-    <mxGraphModel dx="1195" dy="5291" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="875" dy="5111" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -3616,16 +3616,28 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="JsmoGGVePTYYPnhxTUri-11" value="阿里云Docker" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#D4E1F5;strokeColor=#36393d;" parent="1" vertex="1">
-          <mxGeometry x="1380" y="-2606.55" width="120" height="80" as="geometry" />
+          <mxGeometry x="1390" y="-2600" width="120" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="JsmoGGVePTYYPnhxTUri-22" value="3.3.部署服务器" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="JsmoGGVePTYYPnhxTUri-13" target="JsmoGGVePTYYPnhxTUri-20" edge="1">
+        <mxCell id="JsmoGGVePTYYPnhxTUri-22" value="3.3.部署服务器" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="JsmoGGVePTYYPnhxTUri-13" target="Y_ZEJ4xmFB6dKO-EDr4C-3" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="JsmoGGVePTYYPnhxTUri-13" value="Rancher" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#D4E1F5;strokeColor=#36393d;" parent="1" vertex="1">
-          <mxGeometry x="1380" y="-2480.0000000000005" width="120" height="80" as="geometry" />
+          <mxGeometry x="1390" y="-2480.0000000000005" width="120" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="JsmoGGVePTYYPnhxTUri-20" value="" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.traditional_server;fillColor=#7D7C7C;gradientColor=none;" parent="1" vertex="1">
-          <mxGeometry x="1616.75" y="-2471.5" width="46.5" height="63" as="geometry" />
+        <mxCell id="Y_ZEJ4xmFB6dKO-EDr4C-5" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="1620" y="-2490" width="210" height="104.05000000000018" as="geometry" />
+        </mxCell>
+        <mxCell id="Y_ZEJ4xmFB6dKO-EDr4C-3" value="&lt;b&gt;部署集群&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;dashed=1;verticalAlign=top;" vertex="1" parent="Y_ZEJ4xmFB6dKO-EDr4C-5">
+          <mxGeometry width="210" height="104.05" as="geometry" />
+        </mxCell>
+        <mxCell id="Y_ZEJ4xmFB6dKO-EDr4C-1" value="" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.traditional_server;fillColor=#7D7C7C;gradientColor=none;" vertex="1" parent="Y_ZEJ4xmFB6dKO-EDr4C-5">
+          <mxGeometry x="10" y="29.5" width="46.5" height="63" as="geometry" />
+        </mxCell>
+        <mxCell id="Y_ZEJ4xmFB6dKO-EDr4C-2" value="" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.traditional_server;fillColor=#7D7C7C;gradientColor=none;" vertex="1" parent="Y_ZEJ4xmFB6dKO-EDr4C-5">
+          <mxGeometry x="80" y="30" width="46.5" height="63" as="geometry" />
+        </mxCell>
+        <mxCell id="Y_ZEJ4xmFB6dKO-EDr4C-4" value="" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.traditional_server;fillColor=#7D7C7C;gradientColor=none;" vertex="1" parent="Y_ZEJ4xmFB6dKO-EDr4C-5">
+          <mxGeometry x="150" y="30" width="46.5" height="63" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
