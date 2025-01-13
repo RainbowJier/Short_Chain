@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" version="26.0.4">
   <diagram id="BT_9d3tybcS5t6vmlCDs" name="第 1 页">
-    <mxGraphModel dx="875" dy="5111" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1050" dy="5198" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -3597,15 +3597,16 @@
         <mxCell id="JsmoGGVePTYYPnhxTUri-6" value="Gitee" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#D4E1F5;" parent="1" vertex="1">
           <mxGeometry x="1380" y="-2870" width="120" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="JsmoGGVePTYYPnhxTUri-12" value="2.3.推送到镜像仓库" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="JsmoGGVePTYYPnhxTUri-7" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="1450" y="-2600" as="targetPoint" />
-          </mxGeometry>
+        <mxCell id="JsmoGGVePTYYPnhxTUri-12" value="2.3.推送到镜像仓库" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="JsmoGGVePTYYPnhxTUri-7" target="JsmoGGVePTYYPnhxTUri-11" edge="1">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="JsmoGGVePTYYPnhxTUri-7" value="Jenkins" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#D4E1F5;strokeColor=#36393d;" parent="1" vertex="1">
           <mxGeometry x="1380" y="-2735.05" width="120" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="JsmoGGVePTYYPnhxTUri-22" value="3.3.自动部署" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="JsmoGGVePTYYPnhxTUri-7" target="Y_ZEJ4xmFB6dKO-EDr4C-3" edge="1">
+        <mxCell id="JsmoGGVePTYYPnhxTUri-11" value="阿里云Docker" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#D4E1F5;strokeColor=#36393d;" parent="1" vertex="1">
+          <mxGeometry x="1380" y="-2606.55" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="JsmoGGVePTYYPnhxTUri-22" value="3.3.部署服务器" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="JsmoGGVePTYYPnhxTUri-7" target="Y_ZEJ4xmFB6dKO-EDr4C-3" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="Y_ZEJ4xmFB6dKO-EDr4C-5" value="" style="group" vertex="1" connectable="0" parent="1">
