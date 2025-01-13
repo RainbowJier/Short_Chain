@@ -3588,15 +3588,6 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="JsmoGGVePTYYPnhxTUri-14" value="3.发布平台" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="JsmoGGVePTYYPnhxTUri-5" target="JsmoGGVePTYYPnhxTUri-13" edge="1">
-          <mxGeometry x="0.668" relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="1210" y="-2740" />
-              <mxPoint x="1210" y="-2444" />
-            </Array>
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
         <mxCell id="JsmoGGVePTYYPnhxTUri-5" value="开发人员" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
           <mxGeometry x="1100" y="-2770" width="30" height="60" as="geometry" />
         </mxCell>
@@ -3606,26 +3597,19 @@
         <mxCell id="JsmoGGVePTYYPnhxTUri-6" value="Gitee" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#D4E1F5;" parent="1" vertex="1">
           <mxGeometry x="1380" y="-2870" width="120" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="JsmoGGVePTYYPnhxTUri-12" value="2.3.推送到镜像仓库" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="JsmoGGVePTYYPnhxTUri-7" target="JsmoGGVePTYYPnhxTUri-11" edge="1">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="JsmoGGVePTYYPnhxTUri-12" value="2.3.推送到镜像仓库" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="JsmoGGVePTYYPnhxTUri-7" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1450" y="-2600" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="JsmoGGVePTYYPnhxTUri-7" value="Jenkins" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#D4E1F5;strokeColor=#36393d;" parent="1" vertex="1">
           <mxGeometry x="1380" y="-2735.05" width="120" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="JsmoGGVePTYYPnhxTUri-17" value="3.2.拉去镜像" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="JsmoGGVePTYYPnhxTUri-11" target="JsmoGGVePTYYPnhxTUri-13" edge="1">
+        <mxCell id="JsmoGGVePTYYPnhxTUri-22" value="3.3.自动部署" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="JsmoGGVePTYYPnhxTUri-7" target="Y_ZEJ4xmFB6dKO-EDr4C-3" edge="1">
           <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="JsmoGGVePTYYPnhxTUri-11" value="阿里云Docker" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#D4E1F5;strokeColor=#36393d;" parent="1" vertex="1">
-          <mxGeometry x="1390" y="-2600" width="120" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="JsmoGGVePTYYPnhxTUri-22" value="3.3.部署服务器" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="JsmoGGVePTYYPnhxTUri-13" target="Y_ZEJ4xmFB6dKO-EDr4C-3" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="JsmoGGVePTYYPnhxTUri-13" value="Rancher" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#D4E1F5;strokeColor=#36393d;" parent="1" vertex="1">
-          <mxGeometry x="1390" y="-2480.0000000000005" width="120" height="80" as="geometry" />
         </mxCell>
         <mxCell id="Y_ZEJ4xmFB6dKO-EDr4C-5" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="1620" y="-2490" width="210" height="104.05000000000018" as="geometry" />
+          <mxGeometry x="1610" y="-2750" width="210" height="104.05000000000018" as="geometry" />
         </mxCell>
         <mxCell id="Y_ZEJ4xmFB6dKO-EDr4C-3" value="&lt;b&gt;部署集群&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;dashed=1;verticalAlign=top;" vertex="1" parent="Y_ZEJ4xmFB6dKO-EDr4C-5">
           <mxGeometry width="210" height="104.05" as="geometry" />
