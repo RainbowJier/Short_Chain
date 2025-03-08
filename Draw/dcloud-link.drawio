@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36" version="26.1.0">
   <diagram name="第 1 页" id="zngaNRGyfOBU_eu8mxkX">
-    <mxGraphModel dx="-2766" dy="984" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2339" pageHeight="3300" math="0" shadow="0">
+    <mxGraphModel dx="-2885" dy="923" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2339" pageHeight="3300" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -91,7 +91,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="SSOsadmcBXxZNNzZLrk8-22" value="B端：新增短链映射" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D5E8D4;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="5677.5" y="2120" width="110" height="40" as="geometry" />
+          <mxGeometry x="5677.5" y="2120" width="112.5" height="40" as="geometry" />
         </mxCell>
         <mxCell id="SSOsadmcBXxZNNzZLrk8-23" value="冗余双写&lt;br&gt;分库：account_no&lt;br&gt;分表：group_id" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1" vertex="1" parent="1">
           <mxGeometry x="5680" y="2160" width="120" height="60" as="geometry" />
@@ -147,7 +147,7 @@
           <mxGeometry x="5770" y="1820" width="30" height="60" as="geometry" />
         </mxCell>
         <mxCell id="SSOsadmcBXxZNNzZLrk8-53" value="Redis实现分布式锁" style="image;sketch=0;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/mscae/Cache_Redis_Product.svg;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="6470" y="1970" width="50" height="42" as="geometry" />
+          <mxGeometry x="6010" y="2060" width="50" height="42" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
