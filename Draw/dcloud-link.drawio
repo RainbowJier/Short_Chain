@@ -1,9 +1,110 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36" version="26.0.16">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36" version="26.1.0">
   <diagram name="第 1 页" id="zngaNRGyfOBU_eu8mxkX">
-    <mxGraphModel>
+    <mxGraphModel dx="-3004" dy="738" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2339" pageHeight="3300" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-1" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="5264.85" y="1930" width="375.15" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-2" value="创建短链" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="SSOsadmcBXxZNNzZLrk8-3" target="SSOsadmcBXxZNNzZLrk8-10">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="5100" y="2119.217391304348" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-3" value="管理员" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="4980" y="2025" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="SSOsadmcBXxZNNzZLrk8-8" target="SSOsadmcBXxZNNzZLrk8-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="SSOsadmcBXxZNNzZLrk8-8" target="SSOsadmcBXxZNNzZLrk8-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-6" value="Topic&lt;br&gt;类型匹配" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="SSOsadmcBXxZNNzZLrk8-5">
+          <mxGeometry x="-0.5823" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-7" value="异常处理" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="SSOsadmcBXxZNNzZLrk8-8" target="SSOsadmcBXxZNNzZLrk8-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-8" value="X" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;fontStyle=1;fillColor=#F8CECC;" vertex="1" parent="1">
+          <mxGeometry x="5280" y="2080.75" width="60" height="38.5" as="geometry" />
+        </mxCell>
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="SSOsadmcBXxZNNzZLrk8-10" target="SSOsadmcBXxZNNzZLrk8-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-10" value="短链服务" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D5E8D4;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="5120" y="2035" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="SSOsadmcBXxZNNzZLrk8-12" target="SSOsadmcBXxZNNzZLrk8-20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-12" value="short_link队列" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#F8CECC;" vertex="1" parent="1">
+          <mxGeometry x="5470" y="2040" width="130" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="SSOsadmcBXxZNNzZLrk8-14" target="SSOsadmcBXxZNNzZLrk8-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-14" value="mapping队列" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#F8CECC;" vertex="1" parent="1">
+          <mxGeometry x="5470" y="2118.5" width="130" height="41.5" as="geometry" />
+        </mxCell>
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="SSOsadmcBXxZNNzZLrk8-16" target="SSOsadmcBXxZNNzZLrk8-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-16" value="异常交换机" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;fontStyle=1;fillColor=#FF9999;" vertex="1" parent="1">
+          <mxGeometry x="5275" y="1960" width="70" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-17" value="异常队列" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#FF9999;" vertex="1" parent="1">
+          <mxGeometry x="5470" y="1960" width="130" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-18" value="&lt;font style=&quot;&quot;&gt;RabbitMQ&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontColor=#EA6B66;" vertex="1" parent="1">
+          <mxGeometry x="5264.85" y="1900" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="SSOsadmcBXxZNNzZLrk8-20" target="SSOsadmcBXxZNNzZLrk8-26">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="5871" y="2100" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="5790" y="2060" />
+              <mxPoint x="5790" y="2100" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-20" value="新增短链" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D5E8D4;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="5677.5" y="2040" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="SSOsadmcBXxZNNzZLrk8-22" target="SSOsadmcBXxZNNzZLrk8-26">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="5871" y="2100" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="5790" y="2140" />
+              <mxPoint x="5790" y="2100" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-22" value="新增短链映射" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D5E8D4;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="5680" y="2120" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-23" value="冗余双写&lt;br&gt;分库：account_no&lt;br&gt;分表：group_id" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="5680" y="2160" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-24" value="随机库表位" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="5665" y="2010" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-25" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="5820" y="2070" width="210" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-26" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;dashed=1;" vertex="1" parent="SSOsadmcBXxZNNzZLrk8-25">
+          <mxGeometry width="210" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-27" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/databases/Azure_Database_MySQL_Server.svg;" vertex="1" parent="SSOsadmcBXxZNNzZLrk8-25">
+          <mxGeometry x="15" y="8" width="48" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="SSOsadmcBXxZNNzZLrk8-28" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/databases/Azure_Database_MySQL_Server.svg;" vertex="1" parent="SSOsadmcBXxZNNzZLrk8-25">
+          <mxGeometry x="140" y="8" width="48" height="64" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
