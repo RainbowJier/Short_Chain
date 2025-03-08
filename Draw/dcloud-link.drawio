@@ -147,7 +147,7 @@
           <mxGeometry x="5770" y="1820" width="30" height="60" as="geometry" />
         </mxCell>
         <mxCell id="SSOsadmcBXxZNNzZLrk8-53" value="Redis实现分布式锁" style="image;sketch=0;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/mscae/Cache_Redis_Product.svg;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="6030" y="2060" width="50" height="42" as="geometry" />
+          <mxGeometry x="6470" y="1970" width="50" height="42" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
